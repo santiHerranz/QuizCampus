@@ -4,7 +4,8 @@ CREATE TABLE usuari
 (
   usuariId int auto_increment PRIMARY KEY,
   email VARCHAR (100),
-  contrasenya VARCHAR (100) NOT NULL
+  contrasenya VARCHAR (100) NOT NULL,
+  admin BOOLEAN NOT NULL DEFAULT (0)
 );
 
 

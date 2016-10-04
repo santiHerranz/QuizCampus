@@ -9,9 +9,10 @@ import java.util.ArrayList;
 
 public class Usuari {
 
+    private Long Id;
     private String email;
     private String contrasenya;
-    private boolean admin = false;
+    private boolean admin;
 
     private List<Resposta> respostes;
 
@@ -25,6 +26,13 @@ public class Usuari {
         setContrasenya(contrasenya);
     }
 
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long Id) {
+        this.Id = Id;
+    }
 
     public String getEmail() {
         return email;
@@ -46,9 +54,7 @@ public class Usuari {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
+    public void setAdmin(boolean admin) { this.admin = admin;  }
 
     public List<Resposta> getRespostes() {
         return respostes;
