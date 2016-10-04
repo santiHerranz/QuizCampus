@@ -18,7 +18,7 @@ public class UserUseCases  {
     public Usuari createUser(String email, String contrasenya) {
         Usuari usuari = new Usuari(email, contrasenya);
         try {
-            userLabRepository.save(usuari);
+            userLabRepository.crear(usuari);
         } catch (Exception e) {
             e.printStackTrace();
         }

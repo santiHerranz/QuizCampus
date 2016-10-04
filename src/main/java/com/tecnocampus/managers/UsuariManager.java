@@ -24,7 +24,7 @@ public class UsuariManager {
         return jdbcOperations.query("Select * from usuari", new UsuariMapper());
     }
 
-    public Usuari findOne(String email) {
+    public Usuari obtenir(String email) {
         return jdbcOperations.queryForObject(
                   "Select * from usuari where email = ?"
                 , new Object[]{email}
@@ -32,16 +32,29 @@ public class UsuariManager {
         );
     }
 
-    public int save(Usuari userLab) {
+    public int crear(Usuari usuari) {
         int userUpdate = jdbcOperations.update(
                 "insert into usuari (email, contrasenya) values(?,?)"
-                , userLab.getEmail()
-                , userLab.getContrasenya());
+                , usuari.getEmail()
+                , usuari.getContrasenya());
 
         return userUpdate;
     }
+    public boolean comprobar(Usuari usuari) {
+        //TODO: implementar
+        return true;
+    }
 
-    private final class UsuariMapper implements RowMapper<Usuari> {
+    public void ferAdmin(Usuari usuari) {
+        //TODO: implementar
+    }
+
+    public void eliminar(Usuari usuari) {
+        //TODO: implementar
+    }
+
+
+        private final class UsuariMapper implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
             Usuari usuari = new Usuari();
