@@ -24,9 +24,7 @@ public class QuizCampusApplication {
 			@Override
 			public void run(String... strings) throws Exception {
 
-
 				Usuari usuari = userUseCases.crearUsuari("sherranzm", "112233");
-				userUseCases.ferAdmin(usuari);
 
 				Usuari iargemi = userUseCases.crearUsuari("iargemi", "112233");
 
