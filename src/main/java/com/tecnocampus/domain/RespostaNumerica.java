@@ -3,7 +3,7 @@ package com.tecnocampus.domain;
 /**
  * Created by santi on 03/10/2016.
  */
-public final class RespostaNumerica extends Resposta {
+public final class RespostaNumerica implements Resposta {
     private int valor;
 
     public int getValor() {
