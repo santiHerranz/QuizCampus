@@ -7,9 +7,8 @@ import java.util.ArrayList;
  * Created by santi on 03/10/2016.
  */
 
-public class Usuari {
+public class Usuari extends Clau {
 
-    private Long Id;
     private String email;
     private String contrasenya;
     private boolean admin;
@@ -24,14 +23,6 @@ public class Usuari {
         this();
         setEmail(email);
         setContrasenya(contrasenya);
-    }
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long Id) {
-        this.Id = Id;
     }
 
     public String getEmail() {

@@ -3,25 +3,16 @@ package com.tecnocampus.domain;
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
-public class PreguntaNumerica  implements Pregunta {
-    private int preguntaID;
+public final class PreguntaNumerica  extends Pregunta {
+
     private String enunciat;
     private int minim;
     private int maxim;
 
-    public PreguntaNumerica(int preguntaID, String enunciat, int minim, int maxim){
-        this.preguntaID = preguntaID;
+    public PreguntaNumerica(String enunciat, int minim, int maxim){
         this.enunciat = enunciat;
         this.minim = minim;
         this.maxim = maxim;
-    }
-
-    public int getPreguntaID() {
-        return preguntaID;
-    }
-
-    public void setPreguntaID(int preguntaID) {
-        this.preguntaID = preguntaID;
     }
 
     public String getEnunciat() {
