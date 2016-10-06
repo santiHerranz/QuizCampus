@@ -23,7 +23,7 @@ CREATE TABLE pregunta
   enunciat VARCHAR (500) NOT NULL,
   minim int,
   maxim int
-  --, CONSTRAINT fk_1 FOREIGN KEY (usuariId) REFERENCES usuari(usuariId)
+  , FOREIGN KEY (enquestaId) REFERENCES enquesta(enquestaId)
 );
 
 
@@ -34,7 +34,7 @@ CREATE TABLE resposta
   usuariId int NOT NULL,
   preguntaId int NOT NULL,
   valor int NOT NULL
-  --, CONSTRAINT fk_1 FOREIGN KEY (usuariId) REFERENCES usuari(usuariId)
+  , FOREIGN KEY (usuariId) REFERENCES usuari(usuariId)
 );
 /*
 */

@@ -1,7 +1,7 @@
 package com.tecnocampus;
 
 import com.tecnocampus.domain.Usuari;
-import com.tecnocampus.useCases.UserUseCases;
+import com.tecnocampus.useCases.UsuariCasosUs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +16,13 @@ public class QuizCampusApplication {
 	}
 
 	@Autowired
-	private UserUseCases userUseCases;
+	private UsuariCasosUs userUseCases;
+
+
+	// Acces a BBDD
+	// http://localhost:8080/h2-console
+	// h2:mem:testdb
+
 
 	@Bean
 	CommandLineRunner runner() {

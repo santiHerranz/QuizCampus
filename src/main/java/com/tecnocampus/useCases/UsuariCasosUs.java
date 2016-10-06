@@ -2,23 +2,19 @@ package com.tecnocampus.useCases;
 
 import com.tecnocampus.domain.Usuari;
 import com.tecnocampus.managers.UsuariManager;
-import org.omg.CORBA.SystemException;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
  * Created by santi on 04/10/2016.
  */
 @Component
-public final class UserUseCases  {
+public final class UsuariCasosUs {
     private UsuariManager usuariManager;
 
-    public UserUseCases(UsuariManager usuariManager) {
+    public UsuariCasosUs(UsuariManager usuariManager) {
         this.usuariManager = usuariManager;
     }
 

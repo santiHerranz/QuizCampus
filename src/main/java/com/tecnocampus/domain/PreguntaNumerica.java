@@ -10,7 +10,7 @@ public final class PreguntaNumerica  extends Pregunta {
     private int maxim;
 
     public PreguntaNumerica(String enunciat, int minim, int maxim){
-        this.enunciat = enunciat;
+        super(enunciat);
         this.minim = minim;
         this.maxim = maxim;
     }
