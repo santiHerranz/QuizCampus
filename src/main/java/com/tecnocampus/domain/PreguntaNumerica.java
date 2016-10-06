@@ -39,7 +39,4 @@ public final class PreguntaNumerica  extends Pregunta {
         this.maxim = maxim;
     }
 
-    public void mostraRang() {
-        //TODO hem de decidir com mostrarem el rang
-    }
 }
