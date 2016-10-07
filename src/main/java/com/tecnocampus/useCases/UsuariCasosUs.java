@@ -57,7 +57,6 @@ public final class UsuariCasosUs {
         return admins.size()==1;
     }
 
-
     /***
      * Elimina l'usuari
      * @param usuari

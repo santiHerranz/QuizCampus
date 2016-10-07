@@ -23,6 +23,11 @@ public class UsuariManager {
 
     private JdbcOperations jdbcOperations;
 
+    private static final String SQL_SELECT_STATEMENT = "SELECT * FROM USUARI ";
+    private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (EMAIL, CONTRASENYA) VALUES(?,?)";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET EMAIL = ?, CONTRASENYA = ?, ADMIN = ? WHERE USUARIID = ?";
+    private static final String SQL_DELETE_STATEMENT = "DELETE FROM USUARI WHERE USUARIID = ?";
+
     public UsuariManager(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
     }
@@ -32,7 +37,7 @@ public class UsuariManager {
      * @return
      */
     public List<Usuari> llistar() {
-        Iterable<Usuari> usuaris = jdbcOperations.query("Select * from usuari", new UsuariMapper());
+        Iterable<Usuari> usuaris = jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
         List<Usuari> target = new ArrayList<Usuari>();
         usuaris.forEach(target::add);
         return target;
@@ -45,7 +50,7 @@ public class UsuariManager {
      */
     public Usuari obtenir(String email) {
         return jdbcOperations.queryForObject(
-                  "Select * from usuari where email = ?"
+                  SQL_SELECT_STATEMENT + "where email = ?"
                 , new Object[]{email}
                 , new UsuariMapper()
         );
@@ -58,7 +63,7 @@ public class UsuariManager {
      */
     public Usuari obtenir(int id) {
         return jdbcOperations.queryForObject(
-                "Select * from usuari where usuariId = ?"
+                SQL_SELECT_STATEMENT + "where usuariId = ?"
                 , new Object[]{id}
                 , new UsuariMapper()
         );
@@ -76,7 +81,7 @@ public class UsuariManager {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(
-                        "insert into usuari (email, contrasenya) values(?,?)",
+                         SQL_INSERT_STATEMENT ,
                         new String[] { "usuariId" });
                 ps.setString(1, usuari.getEmail());
                 ps.setString(2, usuari.getContrasenya());
@@ -96,7 +101,7 @@ public class UsuariManager {
      */
     public int eliminar(Usuari usuari) {
         int userDelete = jdbcOperations.update(
-                "delete from usuari where usuariId = ?"
+                SQL_DELETE_STATEMENT
                 , usuari.getId()
                 );
         return userDelete;
@@ -108,7 +113,7 @@ public class UsuariManager {
      */
     public void guardar(Usuari usuari) {
         jdbcOperations.update(
-                "update usuari set email = ?, contrasenya = ?, admin = ? WHERE usuariId = ?"
+                 SQL_UPDATE_STATEMENT
                 , usuari.getEmail()
                 , usuari.getContrasenya()
                 , usuari.isAdmin()

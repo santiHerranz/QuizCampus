@@ -37,7 +37,7 @@ public class EnquestaManager {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(
-                        "insert into enquesta (email, contrasenya) values(?,?)",
+                        "INSERT INTO ENQUESTA (TITOL) VALUES(?)",
                         new String[] { "enquestaId" });
                 ps.setString(1, enquesta.getTitol());
                 return ps;
@@ -97,6 +97,7 @@ public class EnquestaManager {
     private boolean existeix(String titol) {
         return false;
     }
+
 
     private final class EnquestaMapper implements RowMapper<Enquesta> {
         @Override

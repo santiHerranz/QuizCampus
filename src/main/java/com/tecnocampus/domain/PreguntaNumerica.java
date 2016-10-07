@@ -9,8 +9,12 @@ public final class PreguntaNumerica  extends Pregunta {
     private int minim;
     private int maxim;
 
-    public PreguntaNumerica(String enunciat, int minim, int maxim){
-        super(enunciat);
+    public PreguntaNumerica(Enquesta enquesta, String enunciat){
+        super( enquesta,  enunciat);
+    }
+
+    public PreguntaNumerica(Enquesta enquesta, String enunciat, int minim, int maxim){
+        super(enquesta, enunciat);
         this.minim = minim;
         this.maxim = maxim;
     }

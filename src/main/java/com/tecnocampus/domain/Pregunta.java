@@ -6,8 +6,11 @@ package com.tecnocampus.domain;
 public abstract class Pregunta extends Clau {
 
     String enunciat = "";
+    Enquesta enquesta;
 
-    public Pregunta(String enunciat) {
+
+    public Pregunta(Enquesta enquesta,String enunciat) {
+        setEnquesta(enquesta);
         setEnunciat(enunciat);
     }
 
@@ -18,5 +21,13 @@ public abstract class Pregunta extends Clau {
         this.enunciat = enunciat;
     }
 
+
+    public Enquesta getEnquesta() {
+        return enquesta;
+    }
+
+    public void setEnquesta(Enquesta enquesta) {
+        this.enquesta = enquesta;
+    }
 
 }
