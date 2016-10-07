@@ -3,6 +3,7 @@ package com.tecnocampus.useCases;
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Usuari;
 import com.tecnocampus.managers.EnquestaManager;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -10,7 +11,9 @@ import java.util.List;
  * Created by santi on 6/10/16.
  *
  */
-public class EnquestaCasosUs {
+
+@Component
+public final class EnquestaCasosUs {
     private EnquestaManager enquestaManager;
 
     public EnquestaCasosUs(EnquestaManager enquestaManager) {
@@ -19,6 +22,13 @@ public class EnquestaCasosUs {
 
     public Enquesta crearEnquesta(String titol) {
         Enquesta enquesta = new Enquesta(titol);
+
+        try {
+            enquestaManager.crear(enquesta);
+            System.out.format("Nova enquesta {id:%s, titol:\"%s\"} %n", enquesta.getId(), enquesta.getTitol());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return enquesta;
     }

@@ -36,11 +36,8 @@ public class UsuariManager {
      * Obtenir llistat d'usuaris
      * @return
      */
-    public List<Usuari> llistar() {
-        Iterable<Usuari> usuaris = jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
-        List<Usuari> target = new ArrayList<Usuari>();
-        usuaris.forEach(target::add);
-        return target;
+    public List llistar() {
+        return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
     }
 
     /***

@@ -1,5 +1,6 @@
 package com.tecnocampus.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ public class Enquesta extends Clau {
     // Constructor
     public Enquesta(String titol) {
         this.titol = titol;
+        this.preguntes = new ArrayList<Pregunta>();
     }
 
     public String getTitol() {
@@ -23,10 +25,15 @@ public class Enquesta extends Clau {
     }
 
     public List<Pregunta> getPreguntes() {
-        return preguntes;
+        return this.preguntes;
     }
     public void setPreguntes(List<Pregunta> preguntes) {
         this.preguntes = preguntes;
+    }
+
+
+    public java.lang.String toString() {
+        return super.toString() + " titol: '" + this.titol + "', preguntes: '" + this.preguntes.toString();
     }
 
 

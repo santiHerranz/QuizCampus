@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.tecnocampus.domain.*;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,8 +18,10 @@ import java.util.List;
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
+@Repository
 public class EnquestaManager {
 
+    private static final String SQL_SELECT_STATEMENT = "SELECT * FROM ENQUESTA ";
     private JdbcOperations jdbcOperations;
 
     public EnquestaManager(JdbcOperations jdbcOperations) {
@@ -58,7 +61,7 @@ public class EnquestaManager {
         List<Enquesta> llista = new ArrayList<Enquesta>();
         //TODO recuperar llista d'enquestes amb respostes de l'usuari
         //Fer consulta a enquestes, llavors a preguntes i llavors a respostes
-        return null;
+        return jdbcOperations.query(SQL_SELECT_STATEMENT, new EnquestaMapper());
     }
 
     /***
@@ -77,16 +80,26 @@ public class EnquestaManager {
      * @return Enquesta o null
      */
     public Enquesta obtenirEnquesta(String titol) {
-        return null;
+        return jdbcOperations.queryForObject(
+                SQL_SELECT_STATEMENT + " where titol like ?"
+                , new Object[]{'%'+ titol +'%'}
+                , new EnquestaMapper()
+        );
+
     }
 
     /***
      * Aquesta funció retorna l'enquesta amb l'identificador que li passem per paràmetre
-     * @param enquestaID
+     * @param enquestaId
      * @return
      */
-    public Enquesta obtenirEnquesta(int enquestaID) {
-        return null;
+    public Enquesta obtenirEnquesta(int enquestaId) {
+
+        return jdbcOperations.queryForObject(
+                SQL_SELECT_STATEMENT + " where enquestaId = ?"
+                , new Object[]{enquestaId}
+                , new EnquestaMapper()
+        );
     }
 
     /***

@@ -5,6 +5,7 @@ import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Usuari;
 import com.tecnocampus.managers.PreguntaManager;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by santi on 6/10/16.
@@ -17,6 +18,8 @@ import com.tecnocampus.managers.PreguntaManager;
  * -
  *
  */
+
+@Component
 public class PreguntaCasosUs {
     private PreguntaManager preguntaManager;
 
@@ -34,6 +37,13 @@ public class PreguntaCasosUs {
      */
     public Pregunta crearPreguntaNumerica(Enquesta enquesta, String enunciat, int min, int max) {
         Pregunta pregunta = new PreguntaNumerica(enquesta,enunciat, min, max);
+
+        try {
+            preguntaManager.crear(pregunta);
+            System.out.format("Nova pregunta {id:%s, enunciat:\"%s\"} %n", pregunta.getId(), pregunta.getEnunciat());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return pregunta;
     }
 
@@ -57,5 +67,9 @@ public class PreguntaCasosUs {
         for (Pregunta pregunta: enquesta.getPreguntes()) {
             eliminarPregunta(pregunta);
         }
+    }
+
+    public Iterable<Pregunta> llistarPreguntes() {
+        return preguntaManager.llistarTotes();
     }
 }

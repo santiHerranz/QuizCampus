@@ -5,7 +5,6 @@ package com.tecnocampus.domain;
  */
 public final class PreguntaNumerica  extends Pregunta {
 
-    private String enunciat;
     private int minim;
     private int maxim;
 
@@ -19,13 +18,6 @@ public final class PreguntaNumerica  extends Pregunta {
         this.maxim = maxim;
     }
 
-    public String getEnunciat() {
-        return enunciat;
-    }
-
-    public void setEnunciat(String enunciat) {
-        this.enunciat = enunciat;
-    }
 
     public int getMinim() {
         return minim;
@@ -43,4 +35,8 @@ public final class PreguntaNumerica  extends Pregunta {
         this.maxim = maxim;
     }
 
+
+    public java.lang.String toString() {
+        return super.toString() + " minim: '" + this.minim + "', maxim: '" + this.maxim;
+    }
 }

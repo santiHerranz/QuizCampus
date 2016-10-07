@@ -2,12 +2,15 @@ package com.tecnocampus.useCases;
 
 import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.managers.RespostaManager;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by santi on 7/10/16.
  */
+
+
 public class RespostaCasosUs {
     private RespostaManager respostaManager;
 

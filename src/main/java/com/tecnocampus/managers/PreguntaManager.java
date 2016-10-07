@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
+@Repository
 public class PreguntaManager {
 
     private JdbcOperations jdbcOperations;
@@ -41,6 +43,9 @@ public class PreguntaManager {
                         SQL_INSERT_STATEMENT,
                         new String[] { "preguntaId" });
                 ps.setLong(1, pregunta.getEnquesta().getId());
+                ps.setString(2, pregunta.getEnunciat());
+                ps.setInt(3, ((PreguntaNumerica)pregunta).getMaxim());
+                ps.setInt(4, ((PreguntaNumerica)pregunta).getMinim());
                 return ps;
             }
         }, keyHolder);
@@ -69,16 +74,25 @@ public class PreguntaManager {
     public void llistarRespostes(Pregunta pregunta) {
 
     }
-    
+
+    public Iterable<Pregunta> llistarTotes() {
+        return jdbcOperations.query(
+                SQL_SELECT_STATEMENT
+                , new PreguntaMapper()
+        );
+    }
+
 
     private final class PreguntaMapper implements RowMapper<Pregunta> {
         @Override
         public Pregunta mapRow(ResultSet resultSet, int i) throws SQLException {
 
-            Enquesta enquesta = new EnquestaManager(jdbcOperations).obtenirEnquesta(resultSet.getString("enquestaId"));
+            Enquesta enquesta = new EnquestaManager(jdbcOperations).obtenirEnquesta(resultSet.getInt("enquestaId"));
 
-            Pregunta pregunta = new PreguntaNumerica(enquesta, resultSet.getString("enunciat"));
+            PreguntaNumerica pregunta = new PreguntaNumerica(enquesta, resultSet.getString("enunciat"));
             pregunta.setId(resultSet.getLong("preguntaid"));
+            pregunta.setMaxim(resultSet.getInt("maxim"));
+            pregunta.setMinim(resultSet.getInt("minim"));
             return pregunta;
         }
     }
