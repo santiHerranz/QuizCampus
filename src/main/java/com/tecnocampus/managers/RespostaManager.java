@@ -1,6 +1,9 @@
 package com.tecnocampus.managers;
 
-import com.tecnocampus.domain.*;
+import com.tecnocampus.domain.Pregunta;
+import com.tecnocampus.domain.Resposta;
+import com.tecnocampus.domain.RespostaNumerica;
+import com.tecnocampus.domain.Usuari;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by ignasiargemipuig on 4/10/16.
@@ -54,7 +58,13 @@ public class RespostaManager {
         return respostaUpdate;  
     }
 
+    public List<Resposta> llistarRespostes() {
+        return jdbcOperations.query(SQL_SELECT_STATEMENT, new RespostaMapper());
+    }
 
+    public Iterable<RespostaNumerica> llistarRespostesNumeriques() {
+        return jdbcOperations.query(SQL_SELECT_STATEMENT, new RespostaNumericaMapper());
+    }
 
     public int eliminarResposta(Resposta resposta) {
         int resultDelete = jdbcOperations.update(
@@ -74,6 +84,7 @@ public class RespostaManager {
 
     }
 
+
     private final class RespostaMapper implements RowMapper<Resposta> {
         @Override
         public Resposta mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -86,4 +97,18 @@ public class RespostaManager {
             return resposta;
         }
     }
+
+    private final class RespostaNumericaMapper implements RowMapper<RespostaNumerica> {
+        @Override
+        public RespostaNumerica mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            Pregunta pregunta = new PreguntaManager(jdbcOperations).obtenir(resultSet.getInt("preguntaId"));
+            Usuari usuari = new UsuariManager(jdbcOperations).obtenir(resultSet.getInt("usuariId"));
+
+            RespostaNumerica resposta = new RespostaNumerica(pregunta, usuari, resultSet.getInt("valor"));
+            resposta.setId(resultSet.getLong("respostaid"));
+            return resposta;
+        }
+    }
+
 }

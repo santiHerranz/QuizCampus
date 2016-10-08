@@ -3,7 +3,6 @@ package com.tecnocampus.useCases;
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.PreguntaNumerica;
-import com.tecnocampus.domain.Usuari;
 import com.tecnocampus.managers.PreguntaManager;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +38,7 @@ public class PreguntaCasosUs {
         Pregunta pregunta = new PreguntaNumerica(enquesta,enunciat, min, max);
 
         try {
-            preguntaManager.crear(pregunta);
+            preguntaManager.crear(enquesta, pregunta);
             System.out.format("Nova pregunta {id:%s, enunciat:\"%s\"} %n", pregunta.getId(), pregunta.getEnunciat());
         } catch (Exception e) {
             e.printStackTrace();

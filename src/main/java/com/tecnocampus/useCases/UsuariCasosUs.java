@@ -22,7 +22,8 @@ public final class UsuariCasosUs {
         Usuari usuari = new Usuari(email, contrasenya);
         try {
             usuariManager.crear(usuari);
-            System.out.format("Nou usuari creat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
+            //System.out.format("Nou usuari creat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
+            System.out.format("Nou usuari creat %s %n", usuari.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

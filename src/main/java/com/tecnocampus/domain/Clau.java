@@ -7,6 +7,7 @@ package com.tecnocampus.domain;
 public abstract class Clau {
 
     private Long Id;
+
     public Long getId() {
         return Id;
     }
@@ -14,9 +15,10 @@ public abstract class Clau {
         this.Id = Id;
     }
 
-
     public java.lang.String toString() {
-        return "id: '" + this.Id;
+        return ""
+            + String.format(" Id: %s",this.Id)
+        ;
     }
 
 }

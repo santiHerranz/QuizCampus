@@ -34,7 +34,7 @@ public final class EnquestaCasosUs {
     }
 
     public List<Enquesta> llistarEnquestes() {
-        return enquestaManager.llistarEnquestes(null);
+        return enquestaManager.llistarEnquestes();
     }
 
     public List<Enquesta> llistarUltimesEnquestes() {

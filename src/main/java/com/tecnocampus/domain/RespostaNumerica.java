@@ -22,4 +22,9 @@ public final class RespostaNumerica extends Resposta {
         this.valor = valor;
     }
 
+
+    public java.lang.String toString() {
+        return ""+ this.getId();
+    }
+
 }

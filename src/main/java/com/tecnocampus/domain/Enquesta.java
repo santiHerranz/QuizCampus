@@ -14,7 +14,7 @@ public class Enquesta extends Clau {
     // Constructor
     public Enquesta(String titol) {
         this.titol = titol;
-        this.preguntes = new ArrayList<Pregunta>();
+        this.preguntes = new ArrayList<>();
     }
 
     public String getTitol() {
@@ -24,6 +24,7 @@ public class Enquesta extends Clau {
         this.titol = titol;
     }
 
+
     public List<Pregunta> getPreguntes() {
         return this.preguntes;
     }
@@ -31,10 +32,17 @@ public class Enquesta extends Clau {
         this.preguntes = preguntes;
     }
 
-
-    public java.lang.String toString() {
-        return super.toString() + " titol: '" + this.titol + "', preguntes: '" + this.preguntes.toString();
+    public boolean afegirPregunta(Pregunta p1) {
+        return this.preguntes.add(p1);
     }
 
+    @Override
+    public java.lang.String toString() {
+        return "Enquesta {"
+                +"Id: \""+ this.getId() +"\""
+                +", titol: \""+ this.getTitol() +"\""
+                +", preguntes: \""+ this.getPreguntes().size() +"\""
+                +"}";
+    }
 
 }

@@ -1,9 +1,11 @@
 package com.tecnocampus.managers;
 
+import com.tecnocampus.domain.Enquesta;
+import com.tecnocampus.domain.Pregunta;
+import com.tecnocampus.domain.Usuari;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import com.tecnocampus.domain.*;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -22,6 +24,8 @@ import java.util.List;
 public class EnquestaManager {
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM ENQUESTA ";
+    private static final String SQL_INSERT_STATEMENT = "INSERT INTO ENQUESTA (TITOL) VALUES(?) ";
+
     private JdbcOperations jdbcOperations;
 
     public EnquestaManager(JdbcOperations jdbcOperations) {
@@ -40,7 +44,7 @@ public class EnquestaManager {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(
-                        "INSERT INTO ENQUESTA (TITOL) VALUES(?)",
+                        SQL_INSERT_STATEMENT,
                         new String[] { "enquestaId" });
                 ps.setString(1, enquesta.getTitol());
                 return ps;
@@ -50,6 +54,10 @@ public class EnquestaManager {
         enquesta.setId(keyHolder.getKey().longValue());
 
         return userUpdate;
+    }
+
+    public List<Enquesta> llistarEnquestes() {
+        return jdbcOperations.query(SQL_SELECT_STATEMENT, new EnquestaMapper());
     }
 
     /***
@@ -64,15 +72,6 @@ public class EnquestaManager {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new EnquestaMapper());
     }
 
-    /***
-     * Aquesta funció llista totes les preguntes que pertanyin a l'esquesta que passem per parametre
-     * @param enquesta
-     */
-    public List<Pregunta> llistarPreguntes(Enquesta enquesta) {
-        List<Enquesta> llista = new ArrayList<Enquesta>();
-        Iterable<Enquesta> enq = jdbcOperations.query("Select * from pregunta", new EnquestaMapper());
-        return null;
-    }
 
     /***
      * Aquesta funció retorna l'enquesta amb el títol que li passem per paràmetre
@@ -95,11 +94,12 @@ public class EnquestaManager {
      */
     public Enquesta obtenirEnquesta(int enquestaId) {
 
-        return jdbcOperations.queryForObject(
+        Enquesta enquesta = jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + " where enquestaId = ?"
                 , new Object[]{enquestaId}
                 , new EnquestaMapper()
         );
+        return enquesta;
     }
 
     /***
@@ -116,7 +116,17 @@ public class EnquestaManager {
         @Override
         public Enquesta mapRow(ResultSet resultSet, int i) throws SQLException {
             Enquesta enquesta = new Enquesta(resultSet.getString("titol"));
-            enquesta.setId(resultSet.getLong("enquestaID"));
+            enquesta.setId(resultSet.getLong("enquestaId"));
+
+            // enllaçar objectes
+            Long enquestaId = resultSet.getLong("enquestaId");
+            Iterable<Pregunta> list = new PreguntaManager(jdbcOperations).llistarPreguntes(enquestaId);
+            for (Pregunta p: list) {
+                p.setEnquesta(enquesta);
+                enquesta.afegirPregunta(p);
+            }
+
+
             return enquesta;
         }
     }

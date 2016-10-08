@@ -1,16 +1,15 @@
 package com.tecnocampus.useCases;
 
 import com.tecnocampus.domain.Resposta;
+import com.tecnocampus.domain.RespostaNumerica;
 import com.tecnocampus.managers.RespostaManager;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * Created by santi on 7/10/16.
  */
 
-
+@Component
 public class RespostaCasosUs {
     private RespostaManager respostaManager;
 
@@ -18,11 +17,11 @@ public class RespostaCasosUs {
         this.respostaManager = respostaManager;
     }
 
-
-    public void respondreResposta(List<Resposta> respostes) throws Exception {
-
-        respostes.forEach(r -> respostaManager.crear(r));
-        ;
+    public Iterable<Resposta> llistarRespostes() throws Exception {
+        throw new Exception("No implementat");
     }
-    
+
+    public Iterable<RespostaNumerica> llistarRespostesNumeriques() {
+        return respostaManager.llistarRespostesNumeriques();
+    }
 }

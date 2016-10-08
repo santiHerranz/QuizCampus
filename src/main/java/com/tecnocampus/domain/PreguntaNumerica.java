@@ -8,12 +8,16 @@ public final class PreguntaNumerica  extends Pregunta {
     private int minim;
     private int maxim;
 
+    public PreguntaNumerica() {
+        super();
+    }
+
     public PreguntaNumerica(Enquesta enquesta, String enunciat){
-        super( enquesta,  enunciat);
+        super( enunciat);
     }
 
     public PreguntaNumerica(Enquesta enquesta, String enunciat, int minim, int maxim){
-        super(enquesta, enunciat);
+        super(enunciat);
         this.minim = minim;
         this.maxim = maxim;
     }
@@ -36,7 +40,19 @@ public final class PreguntaNumerica  extends Pregunta {
     }
 
 
-    public java.lang.String toString() {
-        return super.toString() + " minim: '" + this.minim + "', maxim: '" + this.maxim;
+    @Override
+    public boolean afegirResposta(Usuari usuari, int valor) {
+        return this.getRespostes().add(new RespostaNumerica(this,usuari, valor));
     }
+
+    @Override
+    public java.lang.String toString() {
+        return "PreguntaNumerica {"
+                +"Id: \""+ this.getId() +"\""
+                +", enunciat: \""+ this.getEnunciat() +"\""
+                +", respostes: \""+ this.getRespostes().size() +"\""
+                +"}";
+    }
+
+
 }

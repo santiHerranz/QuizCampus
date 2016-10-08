@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -122,10 +121,8 @@ public class UsuariManager {
     private final class UsuariMapper implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
-            Usuari usuari = new Usuari();
+            Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
             usuari.setId(resultSet.getLong("usuariid"));
-            usuari.setEmail(resultSet.getString("email"));
-            usuari.setContrasenya(resultSet.getString("contrasenya"));
             usuari.setAdmin(resultSet.getBoolean("admin"));
             return usuari;
         }

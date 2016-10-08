@@ -9,10 +9,14 @@ package com.tecnocampus.domain;
  */
 public abstract class Resposta extends Clau {
 
-    Usuari usuari;
-    Pregunta preguntaId;
+    private Usuari usuari;
+    private Pregunta preguntaId;
 
     public Resposta(Pregunta pregunta, Usuari usuari){
+        if (pregunta==null) throw new NullPointerException("pregunta");
+        if (usuari==null) throw new NullPointerException("usuari");
+
+        this.setUsuari(usuari);
         this.setPregunta(pregunta);
     }
 
@@ -24,6 +28,7 @@ public abstract class Resposta extends Clau {
         this.usuari = usuari;
     }
 
+
     public Pregunta getPregunta() {
         return preguntaId;
     }
@@ -31,6 +36,8 @@ public abstract class Resposta extends Clau {
     public void setPregunta(Pregunta preguntaId) {
         this.preguntaId = preguntaId;
     }
+
+
 
 
 }

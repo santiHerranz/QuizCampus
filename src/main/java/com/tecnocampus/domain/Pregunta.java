@@ -3,23 +3,25 @@ package com.tecnocampus.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
 public abstract class Pregunta extends Clau {
 
-    String enunciat = "";
-    Enquesta enquesta;
-    List<Resposta> respostes;
+    private String enunciat = "";
+    private Enquesta enquesta;
+    private List<Resposta> respostes;
 
+    public Pregunta(){
+        this.respostes = new ArrayList<Resposta>();
+    }
 
-    public Pregunta(Enquesta enquesta,String enunciat) {
+    public Pregunta(String enunciat) {
+        this();
 
         setEnquesta(enquesta);
         setEnunciat(enunciat);
-
-        enquesta.getPreguntes().add(this);
-        this.respostes = new ArrayList<Resposta>();
     }
 
     public String getEnunciat() {
@@ -43,7 +45,9 @@ public abstract class Pregunta extends Clau {
         this.respostes = respostes;
     }
 
-    public java.lang.String toString() {
-        return super.toString() + " titol: '" + this.enunciat + "', preguntes: '" + this.respostes.toString();
-    }
+
+    public abstract boolean afegirResposta(Usuari usuari, int valor);
+
+
+
 }

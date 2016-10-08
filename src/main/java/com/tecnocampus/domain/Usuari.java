@@ -1,7 +1,7 @@
 package com.tecnocampus.domain;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by santi on 03/10/2016.
@@ -15,14 +15,13 @@ public class Usuari extends Clau {
 
     private List<Resposta> respostes;
 
-    public Usuari() {
-        respostes = new ArrayList<>();
-    }
-
     public Usuari(String email, String contrasenya) {
-        this();
+        if (email==null) throw new NullPointerException("email");
+        if (contrasenya==null) throw new NullPointerException("contrasenya");
+
         setEmail(email);
         setContrasenya(contrasenya);
+        respostes = new ArrayList<>();
     }
 
     public String getEmail() {
@@ -47,6 +46,7 @@ public class Usuari extends Clau {
 
     public void setAdmin(boolean admin) { this.admin = admin;  }
 
+
     public List<Resposta> getRespostes() {
         return respostes;
     }
@@ -55,5 +55,9 @@ public class Usuari extends Clau {
         this.respostes = respostes;
     }
 
+
+    public java.lang.String toString() {
+        return ""+ this.getId();
+    }
 
 }
