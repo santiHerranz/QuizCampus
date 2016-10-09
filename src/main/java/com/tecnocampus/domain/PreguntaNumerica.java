@@ -12,6 +12,7 @@ public final class PreguntaNumerica  extends Pregunta {
         super();
     }
 
+
     public PreguntaNumerica(Enquesta enquesta, String enunciat){
         super( enunciat);
     }
@@ -41,6 +42,11 @@ public final class PreguntaNumerica  extends Pregunta {
 
 
     @Override
+    public boolean afegirResposta(Resposta resposta) {
+        return this.getRespostes().add(resposta);
+    }
+
+    @Override
     public boolean afegirResposta(Usuari usuari, int valor) {
         return this.getRespostes().add(new RespostaNumerica(this,usuari, valor));
     }
@@ -48,9 +54,9 @@ public final class PreguntaNumerica  extends Pregunta {
     @Override
     public java.lang.String toString() {
         return "PreguntaNumerica {"
-                +"Id: \""+ this.getId() +"\""
-                +", enunciat: \""+ this.getEnunciat() +"\""
-                +", respostes: \""+ this.getRespostes().size() +"\""
+                + super.toString()
+                +", minim: \""+ this.minim +"\""
+                +", maxim: \""+ this.maxim +"\""
                 +"}";
     }
 

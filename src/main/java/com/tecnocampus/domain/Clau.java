@@ -16,9 +16,7 @@ public abstract class Clau {
     }
 
     public java.lang.String toString() {
-        return ""
-            + String.format(" Id: %s",this.Id)
-        ;
+        return ""; // + String.format(" Id: %s",this.Id);
     }
 
 }

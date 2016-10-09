@@ -10,10 +10,14 @@ public final class RespostaNumerica extends Resposta {
 
     private int valor;
 
+    public RespostaNumerica() {
+        super();
+    }
     public RespostaNumerica(Pregunta pregunta, Usuari usuari, int valor) {
         super(pregunta, usuari);
         this.valor = valor;
     }
+
 
     public int getValor() {
         return valor;
@@ -22,9 +26,12 @@ public final class RespostaNumerica extends Resposta {
         this.valor = valor;
     }
 
-
     public java.lang.String toString() {
-        return ""+ this.getId();
+        return "RespostaNumerica {"
+                + super.toString()
+                +", Id: \""+ this.getId() +"\""
+                +", valor: \""+ this.getValor() +"\""
+                +"}";
     }
 
 }

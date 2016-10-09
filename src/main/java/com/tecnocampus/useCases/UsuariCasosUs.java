@@ -1,8 +1,8 @@
 package com.tecnocampus.useCases;
 
 import com.tecnocampus.domain.Usuari;
-import com.tecnocampus.managers.UsuariManager;
-import org.springframework.stereotype.Component;
+import com.tecnocampus.managers.UsuariRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,18 +10,19 @@ import java.util.stream.Collectors;
 /**
  * Created by santi on 04/10/2016.
  */
-@Component
+@Service
 public final class UsuariCasosUs {
-    private UsuariManager usuariManager;
+    private UsuariRepository usuariRepository;
 
-    public UsuariCasosUs(UsuariManager usuariManager) {
-        this.usuariManager = usuariManager;
+    public UsuariCasosUs(UsuariRepository usuariRepository) {
+
+        this.usuariRepository = usuariRepository;
     }
 
     public Usuari crearUsuari(String email, String contrasenya) {
         Usuari usuari = new Usuari(email, contrasenya);
         try {
-            usuariManager.crear(usuari);
+            usuariRepository.save(usuari);
             //System.out.format("Nou usuari creat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
             System.out.format("Nou usuari creat %s %n", usuari.toString());
         } catch (Exception e) {
@@ -40,7 +41,7 @@ public final class UsuariCasosUs {
 
     public void ferAdmin(Usuari usuari) {
         usuari.setAdmin(true);
-        usuariManager.guardar(usuari);
+        usuariRepository.update(usuari);
         System.out.format("Usuari promocionat a Admin {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
     }
 
@@ -48,7 +49,7 @@ public final class UsuariCasosUs {
         if(esUltimAdmin(usuari))
             throw new Exception(String.format("L'usuari {id:%s, email:\"%s\"} és l'ultim administrador, no es pot degradar!!!", usuari.getId(), usuari.getEmail()));
         usuari.setAdmin(false);
-        usuariManager.guardar(usuari);
+        usuariRepository.update(usuari);
         System.out.format("Usuari degradat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
     }
 
@@ -61,19 +62,19 @@ public final class UsuariCasosUs {
     /***
      * Elimina l'usuari
      * @param usuari
-     * @throws Exception si es vol eliminar l'ultim administrador
+     * @throws Exception si es vol delete l'ultim administrador
      */
     public void eliminarUsuari(Usuari usuari) throws Exception {
 
         if(esUltimAdmin(usuari))
-            throw new Exception(String.format("L'usuari {id:%s, email:\"%s\"} és l'ultim administrador, no es pot eliminar!!!", usuari.getId(), usuari.getEmail()));
+            throw new Exception(String.format("L'usuari {id:%s, email:\"%s\"} és l'ultim administrador, no es pot delete!!!", usuari.getId(), usuari.getEmail()));
 
         String msg = String.format("Usuari eliminat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
-        usuariManager.eliminar(usuari);
+        usuariRepository.delete(usuari);
         System.out.print(msg);
     }
 
     public List<Usuari> llistarUsuaris() {
-        return usuariManager.llistar();
+        return usuariRepository.findAll();
     }
 }

@@ -1,10 +1,9 @@
 package com.tecnocampus.useCases;
 
-import com.tecnocampus.domain.Enquesta;
-import com.tecnocampus.domain.Pregunta;
-import com.tecnocampus.domain.PreguntaNumerica;
-import com.tecnocampus.managers.PreguntaManager;
-import org.springframework.stereotype.Component;
+import com.tecnocampus.domain.*;
+import com.tecnocampus.managers.PreguntaRepository;
+import com.tecnocampus.managers.RespostaRepository;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by santi on 6/10/16.
@@ -18,43 +17,34 @@ import org.springframework.stereotype.Component;
  *
  */
 
-@Component
+@Service
 public class PreguntaCasosUs {
-    private PreguntaManager preguntaManager;
+    private PreguntaRepository preguntaRepository;
+    private RespostaRepository respostaRepository;
 
-    public PreguntaCasosUs(PreguntaManager preguntaManager) {
-        this.preguntaManager = preguntaManager;
+    public PreguntaCasosUs(PreguntaRepository preguntaRepository,RespostaRepository respostaRepository) {
+        this.preguntaRepository = preguntaRepository;
+        this.respostaRepository = respostaRepository;
     }
 
-    /***
-     *  Afegir pregunta a l'enquesta
-     * @param enquesta
-     * @param enunciat
-     * @param min
-     * @param max
-     * @return Pregunta creada
-     */
-    public Pregunta crearPreguntaNumerica(Enquesta enquesta, String enunciat, int min, int max) {
-        Pregunta pregunta = new PreguntaNumerica(enquesta,enunciat, min, max);
 
-        try {
-            preguntaManager.crear(enquesta, pregunta);
-            System.out.format("Nova pregunta {id:%s, enunciat:\"%s\"} %n", pregunta.getId(), pregunta.getEnunciat());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Pregunta afegirResposta(Pregunta pregunta, Usuari usuari, int valor) {
+        RespostaNumerica resposta = new RespostaNumerica();
+        resposta.setUsuari(usuari);
+        resposta.setValor(valor);
+        pregunta.afegirResposta(resposta);
+        respostaRepository.save(pregunta, resposta);
         return pregunta;
     }
 
     /***
      *
      * @param pregunta
+     * @return
      * @throws Exception
      */
-    public void eliminarPregunta(Pregunta pregunta) throws Exception {
-        String msg = String.format("Pregunta eliminada {id:%s, enunciat:\"%s\"} %n", pregunta.getId(), pregunta.getEnunciat());
-        preguntaManager.eliminar(pregunta);
-        System.out.print(msg);
+    public int eliminarPregunta(Pregunta pregunta) throws Exception {
+        return preguntaRepository.delete(pregunta);
     }
 
     /***
@@ -69,6 +59,6 @@ public class PreguntaCasosUs {
     }
 
     public Iterable<Pregunta> llistarPreguntes() {
-        return preguntaManager.llistarTotes();
+        return preguntaRepository.findAll();
     }
 }

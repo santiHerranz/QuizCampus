@@ -24,15 +24,16 @@ public class QuizCampusApplication {
 	@Autowired
 	private UsuariCasosUs userUseCases;
 
-
 	@Autowired
-	private EnquestaCasosUs enquestaCasosUs;
+	private RespostaCasosUs respostaCasosUs;
 
 	@Autowired
 	private PreguntaCasosUs preguntaCasosUs;
 
 	@Autowired
-	private RespostaCasosUs respostaCasosUs;
+	private EnquestaCasosUs enquestaCasosUs;
+
+
 
 	// Acces a BBDD
 	// http://localhost:8080/h2-console
@@ -100,21 +101,21 @@ public class QuizCampusApplication {
 				System.out.format("====%nJerarquia Enquesta-Pregunta-Resposta%n");
 				Enquesta enquesta = enquestaCasosUs.crearEnquesta("Nova enquesta");
 
-				Pregunta p1 = preguntaCasosUs.crearPreguntaNumerica(enquesta, "Primera pregunta", 1, 10);
-				Pregunta p2 = preguntaCasosUs.crearPreguntaNumerica(enquesta, "Segona pregunta", 1, 10);
+				Pregunta p1 = enquestaCasosUs.afegirPregunta(enquesta,  "Primera pregunta", 1, 10);
+				Pregunta p2 = enquestaCasosUs.afegirPregunta(enquesta,  "Segona pregunta", 1, 10);
 
-				enquesta.afegirPregunta(p1);
-				enquesta.afegirPregunta(p2);
+				preguntaCasosUs.afegirResposta(p1, u1, 5);
+				preguntaCasosUs.afegirResposta(p2, u1, 7);
 
-				p1.afegirResposta(u1, 5);
-				p2.afegirResposta(u1, 7);
+				preguntaCasosUs.afegirResposta(p1, u2, 9);
+				preguntaCasosUs.afegirResposta(p2, u2, 8);
 
 				for(Enquesta e : enquestaCasosUs.llistarEnquestes()){
-					System.out.format("Enquesta %s %n", e.toString());
+					System.out.format("%s %n", e.toString());
 					for(Pregunta p : e.getPreguntes()){
-						System.out.format("Pregunta %s %n", p.toString());
+						System.out.format(" %s %n", p.toString());
 						for(Resposta r : p.getRespostes()){
-							System.out.format("Resposta %s %n", r.toString());
+							System.out.format("  %s %n", r.toString());
 						}
 					}
 				}

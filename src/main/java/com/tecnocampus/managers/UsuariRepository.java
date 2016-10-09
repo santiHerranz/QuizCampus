@@ -1,5 +1,7 @@
 package com.tecnocampus.managers;
 
+import com.tecnocampus.domain.Resposta;
+import com.tecnocampus.domain.RespostaNumerica;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -18,7 +20,7 @@ import java.util.List;
  * Created by santi on 03/10/2016.
  */
 @Repository
-public class UsuariManager {
+public class UsuariRepository {
 
     private JdbcOperations jdbcOperations;
 
@@ -27,15 +29,16 @@ public class UsuariManager {
     private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET EMAIL = ?, CONTRASENYA = ?, ADMIN = ? WHERE USUARIID = ?";
     private static final String SQL_DELETE_STATEMENT = "DELETE FROM USUARI WHERE USUARIID = ?";
 
-    public UsuariManager(JdbcOperations jdbcOperations) {
+    public UsuariRepository(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
+        // IMPORTANT: No afegir UsuariRepository per evitar referencia circular
     }
 
     /***
      * Obtenir llistat d'usuaris
      * @return
      */
-    public List llistar() {
+    public List findAll() {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
     }
 
@@ -44,7 +47,7 @@ public class UsuariManager {
      * @param email
      * @return l'usuari trobat o null
      */
-    public Usuari obtenir(String email) {
+    public Usuari findOne(String email) {
         return jdbcOperations.queryForObject(
                   SQL_SELECT_STATEMENT + "where email = ?"
                 , new Object[]{email}
@@ -57,7 +60,7 @@ public class UsuariManager {
      * @param id
      * @return l'usuari trobat o null
      */
-    public Usuari obtenir(int id) {
+    public Usuari findOne(Long id) {
         return jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + "where usuariId = ?"
                 , new Object[]{id}
@@ -70,7 +73,7 @@ public class UsuariManager {
      * @param usuari
      * @return 0 o 1 segons el numero de files insertades
      */
-    public int crear(Usuari usuari) {
+    public int save(Usuari usuari) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int userUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -95,7 +98,7 @@ public class UsuariManager {
      * @param usuari
      * @return 0 o 1 segons el numero de files eliminades
      */
-    public int eliminar(Usuari usuari) {
+    public int delete(Usuari usuari) {
         int userDelete = jdbcOperations.update(
                 SQL_DELETE_STATEMENT
                 , usuari.getId()
@@ -107,7 +110,7 @@ public class UsuariManager {
      * Actualitza els atributs guardats a la bbdd
      * @param usuari
      */
-    public void guardar(Usuari usuari) {
+    public void update(Usuari usuari) {
         jdbcOperations.update(
                  SQL_UPDATE_STATEMENT
                 , usuari.getEmail()
@@ -124,6 +127,7 @@ public class UsuariManager {
             Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
             usuari.setId(resultSet.getLong("usuariid"));
             usuari.setAdmin(resultSet.getBoolean("admin"));
+
             return usuari;
         }
     }

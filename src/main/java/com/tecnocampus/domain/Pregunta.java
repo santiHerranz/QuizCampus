@@ -10,6 +10,7 @@ import java.util.List;
 public abstract class Pregunta extends Clau {
 
     private String enunciat = "";
+    private Long enquestaId;
     private Enquesta enquesta;
     private List<Resposta> respostes;
 
@@ -22,6 +23,14 @@ public abstract class Pregunta extends Clau {
 
         setEnquesta(enquesta);
         setEnunciat(enunciat);
+    }
+
+    public Long getEnquestaId() {
+        return enquestaId;
+    }
+
+    public void setEnquestaId(Long enquestaId) {
+        this.enquestaId = enquestaId;
     }
 
     public String getEnunciat() {
@@ -46,8 +55,15 @@ public abstract class Pregunta extends Clau {
     }
 
 
+    public abstract boolean afegirResposta(Resposta resposta);
     public abstract boolean afegirResposta(Usuari usuari, int valor);
 
+    public java.lang.String toString() {
+        return ""
+                +"enunciat: \""+ this.enunciat +"\""
+                +", enquesta: \""+ this.enquesta +"\""
+                +"";
+    }
 
 
 }

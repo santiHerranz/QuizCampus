@@ -21,7 +21,7 @@ import java.util.List;
  * Created by ignasiargemipuig on 4/10/16.
  */
 @Repository
-public class RespostaManager {
+public class RespostaRepository {
 
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM RESPOSTA ";
@@ -30,13 +30,15 @@ public class RespostaManager {
     private static final String SQL_DELETE_STATEMENT = "DELETE FROM RESPOSTA WHERE RESPOSTAID = ?";
 
     private JdbcOperations jdbcOperations;
+    private  UsuariRepository usuariRepository;
 
-    public RespostaManager(JdbcOperations jdbcOperations) {
+    public RespostaRepository(JdbcOperations jdbcOperations, UsuariRepository usuariRepository) {
+
         this.jdbcOperations = jdbcOperations;
+        this.usuariRepository = usuariRepository;
     }
 
-
-    public int crear(Resposta resposta) {
+    public int save(Pregunta pregunta, RespostaNumerica resposta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int respostaUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -45,9 +47,9 @@ public class RespostaManager {
                 PreparedStatement ps = connection.prepareStatement(
                         SQL_INSERT_STATEMENT,
                         new String[] { "respostaId" });
-                ps.setLong(1, resposta.getPregunta().getId());
+                ps.setLong(1, pregunta.getId());
                 ps.setLong(2, resposta.getUsuari().getId());
-                //TODO: Forçem el tipus perque de moment només hi ha una taula ,eliminar el forçat quan es separin amb 2 taules
+                //TODO: Forçem el tipus perque de moment només hi ha una taula ,delete el forçat quan es separin amb 2 taules
                 ps.setInt(3, ((RespostaNumerica)resposta).getValor());
                 return ps;
             }
@@ -58,15 +60,24 @@ public class RespostaManager {
         return respostaUpdate;  
     }
 
-    public List<Resposta> llistarRespostes() {
-        return jdbcOperations.query(SQL_SELECT_STATEMENT, new RespostaMapper());
+    public List<RespostaNumerica> findAll(Long preguntaId) {
+        return jdbcOperations.query(
+                SQL_SELECT_STATEMENT +" WHERE preguntaId = ?"
+                , new Object[] { preguntaId}
+                , new RespostaNumericaMapper());
+    }
+
+    public List<RespostaNumerica> findAll() {
+        return jdbcOperations.query(
+                SQL_SELECT_STATEMENT
+                , new RespostaNumericaMapper());
     }
 
     public Iterable<RespostaNumerica> llistarRespostesNumeriques() {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new RespostaNumericaMapper());
     }
 
-    public int eliminarResposta(Resposta resposta) {
+    public int delete(Resposta resposta) {
         int resultDelete = jdbcOperations.update(
                 SQL_DELETE_STATEMENT
                 , resposta.getId()
@@ -75,38 +86,43 @@ public class RespostaManager {
 
     }
 
-    public Resposta obtenirResposta(int respostaId) {
+    public Resposta findOne(int respostaId) {
         return jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + " where respostaId = ?"
                 , new Object[]{respostaId}
-                , new RespostaMapper()
+                , new RespostaNumericaMapper()
         );
 
     }
 
 
-    private final class RespostaMapper implements RowMapper<Resposta> {
-        @Override
-        public Resposta mapRow(ResultSet resultSet, int i) throws SQLException {
 
-            Pregunta pregunta = new PreguntaManager(jdbcOperations).obtenir(resultSet.getInt("preguntaId"));
-            Usuari usuari = new UsuariManager(jdbcOperations).obtenir(resultSet.getInt("usuariId"));
-
-            Resposta resposta = new RespostaNumerica(pregunta, usuari, resultSet.getInt("valor"));
-            resposta.setId(resultSet.getLong("respostaid"));
-            return resposta;
-        }
+    public List<RespostaNumerica> findAllFromUser(Long usuariId) {
+        return jdbcOperations.query(
+                SQL_SELECT_STATEMENT + " where usuariId = ?"
+                , new Object[]{usuariId}
+                , new RespostaNumericaMapper()
+        );
     }
+
+
+
 
     private final class RespostaNumericaMapper implements RowMapper<RespostaNumerica> {
         @Override
         public RespostaNumerica mapRow(ResultSet resultSet, int i) throws SQLException {
 
-            Pregunta pregunta = new PreguntaManager(jdbcOperations).obtenir(resultSet.getInt("preguntaId"));
-            Usuari usuari = new UsuariManager(jdbcOperations).obtenir(resultSet.getInt("usuariId"));
 
-            RespostaNumerica resposta = new RespostaNumerica(pregunta, usuari, resultSet.getInt("valor"));
+            RespostaNumerica resposta = new RespostaNumerica();
+            resposta.setUsuariId(resultSet.getLong("usuariid"));
+            resposta.setPreguntaId(resultSet.getLong("preguntaid"));
             resposta.setId(resultSet.getLong("respostaid"));
+            resposta.setValor(resultSet.getInt("valor"));
+
+            Usuari usuari = usuariRepository.findOne(resposta.getUsuariId());
+            resposta.setUsuari(usuari);
+            usuari.afegirResposta(resposta);
+
             return resposta;
         }
     }

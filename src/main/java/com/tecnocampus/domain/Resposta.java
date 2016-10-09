@@ -9,8 +9,13 @@ package com.tecnocampus.domain;
  */
 public abstract class Resposta extends Clau {
 
+    private Long usuariId;
     private Usuari usuari;
-    private Pregunta preguntaId;
+    private Long preguntaId;
+    private Pregunta pregunta;
+
+    public Resposta() {
+    }
 
     public Resposta(Pregunta pregunta, Usuari usuari){
         if (pregunta==null) throw new NullPointerException("pregunta");
@@ -20,24 +25,39 @@ public abstract class Resposta extends Clau {
         this.setPregunta(pregunta);
     }
 
+    public Long getUsuariId() {
+        return usuariId;
+    }
+    public void setUsuariId(long usuariId) {
+        this.usuariId = usuariId;
+    }
     public Usuari getUsuari() {
         return usuari;
     }
-
     public void setUsuari(Usuari usuari) {
         this.usuari = usuari;
     }
 
 
-    public Pregunta getPregunta() {
+    public Long getPreguntaId() {
         return preguntaId;
     }
-
-    public void setPregunta(Pregunta preguntaId) {
+    public void setPreguntaId(long preguntaId) {
         this.preguntaId = preguntaId;
+    }
+    public Pregunta getPregunta() {
+        return pregunta;
+    }
+    public void setPregunta(Pregunta pregunta) {
+        this.pregunta = pregunta;
     }
 
 
-
+    public java.lang.String toString() {
+        return ""
+                +"usuari: \""+ this.usuari +"\""
+                +", pregunta: \""+ this.pregunta +"\""
+                +"";
+    }
 
 }

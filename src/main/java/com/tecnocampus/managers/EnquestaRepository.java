@@ -21,23 +21,26 @@ import java.util.List;
  * Created by ignasiargemipuig on 4/10/16.
  */
 @Repository
-public class EnquestaManager {
+public class EnquestaRepository {
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM ENQUESTA ";
     private static final String SQL_INSERT_STATEMENT = "INSERT INTO ENQUESTA (TITOL) VALUES(?) ";
 
-    private JdbcOperations jdbcOperations;
 
-    public EnquestaManager(JdbcOperations jdbcOperations) {
+    private JdbcOperations jdbcOperations;
+    private PreguntaRepository preguntaRepository;
+
+    public EnquestaRepository(JdbcOperations jdbcOperations, PreguntaRepository preguntaRepository) {
         this.jdbcOperations = jdbcOperations;
+        this.preguntaRepository = preguntaRepository;
     }
 
     /***
-     * Mètode public per a crear noves enquestes
+     * Mètode public per a save noves enquestes
      * @param enquesta
      * @return
      */
-    public int crear(Enquesta enquesta) {
+    public int save(Enquesta enquesta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int userUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -56,7 +59,7 @@ public class EnquestaManager {
         return userUpdate;
     }
 
-    public List<Enquesta> llistarEnquestes() {
+    public List<Enquesta> findAll() {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new EnquestaMapper());
     }
 
@@ -65,7 +68,7 @@ public class EnquestaManager {
      * @param usuari
      * @return
      */
-    public List<Enquesta> llistarEnquestes(Usuari usuari) {
+    public List<Enquesta> findAllFromUser(Usuari usuari) {
         List<Enquesta> llista = new ArrayList<Enquesta>();
         //TODO recuperar llista d'enquestes amb respostes de l'usuari
         //Fer consulta a enquestes, llavors a preguntes i llavors a respostes
@@ -78,13 +81,13 @@ public class EnquestaManager {
      * @param titol
      * @return Enquesta o null
      */
-    public Enquesta obtenirEnquesta(String titol) {
-        return jdbcOperations.queryForObject(
+    public Enquesta findOne(String titol) {
+        Enquesta enquesta = jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + " where titol like ?"
                 , new Object[]{'%'+ titol +'%'}
                 , new EnquestaMapper()
         );
-
+        return enquesta;
     }
 
     /***
@@ -92,23 +95,15 @@ public class EnquestaManager {
      * @param enquestaId
      * @return
      */
-    public Enquesta obtenirEnquesta(int enquestaId) {
+    public Enquesta findOne(Long enquestaId) {
 
         Enquesta enquesta = jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + " where enquestaId = ?"
                 , new Object[]{enquestaId}
                 , new EnquestaMapper()
         );
-        return enquesta;
-    }
 
-    /***
-     * Aquesta funció retorna un booleà en funció de si l'enquesta existeix
-     * @param titol
-     * @return
-     */
-    private boolean existeix(String titol) {
-        return false;
+        return enquesta;
     }
 
 
@@ -118,14 +113,11 @@ public class EnquestaManager {
             Enquesta enquesta = new Enquesta(resultSet.getString("titol"));
             enquesta.setId(resultSet.getLong("enquestaId"));
 
-            // enllaçar objectes
-            Long enquestaId = resultSet.getLong("enquestaId");
-            Iterable<Pregunta> list = new PreguntaManager(jdbcOperations).llistarPreguntes(enquestaId);
+            Iterable<Pregunta> list = preguntaRepository.findAllFromQuiz(enquesta.getId());
             for (Pregunta p: list) {
                 p.setEnquesta(enquesta);
                 enquesta.afegirPregunta(p);
             }
-
 
             return enquesta;
         }

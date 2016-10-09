@@ -2,19 +2,19 @@ package com.tecnocampus.useCases;
 
 import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.RespostaNumerica;
-import com.tecnocampus.managers.RespostaManager;
-import org.springframework.stereotype.Component;
+import com.tecnocampus.managers.RespostaRepository;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by santi on 7/10/16.
  */
 
-@Component
+@Service
 public class RespostaCasosUs {
-    private RespostaManager respostaManager;
+    private RespostaRepository respostaRepository;
 
-    public RespostaCasosUs(RespostaManager respostaManager) {
-        this.respostaManager = respostaManager;
+    public RespostaCasosUs(RespostaRepository respostaRepository) {
+        this.respostaRepository = respostaRepository;
     }
 
     public Iterable<Resposta> llistarRespostes() throws Exception {
@@ -22,6 +22,6 @@ public class RespostaCasosUs {
     }
 
     public Iterable<RespostaNumerica> llistarRespostesNumeriques() {
-        return respostaManager.llistarRespostesNumeriques();
+        return respostaRepository.llistarRespostesNumeriques();
     }
 }
