@@ -1,5 +1,6 @@
 package com.tecnocampus.databaseRepositories;
 
+import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.Usuari;
@@ -31,7 +32,7 @@ public class EnquestaRepository {
     private JdbcOperations jdbcOperations;
 
     @Autowired
-    PreguntaRepository preguntaRepository;
+    BeansManager beansManager;
 
     public EnquestaRepository(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
@@ -119,7 +120,7 @@ public class EnquestaRepository {
             Enquesta enquesta = new Enquesta(resultSet.getString("titol"));
             enquesta.setId(resultSet.getLong("enquestaId"));
 
-            Iterable<Pregunta> list = preguntaRepository.findAllFromQuiz(enquesta.getId());
+            Iterable<Pregunta> list = beansManager.preguntaRepository.findAllFromQuiz(enquesta.getId());
             for (Pregunta p: list) {
                 p.setEnquesta(enquesta);
                 enquesta.afegirPregunta(p);

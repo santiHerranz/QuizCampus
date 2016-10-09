@@ -1,6 +1,5 @@
 package com.tecnocampus.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -54,9 +53,9 @@ public abstract class Pregunta extends Clau implements IPregunta {
 
 
     public java.lang.String toString() {
-        return ""
+        return ""+ super.toString()
                 +" enunciat: \""+ this.enunciat +"\""
-                +", enquesta: \""+ this.enquesta +"\""
+                +", "+ this.enquesta +""
                 +"";
     }
 

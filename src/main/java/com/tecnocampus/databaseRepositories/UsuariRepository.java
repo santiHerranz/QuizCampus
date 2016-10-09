@@ -1,8 +1,7 @@
 package com.tecnocampus.databaseRepositories;
 
-import com.tecnocampus.domain.PreguntaNumerica;
+import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Resposta;
-import com.tecnocampus.domain.RespostaNumerica;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -26,8 +25,8 @@ public class UsuariRepository {
 
     private JdbcOperations jdbcOperations;
 
-//    @Autowired
-//    RespostaRepository respostaRepository;
+    @Autowired
+    BeansManager beansManager;
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM USUARI ";
     private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (EMAIL, CONTRASENYA) VALUES(?,?)";
@@ -88,7 +87,7 @@ public class UsuariRepository {
 
     /***
      * Obtenir l'usuari a partir de l'Identificador
-     * @param id
+     * @param usuariId
      * @return l'usuari trobat o null
      */
     public Usuari findOne(Long usuariId) {
@@ -142,13 +141,11 @@ public class UsuariRepository {
             usuari.setId(resultSet.getLong("usuariid"));
             usuari.setAdmin(resultSet.getBoolean("admin"));
 
-/*
-            Iterable<RespostaNumerica> list = respostaRepository.findAllFromUser(usuari.getId());
-            for (RespostaNumerica r: list) {
+            Iterable<Resposta> list = beansManager.respostaRepository.findAllFromUser(usuari.getId());
+            for (Resposta r: list) {
                 r.setUsuari(usuari);
                 usuari.afegirResposta(r);
             }
-*/
 
             return usuari;
         }

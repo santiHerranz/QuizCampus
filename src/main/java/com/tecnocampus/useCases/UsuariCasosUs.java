@@ -1,7 +1,8 @@
 package com.tecnocampus.useCases;
 
-import com.tecnocampus.databaseRepositories.UsuariRepository;
+import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Usuari;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,17 +13,18 @@ import java.util.stream.Collectors;
  */
 @Service
 public final class UsuariCasosUs {
-    private UsuariRepository usuariRepository;
 
-    public UsuariCasosUs(UsuariRepository usuariRepository) {
+    @Autowired
+    BeansManager beansManager;
 
-        this.usuariRepository = usuariRepository;
+
+    public UsuariCasosUs() {
     }
 
     public Usuari crearUsuari(String email, String contrasenya) {
         Usuari usuari = new Usuari(email, contrasenya);
         try {
-            usuariRepository.save(usuari);
+            beansManager.usuariRepository.save(usuari);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,7 +41,7 @@ public final class UsuariCasosUs {
 
     public void ferAdmin(Usuari usuari) {
         usuari.setAdmin(true);
-        usuariRepository.update(usuari);
+        beansManager.usuariRepository.update(usuari);
         System.out.format("Usuari promocionat a Admin {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
     }
 
@@ -47,7 +49,7 @@ public final class UsuariCasosUs {
         if(esUltimAdmin(usuari))
             throw new Exception(String.format("L'usuari {id:%s, email:\"%s\"} és l'ultim administrador, no es pot degradar!!!", usuari.getId(), usuari.getEmail()));
         usuari.setAdmin(false);
-        usuariRepository.update(usuari);
+        beansManager.usuariRepository.update(usuari);
         System.out.format("Usuari degradat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
     }
 
@@ -68,11 +70,11 @@ public final class UsuariCasosUs {
             throw new Exception(String.format("L'usuari {id:%s, email:\"%s\"} és l'ultim administrador, no es pot delete!!!", usuari.getId(), usuari.getEmail()));
 
         String msg = String.format("Usuari eliminat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
-        usuariRepository.delete(usuari);
+        beansManager.usuariRepository.delete(usuari);
         System.out.print(msg);
     }
 
     public List<Usuari> llistarUsuaris() {
-        return usuariRepository.findAll();
+        return beansManager.usuariRepository.findAll();
     }
 }

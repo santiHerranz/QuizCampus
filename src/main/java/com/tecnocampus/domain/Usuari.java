@@ -1,6 +1,8 @@
 package com.tecnocampus.domain;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -57,9 +59,18 @@ public class Usuari extends Clau {
 
 
     public java.lang.String toString() {
+
+         java.lang.String text = "[";
+        for (Resposta r: this.respostes) {
+            if (text.length()>1 ) text += ",";
+            text += ((RespostaNumerica)r).getValor() ;
+        }
+        text += "]";
+
         return "{"
-                +" Id: \""+ this.getId() +"\""
-                +", email: \""+ this.getEmail() +"\""
+                + super.toString()
+                +" email: \""+ this.email +"\""
+                +", respostes("+ this.respostes.size() +") " + text
                 +"}";
     }
 

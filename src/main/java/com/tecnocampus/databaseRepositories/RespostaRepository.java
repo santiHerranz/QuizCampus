@@ -1,5 +1,6 @@
 package com.tecnocampus.databaseRepositories;
 
+import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.RespostaNumerica;
@@ -33,7 +34,7 @@ public class RespostaRepository {
     private JdbcOperations jdbcOperations;
 
     @Autowired
-    UsuariRepository usuariRepository;
+    BeansManager beansManager;
 
     /* ERROR circular dependency
     @Autowired
@@ -134,12 +135,13 @@ public class RespostaRepository {
             resposta.setId(resultSet.getLong("respostaid"));
             ((RespostaNumerica)resposta).setValor(resultSet.getInt("valor"));
 
-            Usuari usuari = usuariRepository.findOneLazy(resposta.getUsuariId());
+            Usuari usuari = beansManager.usuariRepository.findOneLazy(resposta.getUsuariId());
             resposta.setUsuari(usuari);
             usuari.afegirResposta(resposta);
 
-            // Falta enllaçar l'objecte resposta amb l'objecte pregunta
-            // ERROR de referencia circular amb preguntaRepository
+            Pregunta p = beansManager.preguntaRepository.findOneLazy(resposta.getUsuariId());
+            resposta.setPregunta(p);
+            p.afegirResposta(resposta);
 
             return resposta;
         }

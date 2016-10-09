@@ -141,6 +141,12 @@ public class QuizCampusApplication {
 				Resposta respostaDB = respostaCasosUs.llistarRespostes().get(1);
 				System.out.format(" %s %n", respostaDB.toString());
 
+
+
+				System.out.format("====%nDATABASE USUARI %n");
+				Usuari usuariDB = usuariCasosUs.llistarUsuaris().get(3);
+				System.out.format(" %s %n", usuariDB.toString());
+
 			}
 		};
 	}
