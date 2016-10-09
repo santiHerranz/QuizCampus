@@ -1,9 +1,13 @@
 package com.tecnocampus.useCases;
 
-import com.tecnocampus.domain.*;
+import com.tecnocampus.databaseRepositories.EnquestaRepository;
 import com.tecnocampus.databaseRepositories.PreguntaRepository;
 import com.tecnocampus.databaseRepositories.RespostaRepository;
+import com.tecnocampus.domain.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by santi on 6/10/16.
@@ -19,22 +23,37 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PreguntaCasosUs {
-    private PreguntaRepository preguntaRepository;
-    private RespostaRepository respostaRepository;
 
-    public PreguntaCasosUs(PreguntaRepository preguntaRepository,RespostaRepository respostaRepository) {
+    @Autowired
+    PreguntaRepository preguntaRepository;
+
+    @Autowired
+    RespostaRepository respostaRepository;
+
+    public PreguntaCasosUs() {}
+
+/*
+    public PreguntaCasosUs(PreguntaRepository preguntaRepository,RespostaRepository respostaRepository,EnquestaRepository enquestaRepository) {
         this.preguntaRepository = preguntaRepository;
         this.respostaRepository = respostaRepository;
+        this.enquestaRepository = enquestaRepository;
     }
+*/
 
 
-    public Pregunta afegirResposta(Pregunta pregunta, Usuari usuari, int valor) {
+    public Resposta afegirResposta(Pregunta pregunta, Usuari usuari, int valor) throws Exception {
+
+        // Un usuari no pot respondre la mateixa pregunta 2 cops
+        if (!respostaRepository.canAnswer(pregunta, usuari))
+            throw new Exception("Un usuari no pot respondre la mateixa pregunta 2 cops");
+
         RespostaNumerica resposta = new RespostaNumerica();
         resposta.setUsuari(usuari);
         resposta.setValor(valor);
         pregunta.afegirResposta(resposta);
         respostaRepository.save(pregunta, resposta);
-        return pregunta;
+        return resposta;
+
     }
 
     /***
@@ -58,7 +77,7 @@ public class PreguntaCasosUs {
         }
     }
 
-    public Iterable<Pregunta> llistarPreguntes() {
+    public List<Pregunta> llistarPreguntes() {
         return preguntaRepository.findAll();
     }
 }

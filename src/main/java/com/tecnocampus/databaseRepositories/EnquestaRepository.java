@@ -3,6 +3,7 @@ package com.tecnocampus.databaseRepositories;
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.Usuari;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,11 +29,12 @@ public class EnquestaRepository {
 
 
     private JdbcOperations jdbcOperations;
-    private PreguntaRepository preguntaRepository;
 
-    public EnquestaRepository(JdbcOperations jdbcOperations, PreguntaRepository preguntaRepository) {
+    @Autowired
+    PreguntaRepository preguntaRepository;
+
+    public EnquestaRepository(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
-        this.preguntaRepository = preguntaRepository;
     }
 
     /***
@@ -96,14 +98,18 @@ public class EnquestaRepository {
      * @return
      */
     public Enquesta findOne(Long enquestaId) {
-
-        Enquesta enquesta = jdbcOperations.queryForObject(
+        return jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + " where enquestaId = ?"
                 , new Object[]{enquestaId}
                 , new EnquestaMapper()
         );
-
-        return enquesta;
+    }
+    public Enquesta findOneLazy(Long enquestaId) {
+        return jdbcOperations.queryForObject(
+                SQL_SELECT_STATEMENT + " where enquestaId = ?"
+                , new Object[]{enquestaId}
+                , new EnquestaMapperLazy()
+        );
     }
 
 
@@ -122,4 +128,15 @@ public class EnquestaRepository {
             return enquesta;
         }
     }
+
+    private final class EnquestaMapperLazy implements RowMapper<Enquesta> {
+        @Override
+        public Enquesta mapRow(ResultSet resultSet, int i) throws SQLException {
+            Enquesta enquesta = new Enquesta(resultSet.getString("titol"));
+            enquesta.setId(resultSet.getLong("enquestaId"));
+
+            return enquesta;
+        }
+    }
+
 }

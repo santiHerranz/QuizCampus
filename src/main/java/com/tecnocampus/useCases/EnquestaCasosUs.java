@@ -1,11 +1,11 @@
 package com.tecnocampus.useCases;
 
+import com.tecnocampus.databaseRepositories.EnquestaRepository;
+import com.tecnocampus.databaseRepositories.PreguntaRepository;
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Usuari;
-import com.tecnocampus.databaseRepositories.EnquestaRepository;
-import com.tecnocampus.databaseRepositories.PreguntaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,11 +36,11 @@ public class EnquestaCasosUs {
         return enquesta;
     }
 
-    //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled
-    // (and not cached) during the saveUser method the transaction is going to rollback
+    //The @Transactiona annotation states that save is a transaction. So ,if a unchecked exception is signaled
+    // (and not cached) during the save method the transaction is going to rollback
     @Transactional
-    public void saveUser(Enquesta user) {
-        enquestaRepository.save(user);
+    public void save(Enquesta enquesta) {
+        enquestaRepository.save(enquesta);
     }
 
     public Pregunta afegirPregunta(Enquesta enquesta, String enunciat, int minim, int maxim) {

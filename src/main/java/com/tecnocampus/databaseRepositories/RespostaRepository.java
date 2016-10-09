@@ -4,6 +4,7 @@ import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.RespostaNumerica;
 import com.tecnocampus.domain.Usuari;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,12 +31,17 @@ public class RespostaRepository {
     private static final String SQL_DELETE_STATEMENT = "DELETE FROM RESPOSTA WHERE RESPOSTAID = ?";
 
     private JdbcOperations jdbcOperations;
-    private  UsuariRepository usuariRepository;
 
-    public RespostaRepository(JdbcOperations jdbcOperations, UsuariRepository usuariRepository) {
+    @Autowired
+    UsuariRepository usuariRepository;
 
+    /* ERROR circular dependency
+    @Autowired
+    PreguntaRepository preguntaRepository;
+    */
+
+    public RespostaRepository(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
-        this.usuariRepository = usuariRepository;
     }
 
     public int save(Pregunta pregunta, RespostaNumerica resposta) {
@@ -60,21 +66,21 @@ public class RespostaRepository {
         return respostaUpdate;  
     }
 
-    public List<RespostaNumerica> findAll(Long preguntaId) {
+    public List<Resposta> findAll(Long preguntaId) {
         return jdbcOperations.query(
                 SQL_SELECT_STATEMENT +" WHERE preguntaId = ?"
                 , new Object[] { preguntaId}
-                , new RespostaNumericaMapper());
+                , new RespostaMapper());
     }
 
-    public List<RespostaNumerica> findAll() {
+    public List<Resposta> findAll() {
         return jdbcOperations.query(
                 SQL_SELECT_STATEMENT
-                , new RespostaNumericaMapper());
+                , new RespostaMapper());
     }
 
-    public Iterable<RespostaNumerica> llistarRespostesNumeriques() {
-        return jdbcOperations.query(SQL_SELECT_STATEMENT, new RespostaNumericaMapper());
+    public Iterable<Resposta> llistarRespostesNumeriques() {
+        return jdbcOperations.query(SQL_SELECT_STATEMENT, new RespostaMapper());
     }
 
     public int delete(Resposta resposta) {
@@ -90,38 +96,50 @@ public class RespostaRepository {
         return jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + " where respostaId = ?"
                 , new Object[]{respostaId}
-                , new RespostaNumericaMapper()
+                , new RespostaMapper()
         );
 
     }
 
 
 
-    public List<RespostaNumerica> findAllFromUser(Long usuariId) {
+    public List<Resposta> findAllFromUser(Long usuariId) {
         return jdbcOperations.query(
                 SQL_SELECT_STATEMENT + " where usuariId = ?"
                 , new Object[]{usuariId}
-                , new RespostaNumericaMapper()
+                , new RespostaMapper()
         );
     }
 
+    public boolean canAnswer(Pregunta pregunta, Usuari usuari) {
+        List<Resposta> respostes = jdbcOperations.query(
+                SQL_SELECT_STATEMENT + " where usuariId = ? AND preguntaId = ?"
+                , new Object[]{usuari.getId(),pregunta.getId()}
+                , new RespostaMapper()
+        );
+    return  respostes.size()==0;
 
 
+    }
 
-    private final class RespostaNumericaMapper implements RowMapper<RespostaNumerica> {
+
+    private final class RespostaMapper implements RowMapper<Resposta> {
         @Override
-        public RespostaNumerica mapRow(ResultSet resultSet, int i) throws SQLException {
+        public Resposta mapRow(ResultSet resultSet, int i) throws SQLException {
 
 
-            RespostaNumerica resposta = new RespostaNumerica();
+            Resposta resposta = new RespostaNumerica();
             resposta.setUsuariId(resultSet.getLong("usuariid"));
             resposta.setPreguntaId(resultSet.getLong("preguntaid"));
             resposta.setId(resultSet.getLong("respostaid"));
-            resposta.setValor(resultSet.getInt("valor"));
+            ((RespostaNumerica)resposta).setValor(resultSet.getInt("valor"));
 
-            Usuari usuari = usuariRepository.findOne(resposta.getUsuariId());
+            Usuari usuari = usuariRepository.findOneLazy(resposta.getUsuariId());
             resposta.setUsuari(usuari);
             usuari.afegirResposta(resposta);
+
+            // Falta enllaçar l'objecte resposta amb l'objecte pregunta
+            // ERROR de referencia circular amb preguntaRepository
 
             return resposta;
         }

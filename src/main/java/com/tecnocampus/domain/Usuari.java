@@ -13,7 +13,7 @@ public class Usuari extends Clau {
     private String contrasenya;
     private boolean admin;
 
-    private List<RespostaNumerica> respostes;
+    private List<Resposta> respostes;
 
     public Usuari(String email, String contrasenya) {
         if (email==null) throw new NullPointerException("email");
@@ -47,11 +47,11 @@ public class Usuari extends Clau {
     public void setAdmin(boolean admin) { this.admin = admin;  }
 
 
-    public List<RespostaNumerica> getRespostes() {
+    public List<Resposta> getRespostes() {
         return respostes;
     }
 
-    public void setRespostes(List<RespostaNumerica> respostes) {
+    public void setRespostes(List<Resposta> respostes) {
         this.respostes = respostes;
     }
 
@@ -64,7 +64,7 @@ public class Usuari extends Clau {
     }
 
 
-    public boolean afegirResposta(RespostaNumerica resposta) {
+    public boolean afegirResposta(Resposta resposta) {
         return this.respostes.add(resposta);
     }
 }

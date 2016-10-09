@@ -40,7 +40,7 @@ public class Enquesta extends Clau {
     public java.lang.String toString() {
         return "Enquesta {"
                 + super.toString()
-                +", titol: \""+ this.getTitol() +"\""
+                +" titol: \""+ this.getTitol() +"\""
                 +"}";
     }
 
