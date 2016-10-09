@@ -1,6 +1,9 @@
 package com.tecnocampus.databaseRepositories;
 
-import com.tecnocampus.domain.*;
+import com.tecnocampus.domain.Enquesta;
+import com.tecnocampus.domain.Pregunta;
+import com.tecnocampus.domain.PreguntaNumerica;
+import com.tecnocampus.domain.Resposta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -73,7 +76,16 @@ public class PreguntaRepository {
         Pregunta pregunta = jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + "where preguntaId = ?"
                 , new Object[]{preguntaId}
-                , new PreguntaMapper()//, new BeanPropertyRowMapper(Pregunta.class)
+                , new PreguntaMapper()
+        );
+        return pregunta;
+    }
+
+    public Pregunta findOneLazy(Long preguntaId) {
+        Pregunta pregunta = jdbcOperations.queryForObject(
+                SQL_SELECT_STATEMENT + "where preguntaId = ?"
+                , new Object[]{preguntaId}
+                , new PreguntaMapperLazy()
         );
         return pregunta;
     }
@@ -119,6 +131,27 @@ public class PreguntaRepository {
                 r.setPregunta(pregunta);
                 pregunta.afegirResposta(r);
             }
+
+            return pregunta;
+        }
+    }
+
+    private final class PreguntaMapperLazy implements RowMapper<Pregunta> {
+        @Override
+        public Pregunta mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            PreguntaNumerica pregunta = new PreguntaNumerica();
+
+            pregunta.setId(resultSet.getLong("preguntaid"));
+            pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
+            pregunta.setEnunciat(resultSet.getString("enunciat"));
+            pregunta.setMaxim(resultSet.getInt("maxim"));
+            pregunta.setMinim(resultSet.getInt("minim"));
+
+            Enquesta enquesta = new EnquestaRepository(jdbcOperations).findOneLazy(pregunta.getEnquestaId());
+            pregunta.setEnquesta(enquesta);
+
+            // No enllaçar amb les respostes per evitar referencies circulars
 
             return pregunta;
         }

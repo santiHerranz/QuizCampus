@@ -1,9 +1,7 @@
 package com.tecnocampus.useCases;
 
-import com.tecnocampus.databaseRepositories.PreguntaRepository;
-import com.tecnocampus.databaseRepositories.RespostaRepository;
+import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Resposta;
-import com.tecnocampus.domain.RespostaNumerica;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +15,12 @@ import java.util.List;
 public class RespostaCasosUs {
 
     @Autowired
-    PreguntaRepository preguntaRespository;
+    BeansManager beansManager;
 
-    private RespostaRepository respostaRepository;
-
-    public RespostaCasosUs(RespostaRepository respostaRepository) {
-
-        this.respostaRepository = respostaRepository;
+    public RespostaCasosUs() {
     }
 
     public List<Resposta> llistarRespostes() {
-        return respostaRepository.findAll();
+        return beansManager.respostaRepository.findAll();
     }
 }

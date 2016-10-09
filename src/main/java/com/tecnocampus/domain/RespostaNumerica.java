@@ -27,10 +27,9 @@ public final class RespostaNumerica extends Resposta {
     }
 
     public java.lang.String toString() {
-        return "RespostaNumerica {"
+        return "{"
                 + super.toString()
-                +", Id: \""+ this.getId() +"\""
-                +", valor: \""+ this.getValor() +"\""
+                +", valor: \""+ this.valor +"\""
                 +"}";
     }
 

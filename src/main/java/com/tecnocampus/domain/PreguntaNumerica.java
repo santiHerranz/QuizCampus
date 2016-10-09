@@ -54,7 +54,7 @@ public final class PreguntaNumerica  extends Pregunta {
 
     @Override
     public java.lang.String toString() {
-        return "PreguntaNumerica {"
+        return "{"
                 + super.toString()
                 +", minim: \""+ this.minim +"\""
                 +", maxim: \""+ this.maxim +"\""

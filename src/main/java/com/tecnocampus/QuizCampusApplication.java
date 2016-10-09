@@ -84,7 +84,7 @@ public class QuizCampusApplication {
 						u.getId() +" "+ u.getEmail() +" "+ u.getContrasenya()+" "+ u.isAdmin()
 				));
 
-
+*/
 
 				////////////////////////////
 
@@ -95,9 +95,9 @@ public class QuizCampusApplication {
 				preguntaCasosUs.llistarPreguntes().forEach(p -> System.out.println(p));
 
 				System.out.format("====%nLlistat de respostes%n");
-				respostaCasosUs.llistarRespostesNumeriques().forEach(r -> System.out.println(r));
+				respostaCasosUs.llistarRespostes().forEach(r -> System.out.println(r));
 
-*/
+
 				System.out.format("====%nJerarquia Enquesta-Pregunta-Resposta%n");
 				Enquesta enquesta = enquestaCasosUs.crearEnquesta("Nova enquesta");
 
@@ -140,6 +140,12 @@ public class QuizCampusApplication {
 				System.out.format("====%nDATABASE RESPOSTA %n");
 				Resposta respostaDB = respostaCasosUs.llistarRespostes().get(1);
 				System.out.format(" %s %n", respostaDB.toString());
+
+
+
+				System.out.format("====%nDATABASE USUARI %n");
+				Usuari usuariDB = usuariCasosUs.llistarUsuaris().get(3);
+				System.out.format(" %s %n", usuariDB.toString());
 
 			}
 		};

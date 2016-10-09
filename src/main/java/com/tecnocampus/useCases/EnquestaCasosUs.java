@@ -1,11 +1,11 @@
 package com.tecnocampus.useCases;
 
-import com.tecnocampus.databaseRepositories.EnquestaRepository;
-import com.tecnocampus.databaseRepositories.PreguntaRepository;
+import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Usuari;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,51 +18,55 @@ import java.util.List;
 
 @Service
 public class EnquestaCasosUs {
-    private EnquestaRepository enquestaRepository;
-    private PreguntaRepository preguntaRepository;
 
-    public EnquestaCasosUs(EnquestaRepository enquestaRepository, PreguntaRepository preguntaRepository) {
-        this.enquestaRepository = enquestaRepository;
-        this.preguntaRepository = preguntaRepository;
+    @Autowired
+    BeansManager beansManager;
+
+    public EnquestaCasosUs() {
     }
 
+    //The @Transactiona annotation states that save is a transaction. So ,if a unchecked exception is signaled
+    // (and not cached) during the save method the transaction is going to rollback
+
+    @Transactional
     public Enquesta crearEnquesta(String titol) {
         Enquesta enquesta = new Enquesta(titol);
         try {
-            enquestaRepository.save(enquesta);
+            beansManager.enquestaRepository.save(enquesta);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return enquesta;
     }
 
-    //The @Transactiona annotation states that save is a transaction. So ,if a unchecked exception is signaled
-    // (and not cached) during the save method the transaction is going to rollback
     @Transactional
     public void save(Enquesta enquesta) {
-        enquestaRepository.save(enquesta);
+        beansManager.enquestaRepository.save(enquesta);
     }
 
+    @Transactional
+    public void eliminarEnquesta(Enquesta enquesta) throws Exception {
+        //TODO implementar
+        throw new Exception();
+    }
+
+    @Transactional
     public Pregunta afegirPregunta(Enquesta enquesta, String enunciat, int minim, int maxim) {
         PreguntaNumerica pregunta = new PreguntaNumerica();
         pregunta.setEnunciat(enunciat);
         pregunta.setMinim(minim);
         pregunta.setMaxim(maxim);
         enquesta.afegirPregunta(pregunta);
-        preguntaRepository.save(enquesta, pregunta);
+        beansManager.preguntaRepository.save(enquesta, pregunta);
         return pregunta;
     }
 
     public List<Enquesta> llistarEnquestes() {
-        return enquestaRepository.findAll();
-    }
-
-    public List<Enquesta> llistarUltimesEnquestes() {
-        return enquestaRepository.findAllFromUser(null);
+        return beansManager.enquestaRepository.findAll();
     }
 
     public List<Enquesta> llistarEnquestesDelUsuari(Usuari usuari) {
-        return enquestaRepository.findAllFromUser(usuari);
+        return beansManager.enquestaRepository.findAllFromUser(usuari);
     }
 
     /***
@@ -71,16 +75,9 @@ public class EnquestaCasosUs {
      * @return
      */
     private boolean existeix(String titol) {
+        //TODO implementar
         return false;
     }
 
-    /***
-     *
-     * @param enquesta
-     * @throws Exception
-     */
-    public void eliminarEnquesta(Enquesta enquesta) throws Exception {
-        throw new Exception();
-    }
 
 }

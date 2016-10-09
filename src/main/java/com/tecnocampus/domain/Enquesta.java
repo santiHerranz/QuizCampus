@@ -38,9 +38,10 @@ public class Enquesta extends Clau {
 
     @Override
     public java.lang.String toString() {
-        return "Enquesta {"
+        return "{"
                 + super.toString()
                 +" titol: \""+ this.getTitol() +"\""
+                //+", preguntes ("+ this.preguntes.size() +")"
                 +"}";
     }
 

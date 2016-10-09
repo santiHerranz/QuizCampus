@@ -54,9 +54,9 @@ public abstract class Resposta extends Clau implements IResposta {
 
 
     public java.lang.String toString() {
-        return ""
-                +" usuari: \""+ this.usuari +"\""
-                +", pregunta: \""+ this.pregunta +"\""
+        return ""+ super.toString()
+                +" "+ this.usuari +""
+                +", "+ this.pregunta +""
                 +"";
     }
 
