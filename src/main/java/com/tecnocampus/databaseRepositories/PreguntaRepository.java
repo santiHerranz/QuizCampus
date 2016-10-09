@@ -1,4 +1,4 @@
-package com.tecnocampus.managers;
+package com.tecnocampus.databaseRepositories;
 
 import com.tecnocampus.domain.*;
 import org.springframework.jdbc.core.JdbcOperations;

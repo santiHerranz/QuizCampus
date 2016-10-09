@@ -1,7 +1,5 @@
-package com.tecnocampus.managers;
+package com.tecnocampus.databaseRepositories;
 
-import com.tecnocampus.domain.Resposta;
-import com.tecnocampus.domain.RespostaNumerica;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;

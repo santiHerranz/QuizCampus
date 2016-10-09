@@ -4,8 +4,8 @@ import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Usuari;
-import com.tecnocampus.managers.EnquestaRepository;
-import com.tecnocampus.managers.PreguntaRepository;
+import com.tecnocampus.databaseRepositories.EnquestaRepository;
+import com.tecnocampus.databaseRepositories.PreguntaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

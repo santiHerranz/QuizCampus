@@ -1,8 +1,8 @@
 package com.tecnocampus.useCases;
 
 import com.tecnocampus.domain.*;
-import com.tecnocampus.managers.PreguntaRepository;
-import com.tecnocampus.managers.RespostaRepository;
+import com.tecnocampus.databaseRepositories.PreguntaRepository;
+import com.tecnocampus.databaseRepositories.RespostaRepository;
 import org.springframework.stereotype.Service;
 
 /**

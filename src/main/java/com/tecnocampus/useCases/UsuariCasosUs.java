@@ -1,7 +1,7 @@
 package com.tecnocampus.useCases;
 
 import com.tecnocampus.domain.Usuari;
-import com.tecnocampus.managers.UsuariRepository;
+import com.tecnocampus.databaseRepositories.UsuariRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

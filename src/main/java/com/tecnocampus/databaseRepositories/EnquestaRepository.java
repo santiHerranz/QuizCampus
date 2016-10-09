@@ -1,4 +1,4 @@
-package com.tecnocampus.managers;
+package com.tecnocampus.databaseRepositories;
 
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;

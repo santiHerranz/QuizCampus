@@ -2,7 +2,7 @@ package com.tecnocampus.useCases;
 
 import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.RespostaNumerica;
-import com.tecnocampus.managers.RespostaRepository;
+import com.tecnocampus.databaseRepositories.RespostaRepository;
 import org.springframework.stereotype.Service;
 
 /**
