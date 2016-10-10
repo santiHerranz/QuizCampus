@@ -29,6 +29,9 @@ public class PreguntaCasosUs {
 
     public Resposta afegirResposta(Pregunta pregunta, Usuari usuari, int valor) throws Exception {
 
+        if(usuari == null) throw new Exception("NullArgumentException");
+        if(pregunta == null) throw new Exception("NullArgumentException");
+
         // Un usuari no pot respondre la mateixa pregunta 2 cops
         if (!beansManager.respostaRepository.canAnswer(pregunta, usuari))
             throw new Exception("Un usuari no pot respondre la mateixa pregunta 2 cops");

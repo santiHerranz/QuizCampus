@@ -23,7 +23,7 @@ CREATE TABLE pregunta
   enunciat VARCHAR (500) NOT NULL,
   minim int,
   maxim int
-  , FOREIGN KEY (enquestaId) REFERENCES enquesta(enquestaId)
+  , FOREIGN KEY (enquestaId) REFERENCES enquesta(enquestaId) ON DELETE CASCADE
 );
 
 
@@ -34,7 +34,7 @@ CREATE TABLE resposta
   usuariId int NOT NULL,
   preguntaId int NOT NULL,
   valor int NOT NULL
-  , FOREIGN KEY (usuariId) REFERENCES usuari(usuariId)
+  , FOREIGN KEY (usuariId) REFERENCES usuari(usuariId) ON DELETE CASCADE
 );
 /*
 */

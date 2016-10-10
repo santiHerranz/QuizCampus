@@ -39,6 +39,8 @@ public class QuizCampusApplication {
 	// http://localhost:8080/h2-console
 	// h2:mem:testdb
 
+
+
 	@Bean
 	CommandLineRunner runner() {
 		return new CommandLineRunner() {
@@ -48,7 +50,6 @@ public class QuizCampusApplication {
 				Usuari u1 = usuariCasosUs.crearUsuari("sherranzm", "112233");
 				Usuari u2 = usuariCasosUs.crearUsuari("iargemi", "112233");
 
-/*
 				System.out.println("Llistat usuaris");
 				usuariCasosUs.llistarUsuaris().forEach(u -> System.out.println(
 						u.getId() +" "+ u.getEmail() +" "+ u.getContrasenya() +" "+ u.isAdmin()
@@ -56,6 +57,7 @@ public class QuizCampusApplication {
 
 				System.out.println("comprobarContrasenya "+ usuariCasosUs.comprobarContrasenya("112233",u1));
 
+/*
 
 				try{
 					usuariCasosUs.eliminarUsuari(u1);
@@ -95,7 +97,7 @@ public class QuizCampusApplication {
 				preguntaCasosUs.llistarPreguntes().forEach(p -> System.out.println(p));
 
 				System.out.format("====%nLlistat de respostes%n");
-				respostaCasosUs.llistarRespostesNumeriques().forEach(r -> System.out.println(r));
+				respostaCasosUs.llistarRespostes().forEach(r -> System.out.println(r));
 
 */
 				System.out.format("====%nJerarquia Enquesta-Pregunta-Resposta%n");
@@ -146,6 +148,8 @@ public class QuizCampusApplication {
 				System.out.format("====%nDATABASE USUARI %n");
 				Usuari usuariDB = usuariCasosUs.llistarUsuaris().get(3);
 				System.out.format(" %s %n", usuariDB.toString());
+
+
 
 			}
 		};
