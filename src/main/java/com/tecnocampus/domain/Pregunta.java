@@ -1,26 +1,23 @@
 package com.tecnocampus.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
-public abstract class Pregunta extends Clau {
+public abstract class Pregunta extends Clau implements IPregunta {
 
     private String enunciat = "";
     private Long enquestaId;
     private Enquesta enquesta;
-    private List<Resposta> respostes;
+    protected List<Resposta> respostes;
 
     public Pregunta(){
-        this.respostes = new ArrayList<Resposta>();
     }
 
-    public Pregunta(String enunciat) {
+    public Pregunta(Enquesta enquesta, String enunciat) {
         this();
-
         setEnquesta(enquesta);
         setEnunciat(enunciat);
     }
@@ -55,13 +52,10 @@ public abstract class Pregunta extends Clau {
     }
 
 
-    public abstract boolean afegirResposta(Resposta resposta);
-    public abstract boolean afegirResposta(Usuari usuari, int valor);
-
     public java.lang.String toString() {
-        return ""
-                +"enunciat: \""+ this.enunciat +"\""
-                +", enquesta: \""+ this.enquesta +"\""
+        return ""+ super.toString()
+                +" enunciat: \""+ this.enunciat +"\""
+                +", "+ this.enquesta +""
                 +"";
     }
 

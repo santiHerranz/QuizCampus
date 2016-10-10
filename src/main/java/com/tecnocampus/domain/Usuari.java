@@ -1,6 +1,8 @@
 package com.tecnocampus.domain;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,7 +15,7 @@ public class Usuari extends Clau {
     private String contrasenya;
     private boolean admin;
 
-    private List<RespostaNumerica> respostes;
+    private List<Resposta> respostes;
 
     public Usuari(String email, String contrasenya) {
         if (email==null) throw new NullPointerException("email");
@@ -47,24 +49,33 @@ public class Usuari extends Clau {
     public void setAdmin(boolean admin) { this.admin = admin;  }
 
 
-    public List<RespostaNumerica> getRespostes() {
+    public List<Resposta> getRespostes() {
         return respostes;
     }
 
-    public void setRespostes(List<RespostaNumerica> respostes) {
+    public void setRespostes(List<Resposta> respostes) {
         this.respostes = respostes;
     }
 
 
     public java.lang.String toString() {
+
+         java.lang.String text = "[";
+        for (Resposta r: this.respostes) {
+            if (text.length()>1 ) text += ",";
+            text += ((RespostaNumerica)r).getValor() ;
+        }
+        text += "]";
+
         return "{"
-                +" Id: \""+ this.getId() +"\""
-                +", email: \""+ this.getEmail() +"\""
+                + super.toString()
+                +" email: \""+ this.email +"\""
+                +", respostes("+ this.respostes.size() +") " + text
                 +"}";
     }
 
 
-    public boolean afegirResposta(RespostaNumerica resposta) {
+    public boolean afegirResposta(Resposta resposta) {
         return this.respostes.add(resposta);
     }
 }

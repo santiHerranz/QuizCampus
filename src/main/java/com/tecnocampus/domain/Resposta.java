@@ -7,7 +7,7 @@ package com.tecnocampus.domain;
  *  - Qui ha respost
  *  - Quina pregunta s'ha respost
  */
-public abstract class Resposta extends Clau {
+public abstract class Resposta extends Clau implements IResposta {
 
     private Long usuariId;
     private Usuari usuari;
@@ -54,9 +54,9 @@ public abstract class Resposta extends Clau {
 
 
     public java.lang.String toString() {
-        return ""
-                +"usuari: \""+ this.usuari +"\""
-                +", pregunta: \""+ this.pregunta +"\""
+        return ""+ super.toString()
+                +" "+ this.usuari +""
+                +", "+ this.pregunta +""
                 +"";
     }
 

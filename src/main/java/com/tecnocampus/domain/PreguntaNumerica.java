@@ -1,5 +1,7 @@
 package com.tecnocampus.domain;
 
+import java.util.ArrayList;
+
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
@@ -12,13 +14,12 @@ public final class PreguntaNumerica  extends Pregunta {
         super();
     }
 
-
     public PreguntaNumerica(Enquesta enquesta, String enunciat){
-        super( enunciat);
+        super(enquesta, enunciat);
     }
 
     public PreguntaNumerica(Enquesta enquesta, String enunciat, int minim, int maxim){
-        super(enunciat);
+        super(enquesta, enunciat);
         this.minim = minim;
         this.maxim = maxim;
     }
@@ -41,19 +42,19 @@ public final class PreguntaNumerica  extends Pregunta {
     }
 
 
-    @Override
     public boolean afegirResposta(Resposta resposta) {
+        if(this.respostes == null)
+            this.respostes = new ArrayList<Resposta>();
         return this.getRespostes().add(resposta);
     }
 
-    @Override
     public boolean afegirResposta(Usuari usuari, int valor) {
         return this.getRespostes().add(new RespostaNumerica(this,usuari, valor));
     }
 
     @Override
     public java.lang.String toString() {
-        return "PreguntaNumerica {"
+        return "{"
                 + super.toString()
                 +", minim: \""+ this.minim +"\""
                 +", maxim: \""+ this.maxim +"\""

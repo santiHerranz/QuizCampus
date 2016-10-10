@@ -1,9 +1,11 @@
 package com.tecnocampus.useCases;
 
+import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.*;
-import com.tecnocampus.databaseRepositories.PreguntaRepository;
-import com.tecnocampus.databaseRepositories.RespostaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by santi on 6/10/16.
@@ -19,22 +21,25 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PreguntaCasosUs {
-    private PreguntaRepository preguntaRepository;
-    private RespostaRepository respostaRepository;
 
-    public PreguntaCasosUs(PreguntaRepository preguntaRepository,RespostaRepository respostaRepository) {
-        this.preguntaRepository = preguntaRepository;
-        this.respostaRepository = respostaRepository;
-    }
+    @Autowired
+    BeansManager beansManager;
 
+    public PreguntaCasosUs() {}
 
-    public Pregunta afegirResposta(Pregunta pregunta, Usuari usuari, int valor) {
+    public Resposta afegirResposta(Pregunta pregunta, Usuari usuari, int valor) throws Exception {
+
+        // Un usuari no pot respondre la mateixa pregunta 2 cops
+        if (!beansManager.respostaRepository.canAnswer(pregunta, usuari))
+            throw new Exception("Un usuari no pot respondre la mateixa pregunta 2 cops");
+
         RespostaNumerica resposta = new RespostaNumerica();
         resposta.setUsuari(usuari);
         resposta.setValor(valor);
         pregunta.afegirResposta(resposta);
-        respostaRepository.save(pregunta, resposta);
-        return pregunta;
+        beansManager.respostaRepository.save(pregunta, resposta);
+        return resposta;
+
     }
 
     /***
@@ -44,7 +49,7 @@ public class PreguntaCasosUs {
      * @throws Exception
      */
     public int eliminarPregunta(Pregunta pregunta) throws Exception {
-        return preguntaRepository.delete(pregunta);
+        return beansManager.preguntaRepository.delete(pregunta);
     }
 
     /***
@@ -58,7 +63,7 @@ public class PreguntaCasosUs {
         }
     }
 
-    public Iterable<Pregunta> llistarPreguntes() {
-        return preguntaRepository.findAll();
+    public List<Pregunta> llistarPreguntes() {
+        return beansManager.preguntaRepository.findAll();
     }
 }

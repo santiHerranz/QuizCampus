@@ -22,7 +22,7 @@ public class QuizCampusApplication {
 	}
 
 	@Autowired
-	private UsuariCasosUs userUseCases;
+	private UsuariCasosUs usuariCasosUs;
 
 	@Autowired
 	private RespostaCasosUs respostaCasosUs;
@@ -45,45 +45,45 @@ public class QuizCampusApplication {
 			@Override
 			public void run(String... strings) throws Exception {
 
-				Usuari u1 = userUseCases.crearUsuari("sherranzm", "112233");
-				Usuari u2 = userUseCases.crearUsuari("iargemi", "112233");
+				Usuari u1 = usuariCasosUs.crearUsuari("sherranzm", "112233");
+				Usuari u2 = usuariCasosUs.crearUsuari("iargemi", "112233");
 
 /*
 				System.out.println("Llistat usuaris");
-				userUseCases.llistarUsuaris().forEach(u -> System.out.println(
+				usuariCasosUs.llistarUsuaris().forEach(u -> System.out.println(
 						u.getId() +" "+ u.getEmail() +" "+ u.getContrasenya() +" "+ u.isAdmin()
 				));
 
-				System.out.println("comprobarContrasenya "+ userUseCases.comprobarContrasenya("112233",u1));
+				System.out.println("comprobarContrasenya "+ usuariCasosUs.comprobarContrasenya("112233",u1));
 
 
 				try{
-					userUseCases.eliminarUsuari(u1);
+					usuariCasosUs.eliminarUsuari(u1);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 
 
-				userUseCases.ferAdmin(u2);
+				usuariCasosUs.ferAdmin(u2);
 
 				try{
-					userUseCases.desferAdmin(u1);
+					usuariCasosUs.desferAdmin(u1);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 
 
 				try{
-					userUseCases.eliminarUsuari(u1);
+					usuariCasosUs.eliminarUsuari(u1);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
 
 				System.out.println("Llistat usuaris");
-				userUseCases.llistarUsuaris().forEach(u -> System.out.println(
+				usuariCasosUs.llistarUsuaris().forEach(u -> System.out.println(
 						u.getId() +" "+ u.getEmail() +" "+ u.getContrasenya()+" "+ u.isAdmin()
 				));
-*/
+
 
 
 				////////////////////////////
@@ -97,7 +97,7 @@ public class QuizCampusApplication {
 				System.out.format("====%nLlistat de respostes%n");
 				respostaCasosUs.llistarRespostesNumeriques().forEach(r -> System.out.println(r));
 
-
+*/
 				System.out.format("====%nJerarquia Enquesta-Pregunta-Resposta%n");
 				Enquesta enquesta = enquestaCasosUs.crearEnquesta("Nova enquesta");
 
@@ -108,7 +108,10 @@ public class QuizCampusApplication {
 				preguntaCasosUs.afegirResposta(p2, u1, 7);
 
 				preguntaCasosUs.afegirResposta(p1, u2, 9);
-				preguntaCasosUs.afegirResposta(p2, u2, 8);
+				Resposta r1 = preguntaCasosUs.afegirResposta(p2, u2, 8);
+
+
+				//preguntaCasosUs.afegirResposta(p2, u2, 8);
 
 				for(Enquesta e : enquestaCasosUs.llistarEnquestes()){
 					System.out.format("%s %n", e.toString());
@@ -120,6 +123,29 @@ public class QuizCampusApplication {
 					}
 				}
 
+				System.out.format("====%nDATABASE %n");
+				enquestaCasosUs.save(enquesta);
+				Enquesta enquestaBD = enquestaCasosUs.llistarEnquestes().get(1);
+				for(Pregunta p : enquestaBD.getPreguntes()){
+					System.out.format(" %s %n", p.toString());
+					for(Resposta r : p.getRespostes()){
+						System.out.format("  %s %n", r.toString());
+					}
+				}
+
+				System.out.format("====%nDATABASE PREGUNTA %n");
+				Pregunta preguntaDB = preguntaCasosUs.llistarPreguntes().get(1);
+				System.out.format(" %s %n", preguntaDB.toString());
+
+				System.out.format("====%nDATABASE RESPOSTA %n");
+				Resposta respostaDB = respostaCasosUs.llistarRespostes().get(1);
+				System.out.format(" %s %n", respostaDB.toString());
+
+
+
+				System.out.format("====%nDATABASE USUARI %n");
+				Usuari usuariDB = usuariCasosUs.llistarUsuaris().get(3);
+				System.out.format(" %s %n", usuariDB.toString());
 
 			}
 		};

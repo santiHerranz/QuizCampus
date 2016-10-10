@@ -1,6 +1,9 @@
 package com.tecnocampus.databaseRepositories;
 
+import com.tecnocampus.BeansManager;
+import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.Usuari;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -22,6 +25,9 @@ public class UsuariRepository {
 
     private JdbcOperations jdbcOperations;
 
+    @Autowired
+    BeansManager beansManager;
+
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM USUARI ";
     private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (EMAIL, CONTRASENYA) VALUES(?,?)";
     private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET EMAIL = ?, CONTRASENYA = ?, ADMIN = ? WHERE USUARIID = ?";
@@ -29,7 +35,6 @@ public class UsuariRepository {
 
     public UsuariRepository(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
-        // IMPORTANT: No afegir UsuariRepository per evitar referencia circular
     }
 
     /***
@@ -53,18 +58,6 @@ public class UsuariRepository {
         );
     }
 
-    /***
-     * Obtenir l'usuari a partir de l'Identificador
-     * @param id
-     * @return l'usuari trobat o null
-     */
-    public Usuari findOne(Long id) {
-        return jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + "where usuariId = ?"
-                , new Object[]{id}
-                , new UsuariMapper()
-        );
-    }
 
     /***
      * guarda l'usuari a bbdd i obté el nou identificador autonuméric
@@ -89,6 +82,27 @@ public class UsuariRepository {
         usuari.setId(keyHolder.getKey().longValue());
 
         return userUpdate;
+    }
+
+
+    /***
+     * Obtenir l'usuari a partir de l'Identificador
+     * @param usuariId
+     * @return l'usuari trobat o null
+     */
+    public Usuari findOne(Long usuariId) {
+        return jdbcOperations.queryForObject(
+                SQL_SELECT_STATEMENT + "where usuariId = ?"
+                , new Object[]{usuariId}
+                , new UsuariMapper()
+        );
+    }
+    public Usuari findOneLazy(Long usuariId) {
+        return jdbcOperations.queryForObject(
+                SQL_SELECT_STATEMENT + "where usuariId = ?"
+                , new Object[]{usuariId}
+                , new UsuariMapperLazy()
+        );
     }
 
     /***
@@ -119,7 +133,25 @@ public class UsuariRepository {
     }
 
 
+
     private final class UsuariMapper implements RowMapper<Usuari> {
+        @Override
+        public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
+            Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
+            usuari.setId(resultSet.getLong("usuariid"));
+            usuari.setAdmin(resultSet.getBoolean("admin"));
+
+            Iterable<Resposta> list = beansManager.respostaRepository.findAllFromUser(usuari.getId());
+            for (Resposta r: list) {
+                r.setUsuari(usuari);
+                usuari.afegirResposta(r);
+            }
+
+            return usuari;
+        }
+    }
+
+    private final class UsuariMapperLazy implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
             Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
