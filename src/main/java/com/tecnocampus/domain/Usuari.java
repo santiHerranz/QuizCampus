@@ -62,7 +62,7 @@ public class Usuari extends Clau {
         return "{"
                 + super.toString()
                 +" email: \""+ this.email +"\""
-                +" admin: \""+ this.admin +"\""
+                +", admin: \""+ this.admin +"\""
                 //+", respostes("+ this.respostes.size() +") "
                 +"}";
     }

@@ -1,7 +1,7 @@
 --TRUNCATE TABLE usuari;
 
 
-INSERT INTO usuari (email,contrasenya) VALUES ('sherranzm@edu.tecnocampus.cat', '12345');
+INSERT INTO usuari (email,contrasenya, admin) VALUES ('sherranzm@edu.tecnocampus.cat', '12345', true);
 INSERT INTO usuari (email,contrasenya) VALUES ('iargemi@edu.tecnocampus.cat', '12345');
 
 --TRUNCATE TABLE enquesta;

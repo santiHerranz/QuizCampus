@@ -21,8 +21,16 @@ public final class UsuariCasosUs {
 
     public UsuariCasosUs() {
     }
-
     public Usuari crearUsuari(String email, String contrasenya) {
+        return crearUsuari(email, contrasenya, contrasenya);
+    }
+
+    public Usuari crearUsuari(String email, String contrasenya, String contrasenyaRepetida) {
+        if(email == null ) throw new IllegalArgumentException();
+        if(contrasenya == null ) throw new IllegalArgumentException();
+
+        if(!contrasenyaRepetida.equals(contrasenya))
+            throw  new RuntimeException("La contrasenya no coincideix");
 
         Usuari existeix = beansManager.usuariRepository.findOne(email);
         if(existeix != null)

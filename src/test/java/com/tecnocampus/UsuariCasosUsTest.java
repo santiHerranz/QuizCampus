@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -46,15 +48,15 @@ public class UsuariCasosUsTest {
 
 	@Test
 	public void eliminarUsuariTest(){
-		Usuari usuari = usuariCasosUs.cercarUsuari(1L);
+		Usuari usuari = usuariCasosUs.cercarUsuari(2L);
 		usuariCasosUs.eliminarUsuari(usuari);
-		usuari = usuariCasosUs.cercarUsuari(1L);
+		usuari = usuariCasosUs.cercarUsuari(2L);
 		Assert.isNull(usuari);
 	}
 
 	@Test
 	public void NoEsPotDegradarUnUusariTest(){
-		Usuari usuari = usuariCasosUs.cercarUsuari(1L);
+		Usuari usuari = usuariCasosUs.cercarUsuari(2L);
 
 		expectedEx.expect(RuntimeException.class);
 		expectedEx.expectMessage("L'usuari no és administrador, no es pot degradar!!!");
@@ -78,7 +80,7 @@ public class UsuariCasosUsTest {
 	}
 
 	@Test
-	public void comprobarContrasenyaNoUsuariTest(){
+	public void comprobarContrasenyaUsuariNoExisteixTest(){
 		expectedEx.expect(RuntimeException.class);
 		expectedEx.expectMessage("Email no trobat!");
 		Boolean result = usuariCasosUs.comprobarContrasenya("noone@domail.com", "123456789");
@@ -112,10 +114,15 @@ public class UsuariCasosUsTest {
 		expectedEx.expect(RuntimeException.class);
 		expectedEx.expectMessage("L'usuari és l'ultim administrador, no es pot eliminar!!!");
 
-		Usuari testAdmin = usuariCasosUs.crearUsuari("ADMIN","12345");
-		usuariCasosUs.promocionarAdmin(testAdmin);
-
+		Usuari testAdmin = usuariCasosUs.cercarUsuari("sherranzm@edu.tecnocampus.cat");
 		usuariCasosUs.eliminarUsuari(testAdmin);
+	}
+
+
+	@Test
+	public void llistarUsuarisTest(){
+		List<Usuari> usuaris = usuariCasosUs.llistarUsuaris();
+		Assert.isTrue(usuaris.size() > 0);
 	}
 
 }
