@@ -16,7 +16,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +61,10 @@ public class EnquestaRepository {
         return userUpdate;
     }
 
+    /***
+     * Aquesta funció retorna totes les enquestes
+     * @return
+     */
     public List<Enquesta> findAll() {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new EnquestaMapper());
     }
@@ -72,10 +75,12 @@ public class EnquestaRepository {
      * @return
      */
     public List<Enquesta> findAllFromUser(Usuari usuari) {
-        List<Enquesta> llista = new ArrayList<Enquesta>();
-        //TODO recuperar llista d'enquestes amb respostes de l'usuari
-        //Fer consulta a enquestes, llavors a preguntes i llavors a respostes
-        return jdbcOperations.query(SQL_SELECT_STATEMENT, new EnquestaMapper());
+        String CercaAmbJoin = "select distinct(e.enquestaId) enquestaId, e.titol titol from enquesta as e join pregunta as p on e.enquestaId = p.enquestaId join resposta as r on p.preguntaId = r.preguntaId\n";
+
+        List<Enquesta> llista = jdbcOperations.query(CercaAmbJoin + " where r.usuariId = ?"
+                , new Object[]{ usuari.getId()}
+                , new EnquestaMapperLazy());
+        return llista;
     }
 
 

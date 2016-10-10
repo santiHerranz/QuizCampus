@@ -2,7 +2,6 @@ package com.tecnocampus.domain;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,6 +62,7 @@ public class Usuari extends Clau {
         return "{"
                 + super.toString()
                 +" email: \""+ this.email +"\""
+                +" admin: \""+ this.admin +"\""
                 //+", respostes("+ this.respostes.size() +") "
                 +"}";
     }

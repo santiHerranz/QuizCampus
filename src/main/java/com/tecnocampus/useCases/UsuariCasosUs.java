@@ -1,5 +1,6 @@
 package com.tecnocampus.useCases;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,35 +23,46 @@ public final class UsuariCasosUs {
     }
 
     public Usuari crearUsuari(String email, String contrasenya) {
+
+        Usuari existeix = beansManager.usuariRepository.findOne(email);
+        if(existeix != null)
+            throw  new RuntimeException("No es pot guardar l'usuari, l'email ja existeix!");
+
         Usuari usuari = new Usuari(email, contrasenya);
-        try {
-            beansManager.usuariRepository.save(usuari);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        beansManager.usuariRepository.save(usuari);
+
         // Establir admin al primer usuari
         if( llistarUsuaris().size()==1)
-            ferAdmin(usuari);
+            promocionarAdmin(usuari);
+
+        System.out.println(usuari);
 
         return usuari;
     }
 
-    public boolean comprobarContrasenya(String contrasenya, Usuari usuari) {
+    public boolean comprobarContrasenya(String email, String contrasenya) {
+        if(email == null ) throw new IllegalArgumentException();
+        if(contrasenya == null ) throw new IllegalArgumentException();
+
+        Usuari usuari = beansManager.usuariRepository.findOne(email);
+        if( usuari == null)
+            throw new RuntimeException("Email no trobat!");
+
         return contrasenya == usuari.getContrasenya();
     }
 
-    public void ferAdmin(Usuari usuari) {
+    public void promocionarAdmin(Usuari usuari) {
         usuari.setAdmin(true);
         beansManager.usuariRepository.update(usuari);
-        System.out.format("Usuari promocionat a Admin {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
     }
 
-    public void desferAdmin(Usuari usuari) throws Exception {
+    public void degradarAdmin(Usuari usuari){
+        if(!usuari.isAdmin())
+            throw new RuntimeException("L'usuari no és administrador, no es pot degradar!!!");
         if(esUltimAdmin(usuari))
-            throw new Exception(String.format("L'usuari {id:%s, email:\"%s\"} és l'ultim administrador, no es pot degradar!!!", usuari.getId(), usuari.getEmail()));
+            throw new RuntimeException("L'usuari és l'ultim administrador, no es pot degradar!!!");
         usuari.setAdmin(false);
         beansManager.usuariRepository.update(usuari);
-        System.out.format("Usuari degradat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
     }
 
     private boolean esUltimAdmin(Usuari usuari){
@@ -64,10 +76,10 @@ public final class UsuariCasosUs {
      * @param usuari
      * @throws Exception si es vol delete l'ultim administrador
      */
-    public void eliminarUsuari(Usuari usuari) throws Exception {
+    public void eliminarUsuari(Usuari usuari) {
 
         if(esUltimAdmin(usuari))
-            throw new Exception(String.format("L'usuari {id:%s, email:\"%s\"} és l'ultim administrador, no es pot delete!!!", usuari.getId(), usuari.getEmail()));
+            throw new RuntimeException("L'usuari és l'ultim administrador, no es pot eliminar!!!");
 
         String msg = String.format("Usuari eliminat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
         beansManager.usuariRepository.delete(usuari);
@@ -75,6 +87,15 @@ public final class UsuariCasosUs {
     }
 
     public List<Usuari> llistarUsuaris() {
+
         return beansManager.usuariRepository.findAll();
+    }
+
+    public Usuari cercarUsuari(String email) {
+        return beansManager.usuariRepository.findOne(email);
+    }
+
+    public Usuari cercarUsuari(long usuariId) {
+        return beansManager.usuariRepository.findOne(usuariId);
     }
 }

@@ -9,7 +9,6 @@ import java.util.List;
 public abstract class Pregunta extends Clau implements IPregunta {
 
     private String enunciat = "";
-    private Long enquestaId;
     private Enquesta enquesta;
     protected List<Resposta> respostes;
 
@@ -20,14 +19,6 @@ public abstract class Pregunta extends Clau implements IPregunta {
         this();
         setEnquesta(enquesta);
         setEnunciat(enunciat);
-    }
-
-    public Long getEnquestaId() {
-        return enquestaId;
-    }
-
-    public void setEnquestaId(Long enquestaId) {
-        this.enquestaId = enquestaId;
     }
 
     public String getEnunciat() {

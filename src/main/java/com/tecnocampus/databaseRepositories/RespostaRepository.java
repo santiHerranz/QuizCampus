@@ -130,16 +130,14 @@ public class RespostaRepository {
 
 
             Resposta resposta = new RespostaNumerica();
-            resposta.setUsuariId(resultSet.getLong("usuariid"));
-            resposta.setPreguntaId(resultSet.getLong("preguntaid"));
             resposta.setId(resultSet.getLong("respostaid"));
             ((RespostaNumerica)resposta).setValor(resultSet.getInt("valor"));
 
-            Usuari usuari = beansManager.usuariRepository.findOneLazy(resposta.getUsuariId());
+            Usuari usuari = beansManager.usuariRepository.findOneLazy(resultSet.getLong("usuariid"));
             resposta.setUsuari(usuari);
             usuari.afegirResposta(resposta);
 
-            Pregunta p = beansManager.preguntaRepository.findOneLazy(resposta.getUsuariId());
+            Pregunta p = beansManager.preguntaRepository.findOneLazy(resultSet.getLong("usuariid"));
             resposta.setPregunta(p);
             p.afegirResposta(resposta);
 

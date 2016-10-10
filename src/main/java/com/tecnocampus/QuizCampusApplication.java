@@ -1,9 +1,5 @@
 package com.tecnocampus;
 
-import com.tecnocampus.domain.Enquesta;
-import com.tecnocampus.domain.Pregunta;
-import com.tecnocampus.domain.Resposta;
-import com.tecnocampus.domain.Usuari;
 import com.tecnocampus.useCases.EnquestaCasosUs;
 import com.tecnocampus.useCases.PreguntaCasosUs;
 import com.tecnocampus.useCases.RespostaCasosUs;
@@ -44,11 +40,11 @@ public class QuizCampusApplication {
 		return new CommandLineRunner() {
 			@Override
 			public void run(String... strings) throws Exception {
-
+/*
 				Usuari u1 = usuariCasosUs.crearUsuari("sherranzm", "112233");
 				Usuari u2 = usuariCasosUs.crearUsuari("iargemi", "112233");
 
-/*
+
 				System.out.println("Llistat usuaris");
 				usuariCasosUs.llistarUsuaris().forEach(u -> System.out.println(
 						u.getId() +" "+ u.getEmail() +" "+ u.getContrasenya() +" "+ u.isAdmin()
@@ -64,10 +60,10 @@ public class QuizCampusApplication {
 				}
 
 
-				usuariCasosUs.ferAdmin(u2);
+				usuariCasosUs.promocionarAdmin(u2);
 
 				try{
-					usuariCasosUs.desferAdmin(u1);
+					usuariCasosUs.degradarAdmin(u1);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
@@ -84,7 +80,7 @@ public class QuizCampusApplication {
 						u.getId() +" "+ u.getEmail() +" "+ u.getContrasenya()+" "+ u.isAdmin()
 				));
 
-*/
+
 
 				////////////////////////////
 
@@ -146,6 +142,8 @@ public class QuizCampusApplication {
 				System.out.format("====%nDATABASE USUARI %n");
 				Usuari usuariDB = usuariCasosUs.llistarUsuaris().get(3);
 				System.out.format(" %s %n", usuariDB.toString());
+
+*/
 
 			}
 		};

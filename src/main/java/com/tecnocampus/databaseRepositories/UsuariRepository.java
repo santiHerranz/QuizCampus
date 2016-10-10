@@ -4,6 +4,7 @@ import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -45,26 +46,15 @@ public class UsuariRepository {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
     }
 
-    /***
-     * Obtenir l'usuari a partir de l'email
-     * @param email
-     * @return l'usuari trobat o null
-     */
-    public Usuari findOne(String email) {
-        return jdbcOperations.queryForObject(
-                  SQL_SELECT_STATEMENT + "where email = ?"
-                , new Object[]{email}
-                , new UsuariMapper()
-        );
-    }
 
 
     /***
-     * guarda l'usuari a bbdd i obté el nou identificador autonuméric
+     * guarda l'usuari a bbdd i assigna el nou identificador autonuméric que obté
      * @param usuari
      * @return 0 o 1 segons el numero de files insertades
      */
     public int save(Usuari usuari) {
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int userUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -85,37 +75,63 @@ public class UsuariRepository {
     }
 
 
+
     /***
      * Obtenir l'usuari a partir de l'Identificador
      * @param usuariId
      * @return l'usuari trobat o null
      */
     public Usuari findOne(Long usuariId) {
-        return jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + "where usuariId = ?"
-                , new Object[]{usuariId}
-                , new UsuariMapper()
-        );
+        try {
+            return jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + "where usuariId = ?"
+                    , new Object[]{usuariId}
+                    , new UsuariMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
     public Usuari findOneLazy(Long usuariId) {
-        return jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + "where usuariId = ?"
-                , new Object[]{usuariId}
-                , new UsuariMapperLazy()
-        );
+        try {
+            return jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + "where usuariId = ?"
+                    , new Object[]{usuariId}
+                    , new UsuariMapperLazy()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
+
+    /***
+     * Obtenir l'usuari a partir de l'email
+     * @param email
+     * @return l'usuari trobat o null
+     */
+    public Usuari findOne(String email) {
+        try {
+            return jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + "where email = ?"
+                    , new Object[]{email}
+                    , new UsuariMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 
     /***
      * Elimina l'usuari
      * @param usuari
      * @return 0 o 1 segons el numero de files eliminades
      */
-    public int delete(Usuari usuari) {
-        int userDelete = jdbcOperations.update(
+    public void delete(Usuari usuari) {
+        int result = jdbcOperations.update(
                 SQL_DELETE_STATEMENT
                 , usuari.getId()
                 );
-        return userDelete;
     }
 
     /***

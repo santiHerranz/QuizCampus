@@ -118,12 +118,12 @@ public class PreguntaRepository {
             PreguntaNumerica pregunta = new PreguntaNumerica();
 
             pregunta.setId(resultSet.getLong("preguntaid"));
-            pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
+            //pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
             pregunta.setEnunciat(resultSet.getString("enunciat"));
             pregunta.setMaxim(resultSet.getInt("maxim"));
             pregunta.setMinim(resultSet.getInt("minim"));
 
-            Enquesta enquesta = new EnquestaRepository(jdbcOperations).findOneLazy(pregunta.getEnquestaId());
+            Enquesta enquesta = new EnquestaRepository(jdbcOperations).findOneLazy(resultSet.getLong("enquestaid"));
             pregunta.setEnquesta(enquesta);
 
             List<Resposta> list = respostaRepository.findAll(pregunta.getId());
@@ -143,12 +143,12 @@ public class PreguntaRepository {
             PreguntaNumerica pregunta = new PreguntaNumerica();
 
             pregunta.setId(resultSet.getLong("preguntaid"));
-            pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
+            //pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
             pregunta.setEnunciat(resultSet.getString("enunciat"));
             pregunta.setMaxim(resultSet.getInt("maxim"));
             pregunta.setMinim(resultSet.getInt("minim"));
 
-            Enquesta enquesta = new EnquestaRepository(jdbcOperations).findOneLazy(pregunta.getEnquestaId());
+            Enquesta enquesta = new EnquestaRepository(jdbcOperations).findOneLazy(resultSet.getLong("enquestaid"));
             pregunta.setEnquesta(enquesta);
 
             // No enllaçar amb les respostes per evitar referencies circulars
