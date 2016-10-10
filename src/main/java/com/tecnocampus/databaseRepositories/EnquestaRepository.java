@@ -72,6 +72,11 @@ public class EnquestaRepository {
         List<Enquesta> llista = new ArrayList<Enquesta>();
         //TODO recuperar llista d'enquestes amb respostes de l'usuari
         //Fer consulta a enquestes, llavors a preguntes i llavors a respostes
+        /*
+        select e.enquestaId, e.titol from ENQUESTA AS e join PREGUNTA AS p on (e.enquestaId = p.enquestaId) join RESPOSTA r AS
+        on (p.preguntaId = r.preguntaId)
+         where r.usuariId = ?
+         */
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new EnquestaMapper());
     }
 
