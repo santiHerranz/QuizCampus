@@ -2,8 +2,6 @@ package com.tecnocampus;
 
 import com.tecnocampus.domain.Usuari;
 import com.tecnocampus.useCases.UsuariCasosUs;
-import org.assertj.core.api.AssertProvider;
-import org.hibernate.validator.cfg.defs.AssertTrueDef;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

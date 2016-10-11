@@ -21,6 +21,7 @@ CREATE TABLE pregunta
   preguntaId int auto_increment PRIMARY KEY, --
   enquestaId int NOT NULL,
   enunciat VARCHAR (500) NOT NULL,
+  --ordre int,  -- Ampliació: canviar l'ordre de les preguntes de l'enquesta
   minim int,
   maxim int
   , FOREIGN KEY (enquestaId) REFERENCES enquesta(enquestaId) ON DELETE CASCADE
