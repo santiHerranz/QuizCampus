@@ -5,6 +5,7 @@ import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,6 +27,7 @@ public class EnquestaRepository {
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM ENQUESTA ";
     private static final String SQL_INSERT_STATEMENT = "INSERT INTO ENQUESTA (TITOL) VALUES(?) ";
+    private static final String SQL_DELETE_STATEMENT = "DELETE FROM ENQUESTA WHERE ENQUESTAID = ?";
 
 
     private JdbcOperations jdbcOperations;
@@ -90,31 +92,50 @@ public class EnquestaRepository {
      * @return Enquesta o null
      */
     public Enquesta findOne(String titol) {
-        Enquesta enquesta = jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + " where titol like ?"
-                , new Object[]{'%'+ titol +'%'}
-                , new EnquestaMapper()
-        );
-        return enquesta;
+        try {
+            Enquesta enquesta = jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + " where titol like ?"
+                    , new Object[]{'%'+ titol +'%'}
+                    , new EnquestaMapper()
+            );
+            return enquesta;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /***
      * Aquesta funció retorna l'enquesta amb l'identificador que li passem per paràmetre
      * @param enquestaId
-     * @return
+     * @return Enquesta o null
      */
     public Enquesta findOne(Long enquestaId) {
-        return jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + " where enquestaId = ?"
-                , new Object[]{enquestaId}
-                , new EnquestaMapper()
-        );
+        try {
+            return jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + " where enquestaId = ?"
+                    , new Object[]{enquestaId}
+                    , new EnquestaMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
     public Enquesta findOneLazy(Long enquestaId) {
         return jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + " where enquestaId = ?"
                 , new Object[]{enquestaId}
                 , new EnquestaMapperLazy()
+        );
+    }
+
+    /***
+     * Aquest mètode elimina l'enquesta passada per parametres.
+     * @param enquesta
+     */
+    public void eliminarEnquesta(Enquesta enquesta) {
+        int result = jdbcOperations.update(
+                SQL_DELETE_STATEMENT
+                , enquesta.getId()
         );
     }
 

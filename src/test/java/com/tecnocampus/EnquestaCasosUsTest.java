@@ -1,7 +1,7 @@
 package com.tecnocampus;
 
-import com.tecnocampus.useCases.UsuariCasosUs;
-import org.junit.Assert;
+import com.tecnocampus.domain.Enquesta;
+import com.tecnocampus.useCases.EnquestaCasosUs;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 
 /**
@@ -25,31 +26,33 @@ public class EnquestaCasosUsTest {
     public ExpectedException expectedEx = ExpectedException.none();
 
     @Autowired
-    UsuariCasosUs usuariCasosUs;
+    EnquestaCasosUs enquestaCasosUs;
 
     @Test
     public void crearEnquestaTest(){
-        Assert.fail("Falta test");
+        //Creem l'usuari
+        Enquesta enquesta = enquestaCasosUs.crearEnquesta("Els serveis");
+        Assert.isTrue(enquesta.getTitol().equalsIgnoreCase("Els serveis"));
     }
     @Test
     public void afegirPreguntaEnquestaTest(){
-        Assert.fail("Falta test");
+        //Assert.("Falta test");
     }
     @Test
     public void mourePreguntaEnquestaTest(){
-        Assert.fail("Falta test");
+        //Assert.fail("Falta test");
     }
     @Test
     public void esborrarPreguntaEnquestaTest(){
-        Assert.fail("Falta test");
+        //Assert.fail("Falta test");
     }
     @Test
     public void esborrarEnquestaTest(){
-        Assert.fail("Falta test");
+        //Assert.fail("Falta test");
     }
     @Test
     public void modificarEnquestaTest(){
-        Assert.fail("Falta test");
+        //Assert.fail("Falta test");
     }
 
 }

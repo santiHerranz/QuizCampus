@@ -95,7 +95,6 @@ public final class UsuariCasosUs {
     }
 
     public List<Usuari> llistarUsuaris() {
-
         return beansManager.usuariRepository.findAll();
     }
 

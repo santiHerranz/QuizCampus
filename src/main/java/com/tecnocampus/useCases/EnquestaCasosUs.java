@@ -46,8 +46,7 @@ public class EnquestaCasosUs {
 
     @Transactional
     public void eliminarEnquesta(Enquesta enquesta) throws Exception {
-        //TODO implementar
-        throw new Exception();
+        beansManager.enquestaRepository.eliminarEnquesta(enquesta);
     }
 
     @Transactional
@@ -72,11 +71,11 @@ public class EnquestaCasosUs {
     /***
      * Aquesta funció retorna un booleà en funció de si l'enquesta existeix
      * @param titol
-     * @return
+     * @return booleà: true o false
      */
     private boolean existeix(String titol) {
-        //TODO implementar
-        return false;
+        if (beansManager.enquestaRepository.findOne(titol) != null) return true;
+        else return false;
     }
 
 
