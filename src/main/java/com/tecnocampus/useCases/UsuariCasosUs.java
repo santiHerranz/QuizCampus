@@ -101,7 +101,7 @@ public final class UsuariCasosUs {
     }
 
     public List<Usuari> llistarUsuaris() {
-        return beansManager.usuariRepository.findAll();
+        return beansManager.usuariRepository.findAllLazy();
     }
 
     public Usuari cercarUsuari(String email) {

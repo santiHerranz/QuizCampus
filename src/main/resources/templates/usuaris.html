@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Usuaris</title>
+</head>
+<body>
+<h1>List of all Users</h1>
+<ul>
+    <li th:each="usuari : ${usuariList}"
+        th:id="'user_' + ${usuari.id}">
+
+
+        <a th:href="@{'/usuaris/' + ${usuari.id}}" th:text="${usuari.email}" >email</a>
+    </li>
+</ul>
+</body>
+</html>
