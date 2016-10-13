@@ -79,4 +79,7 @@ public class EnquestaCasosUs {
     }
 
 
+    public Enquesta obetenirEnquesta(long enquestaId) {
+        return beansManager.enquestaRepository.findOne(enquestaId);
+    }
 }

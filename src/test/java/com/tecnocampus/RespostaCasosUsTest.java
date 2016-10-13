@@ -1,7 +1,13 @@
 package com.tecnocampus;
 
+import com.tecnocampus.domain.Enquesta;
+import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.Resposta;
+import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.useCases.EnquestaCasosUs;
+import com.tecnocampus.useCases.PreguntaCasosUs;
 import com.tecnocampus.useCases.RespostaCasosUs;
+import com.tecnocampus.useCases.UsuariCasosUs;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,12 +34,30 @@ public class RespostaCasosUsTest {
     public ExpectedException expectedEx = ExpectedException.none();
 
     @Autowired
+    EnquestaCasosUs enquestaCasosUs;
+    @Autowired
+    PreguntaCasosUs preguntaCasosUs;
+    @Autowired
     RespostaCasosUs respostaCasosUs;
-
+    @Autowired
+    UsuariCasosUs usuariCasosUs;
     @Test
     public void llistarRespostesTest() {
 
         List<Resposta> list = respostaCasosUs.llistarRespostes();
         Assert.assertTrue(list.size()>0);
+    }
+
+    @Test
+    public void esborrarRespostaPreguntaTest(){
+
+
+        Enquesta e = enquestaCasosUs.obetenirEnquesta(1L);
+        Pregunta p = enquestaCasosUs.afegirPregunta(e, "Test", 1, 10);
+        Usuari usuari = usuariCasosUs.cercarUsuari(1L);
+
+        Resposta r = preguntaCasosUs.afegirResposta(p, usuari, 5);
+
+        respostaCasosUs.esborraResposta(r);
     }
 }

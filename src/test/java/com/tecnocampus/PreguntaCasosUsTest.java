@@ -1,5 +1,8 @@
 package com.tecnocampus;
 
+import com.tecnocampus.useCases.EnquestaCasosUs;
+import com.tecnocampus.useCases.PreguntaCasosUs;
+import com.tecnocampus.useCases.RespostaCasosUs;
 import com.tecnocampus.useCases.UsuariCasosUs;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -25,6 +28,12 @@ public class PreguntaCasosUsTest {
     public ExpectedException expectedEx = ExpectedException.none();
 
     @Autowired
+    EnquestaCasosUs enquestaCasosUs;
+    @Autowired
+    PreguntaCasosUs preguntaCasosUs;
+    @Autowired
+    RespostaCasosUs respostaCasosUs;
+    @Autowired
     UsuariCasosUs usuariCasosUs;
 
     @Test
@@ -39,9 +48,6 @@ public class PreguntaCasosUsTest {
     public void respondrePreguntaEnquestaTest(){
         Assert.fail("Falta test");
     }
-    @Test
-    public void esborrarRespostaPreguntaTest(){
-        Assert.fail("Falta test");
-    }
+
 
 }

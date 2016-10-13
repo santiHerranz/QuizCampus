@@ -27,14 +27,14 @@ public class PreguntaCasosUs {
 
     public PreguntaCasosUs() {}
 
-    public Resposta afegirResposta(Pregunta pregunta, Usuari usuari, int valor) throws Exception {
+    public Resposta afegirResposta(Pregunta pregunta, Usuari usuari, int valor) throws RuntimeException {
 
         if(usuari == null) throw new IllegalArgumentException("usuari");
         if(pregunta == null) throw new IllegalArgumentException("pregunta");
 
         // Un usuari no pot respondre la mateixa pregunta 2 cops
         if (!beansManager.respostaRepository.canAnswer(pregunta, usuari))
-            throw new Exception("Un usuari no pot respondre la mateixa pregunta 2 cops");
+            throw new RuntimeException("Un usuari no pot respondre la mateixa pregunta 2 cops");
 
         RespostaNumerica resposta = new RespostaNumerica();
         resposta.setUsuari(usuari);

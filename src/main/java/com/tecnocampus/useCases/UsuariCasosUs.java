@@ -1,7 +1,7 @@
 package com.tecnocampus.useCases;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import com.tecnocampus.BeansManager;
+import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,5 +104,9 @@ public final class UsuariCasosUs {
 
     public Usuari cercarUsuari(long usuariId) {
         return beansManager.usuariRepository.findOne(usuariId);
+    }
+
+    public void esborraResposta(Resposta resposta) {
+        beansManager.respostaRepository.delete(resposta);
     }
 }
