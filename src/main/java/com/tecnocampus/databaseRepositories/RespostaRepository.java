@@ -93,7 +93,7 @@ public class RespostaRepository {
 
     }
 
-    public Resposta findOne(int respostaId) {
+    public Resposta findOne(long respostaId) {
         return jdbcOperations.queryForObject(
                 SQL_SELECT_STATEMENT + " where respostaId = ?"
                 , new Object[]{respostaId}
@@ -137,7 +137,7 @@ public class RespostaRepository {
             resposta.setUsuari(usuari);
             usuari.afegirResposta(resposta);
 
-            Pregunta p = beansManager.preguntaRepository.findOneLazy(resultSet.getLong("usuariid"));
+            Pregunta p = beansManager.preguntaRepository.findOneLazy(resultSet.getLong("preguntaid"));
             resposta.setPregunta(p);
             p.afegirResposta(resposta);
 

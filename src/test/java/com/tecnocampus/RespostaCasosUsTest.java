@@ -9,6 +9,7 @@ import com.tecnocampus.useCases.PreguntaCasosUs;
 import com.tecnocampus.useCases.RespostaCasosUs;
 import com.tecnocampus.useCases.UsuariCasosUs;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -41,6 +42,17 @@ public class RespostaCasosUsTest {
     RespostaCasosUs respostaCasosUs;
     @Autowired
     UsuariCasosUs usuariCasosUs;
+
+    Usuari usuari;
+    Enquesta enquesta;
+
+    @Before
+    public void before(){
+        usuari = usuariCasosUs.cercarUsuari(1L);
+        enquesta = enquestaCasosUs.obetenirEnquesta(1L);
+    }
+
+
     @Test
     public void llistarRespostesTest() {
 
@@ -50,7 +62,6 @@ public class RespostaCasosUsTest {
 
     @Test
     public void esborrarRespostaPreguntaTest(){
-
 
         Enquesta e = enquestaCasosUs.obetenirEnquesta(1L);
         Pregunta p = enquestaCasosUs.afegirPregunta(e, "Test", 1, 10);

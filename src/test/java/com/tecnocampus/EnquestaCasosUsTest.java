@@ -1,7 +1,13 @@
 package com.tecnocampus;
 
 import com.tecnocampus.domain.Enquesta;
+import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.EnquestaDuplicadaException;
 import com.tecnocampus.useCases.EnquestaCasosUs;
+import com.tecnocampus.useCases.PreguntaCasosUs;
+import com.tecnocampus.useCases.RespostaCasosUs;
+import com.tecnocampus.useCases.UsuariCasosUs;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -27,13 +33,65 @@ public class EnquestaCasosUsTest {
 
     @Autowired
     EnquestaCasosUs enquestaCasosUs;
+    @Autowired
+    PreguntaCasosUs preguntaCasosUs;
+    @Autowired
+    RespostaCasosUs respostaCasosUs;
+    @Autowired
+    UsuariCasosUs usuariCasosUs;
+
+    Usuari usuari;
+    Enquesta enquesta;
+
+    @Before
+    public void before(){
+
+    }
 
     @Test
+    @Transactional
     public void crearEnquestaTest(){
-        //Creem l'usuari
+        //Creem l'enquesta
         Enquesta enquesta = enquestaCasosUs.crearEnquesta("Els serveis");
-        Assert.isTrue(enquesta.getTitol().equalsIgnoreCase("Els serveis"));
+        Enquesta enquestaDB = enquestaCasosUs.obetenirEnquesta(enquesta.getId());
+        Assert.isTrue(enquestaDB.getTitol().equalsIgnoreCase(enquesta.getTitol()));
     }
+
+    @Test
+    @Transactional
+    public void crearEnquestaDuplicadaTest(){
+        expectedEx.expect(EnquestaDuplicadaException.class);
+        Enquesta enquesta1 = enquestaCasosUs.crearEnquesta("Els serveis");
+        Enquesta enquesta2 = enquestaCasosUs.crearEnquesta("Els serveis");
+    }
+
+    @Test
+    @Transactional
+    public void guardarEnquestaDuplicadaTest(){
+        expectedEx.expect(EnquestaDuplicadaException.class);
+
+        Enquesta enquesta1 = enquestaCasosUs.obetenirEnquesta(1L);
+        Enquesta enquesta2 = enquestaCasosUs.obetenirEnquesta(2L);
+        enquesta1.setTitol(enquesta2.getTitol());
+        enquestaCasosUs.save(enquesta1);
+    }
+
+    @Test
+    @Transactional
+    public void guardarEnquestaTest(){
+        String enquestaTitol;
+
+        Enquesta enquesta1 = enquestaCasosUs.obetenirEnquesta(1L);
+        enquestaTitol = enquesta1.getTitol() + " 2";
+        enquesta1.setTitol(enquestaTitol);
+        enquestaCasosUs.save(enquesta1);
+
+        Enquesta enquestaDB = enquestaCasosUs.obetenirEnquesta(1L);
+        Assert.isTrue(enquestaDB.getTitol().equalsIgnoreCase( enquestaTitol));
+
+    }
+
+
     @Test
     public void afegirPreguntaEnquestaTest(){
         //Assert.("Falta test");

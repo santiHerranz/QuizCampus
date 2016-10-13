@@ -27,6 +27,7 @@ public class EnquestaRepository {
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM ENQUESTA ";
     private static final String SQL_INSERT_STATEMENT = "INSERT INTO ENQUESTA (TITOL) VALUES(?) ";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE ENQUESTA SET TITOL = ? WHERE ENQUESTAID = ? ";
     private static final String SQL_DELETE_STATEMENT = "DELETE FROM ENQUESTA WHERE ENQUESTAID = ?";
 
 
@@ -45,9 +46,28 @@ public class EnquestaRepository {
      * @return
      */
     public int save(Enquesta enquesta) {
+        int result;
+        if(enquesta.getId() == 0) {
+            result = insert(enquesta);
+        } else {
+            result = update(enquesta);
+        }
+        return result;
+    }
+
+
+    private int update(Enquesta enquesta) {
+        int updateResult = this.jdbcOperations.update(
+                SQL_UPDATE_STATEMENT,
+                new String[] { enquesta.getTitol(), enquesta.getId().toString() }
+        );
+        return updateResult;
+    }
+
+    private int insert(Enquesta enquesta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        int userUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
+        int insertResult = this.jdbcOperations.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(
@@ -60,7 +80,7 @@ public class EnquestaRepository {
 
         enquesta.setId(keyHolder.getKey().longValue());
 
-        return userUpdate;
+        return insertResult;
     }
 
     /***

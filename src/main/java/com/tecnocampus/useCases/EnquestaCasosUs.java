@@ -5,6 +5,7 @@ import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.EnquestaDuplicadaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,19 +31,22 @@ public class EnquestaCasosUs {
 
     @Transactional
     public Enquesta crearEnquesta(String titol) {
+        if (existeix(titol))
+            throw new EnquestaDuplicadaException();
+
         Enquesta enquesta = new Enquesta(titol);
-        try {
-            beansManager.enquestaRepository.save(enquesta);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        beansManager.enquestaRepository.save(enquesta);
         return enquesta;
     }
 
     @Transactional
     public void save(Enquesta enquesta) {
+        if (comprobaPerGuardar(enquesta))
+            throw new EnquestaDuplicadaException();
+
         beansManager.enquestaRepository.save(enquesta);
     }
+
 
     @Transactional
     public void eliminarEnquesta(Enquesta enquesta) throws Exception {
@@ -77,6 +81,19 @@ public class EnquestaCasosUs {
         if (beansManager.enquestaRepository.findOne(titol) != null) return true;
         else return false;
     }
+
+    private boolean comprobaPerGuardar(Enquesta enquesta) {
+        List<Enquesta> list = beansManager.enquestaRepository.findAll();
+        for (Enquesta e: list) {
+            if(e.getId()!= enquesta.getId()) {
+                if (e.getTitol().equalsIgnoreCase(enquesta.getTitol())){
+                    return  true;
+                }
+            }
+        }
+        return false;
+    }
+
 
 
     public Enquesta obetenirEnquesta(long enquestaId) {

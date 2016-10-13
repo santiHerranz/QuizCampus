@@ -21,6 +21,9 @@ INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,2,6.0);
 INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,3,7.0);
 INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,4,6.0);
 
+
+INSERT INTO enquesta (titol) VALUES ('Especifica');
+
 /*
 
 

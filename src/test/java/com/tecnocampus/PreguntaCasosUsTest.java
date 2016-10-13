@@ -1,10 +1,17 @@
 package com.tecnocampus;
 
+import com.tecnocampus.domain.Enquesta;
+import com.tecnocampus.domain.Pregunta;
+import com.tecnocampus.domain.Resposta;
+import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.PreguntaNoExisteixException;
+import com.tecnocampus.exceptions.RespostaForaDeLimitsException;
 import com.tecnocampus.useCases.EnquestaCasosUs;
 import com.tecnocampus.useCases.PreguntaCasosUs;
 import com.tecnocampus.useCases.RespostaCasosUs;
 import com.tecnocampus.useCases.UsuariCasosUs;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -36,18 +43,73 @@ public class PreguntaCasosUsTest {
     @Autowired
     UsuariCasosUs usuariCasosUs;
 
-    @Test
-    public void crearPreguntaTest(){
-        Assert.fail("Falta test");
+    Usuari usuari;
+    Enquesta enquesta;
+
+    @Before
+    public void before(){
+        usuari = usuariCasosUs.cercarUsuari(1L);
+        enquesta = enquestaCasosUs.obetenirEnquesta(1L);
     }
+
+
+    /***
+     * Prova bàsica per respondre una pregunta de l'enquesta
+     */
     @Test
-    public void eliminarPreguntaTest(){
-        Assert.fail("Falta test");
-    }
-    @Test
+    @Transactional
     public void respondrePreguntaEnquestaTest(){
-        Assert.fail("Falta test");
+
+        Pregunta p = enquestaCasosUs.afegirPregunta(enquesta, "Pregunta nova", 1, 10);
+        Resposta r = preguntaCasosUs.afegirResposta(p, usuari, 10);
+
+        Assert.assertEquals(r.toString(), respostaCasosUs.obtenirResposta(r.getId()).toString());
+
     }
+    @Test
+    @Transactional
+    public void respondrePreguntaForaLimitSuperiorTest(){
+        expectedEx.expect(RespostaForaDeLimitsException.class);
+
+        Pregunta p = enquestaCasosUs.afegirPregunta(enquesta, "Pregunta nova", 1, 10);
+        Resposta r = preguntaCasosUs.afegirResposta(p, usuari, 15);
+    }
+    @Test
+    @Transactional
+    public void respondrePreguntaForaLimitInferiorTest(){
+        expectedEx.expect(RespostaForaDeLimitsException.class);
+
+        Pregunta p = enquestaCasosUs.afegirPregunta(enquesta, "Pregunta nova", 1, 10);
+        Resposta r = preguntaCasosUs.afegirResposta(p, usuari, -1);
+    }
+
+    @Test
+    @Transactional
+    public void respondrePreguntaArgumentsNullTest(){
+        expectedEx.expect(IllegalArgumentException.class);
+
+        Resposta r = preguntaCasosUs.afegirResposta(null, null, 0);
+    }
+
+
+    @Test
+    @Transactional
+    public void eliminarPreguntaTest(){
+        Pregunta p = enquestaCasosUs.afegirPregunta(enquesta, "Pregunta nova", 1, 10);
+        preguntaCasosUs.eliminarPregunta(p);
+    }
+
+    @Test
+    @Transactional
+    public void eliminarPreguntaNoExisteixTest(){
+        expectedEx.expect(PreguntaNoExisteixException.class);
+
+        Pregunta p = enquestaCasosUs.afegirPregunta(enquesta, "Pregunta nova", 1, 10);
+        preguntaCasosUs.eliminarPregunta(p);
+        preguntaCasosUs.eliminarPregunta(p);
+    }
+
+
 
 
 }
