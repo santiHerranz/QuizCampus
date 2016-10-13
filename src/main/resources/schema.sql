@@ -3,7 +3,7 @@ DROP TABLE if EXISTS usuari;
 CREATE TABLE usuari
 (
   usuariId int auto_increment PRIMARY KEY , --
-  email VARCHAR (100),
+  email VARCHAR (100) NOT NULL UNIQUE ,
   contrasenya VARCHAR (100) NOT NULL,
   admin BOOLEAN NOT NULL DEFAULT (0)
 );
@@ -12,7 +12,7 @@ DROP TABLE if EXISTS enquesta;
 CREATE TABLE enquesta
 (
   enquestaId int auto_increment PRIMARY KEY, --
-  titol VARCHAR (200) NOT NULL
+  titol VARCHAR (200) NOT NULL UNIQUE
 );
 
 DROP TABLE if EXISTS pregunta;

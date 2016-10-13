@@ -47,7 +47,7 @@ public class EnquestaRepository {
      */
     public int save(Enquesta enquesta) {
         int result;
-        if(enquesta.getId() == 0) {
+        if(enquesta.getId() == null) {
             result = insert(enquesta);
         } else {
             result = update(enquesta);
@@ -141,11 +141,15 @@ public class EnquestaRepository {
         }
     }
     public Enquesta findOneLazy(Long enquestaId) {
-        return jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + " where enquestaId = ?"
-                , new Object[]{enquestaId}
-                , new EnquestaMapperLazy()
-        );
+        try {
+            return jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + " where enquestaId = ?"
+                    , new Object[]{enquestaId}
+                    , new EnquestaMapperLazy()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     /***

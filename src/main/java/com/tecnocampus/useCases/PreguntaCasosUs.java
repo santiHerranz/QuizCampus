@@ -61,6 +61,11 @@ public class PreguntaCasosUs {
 
     }
 
+    public Pregunta obtenirPregunta(long preguntaId) {
+        return beansManager.preguntaRepository.findOne(preguntaId);
+    }
+
+
     /***
      *
      * @param pregunta
@@ -68,7 +73,7 @@ public class PreguntaCasosUs {
      * @throws Exception
      */
     public void eliminarPregunta(Pregunta pregunta) throws RuntimeException {
-        if (beansManager.preguntaRepository.findOne(pregunta.getId()) != null)
+        if (beansManager.preguntaRepository.findOne(pregunta.getId()) == null)
             throw new PreguntaNoExisteixException();
         beansManager.preguntaRepository.delete(pregunta);
     }
@@ -87,4 +92,5 @@ public class PreguntaCasosUs {
     public List<Pregunta> llistarPreguntes() {
         return beansManager.preguntaRepository.findAll();
     }
+
 }

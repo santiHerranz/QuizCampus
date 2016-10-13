@@ -1,7 +1,9 @@
 package com.tecnocampus;
 
 import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.UsuariDuplicatException;
 import com.tecnocampus.useCases.UsuariCasosUs;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -32,24 +33,23 @@ public class UsuariCasosUsTest {
 		//cerquem per email
 		Usuari usuari = usuariCasosUs.cercarUsuari(testAdmin.getEmail());
 		// els dos usuaris han de tenir el mateix id
-		Assert.isTrue(testAdmin.getId().equals(usuari.getId()));
+		Assert.assertTrue(testAdmin.getId().equals(usuari.getId()));
 	}
-
 	@Test
-	public void NoEsPotCrearUsuariEmailRepetitTest(){
-		expectedEx.expect(RuntimeException.class);
-		expectedEx.expectMessage("No es pot guardar l'usuari, l'email ja existeix!");
+	public void crearUsuariRepetitTest(){
+		expectedEx.expect(UsuariDuplicatException.class);
 
-		Usuari testUser1 = usuariCasosUs.crearUsuari("user@domain.com","12345");
-		Usuari testUser2 = usuariCasosUs.crearUsuari("user@domain.com","12345");
+		Usuari usuari1 = usuariCasosUs.crearUsuari("usuari@domini.com","12345");
+		Usuari usuari2 = usuariCasosUs.crearUsuari("usuari@domini.com","12345");
 	}
+
 
 	@Test
 	public void eliminarUsuariTest(){
 		Usuari usuari = usuariCasosUs.cercarUsuari(2L);
 		usuariCasosUs.eliminarUsuari(usuari);
 		usuari = usuariCasosUs.cercarUsuari(2L);
-		Assert.isNull(usuari);
+		Assert.assertNull(usuari);
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class UsuariCasosUsTest {
 		String email = usuari.getEmail();
 		String password = usuari.getContrasenya();
 		Boolean result = usuariCasosUs.comprobarContrasenya(email, password);
-		Assert.isTrue(result);
+		Assert.assertTrue(result);
 	}
 
 	@Test
@@ -87,14 +87,31 @@ public class UsuariCasosUsTest {
 
 	@Test
 	public void NoEsPotDegradarUltimAdminTest(){
-		Usuari usuari = usuariCasosUs.cercarUsuari(1L);
-		usuariCasosUs.promocionarAdmin(usuari);
-
 		expectedEx.expect(RuntimeException.class);
 		expectedEx.expectMessage("L'usuari és l'ultim administrador, no es pot degradar!!!");
 
+		Usuari usuari = usuariCasosUs.cercarUsuari(1L);
+		usuariCasosUs.promocionarAdmin(usuari);
 		usuariCasosUs.degradarAdmin(usuari);
 	}
+
+	@Test
+	public void canviarEmailTest(){
+		Usuari usuari = usuariCasosUs.cercarUsuari(2L);
+		usuari.setEmail("sherranzm");
+		usuariCasosUs.save(usuari);
+	}
+
+	@Test
+	public void canviarEmailDuplicatTest(){
+		expectedEx.expect(UsuariDuplicatException.class);
+
+		Usuari usuari1 = usuariCasosUs.cercarUsuari(1L);
+		Usuari usuari2 = usuariCasosUs.cercarUsuari(2L);
+		usuari1.setEmail(usuari2.getEmail());
+		usuariCasosUs.save(usuari1);
+	}
+
 
 	@Test
 	public void degradarAdminTest(){
@@ -120,7 +137,7 @@ public class UsuariCasosUsTest {
 	@Test
 	public void llistarUsuarisTest(){
 		List<Usuari> usuaris = usuariCasosUs.llistarUsuaris();
-		Assert.isTrue(usuaris.size() > 0);
+		Assert.assertTrue(usuaris.size() > 0);
 	}
 
 }
