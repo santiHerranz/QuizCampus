@@ -38,22 +38,34 @@ public class UsuariRepository {
         this.jdbcOperations = jdbcOperations;
     }
 
-    /***
-     * Obtenir llistat d'usuaris
-     * @return
-     */
-    public List findAll() {
-        return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
+    public int save(Usuari usuari) {
+        int result;
+        if(usuari.getId() == null) {
+            result = insert(usuari);
+        } else {
+            result = update(usuari);
+        }
+        return result;
     }
 
 
+    private int update(Usuari usuari) {
+        int updateResult = this.jdbcOperations.update(
+                SQL_UPDATE_STATEMENT
+                , usuari.getEmail()
+                , usuari.getContrasenya()
+                , usuari.isAdmin()
+                , usuari.getId()
+        );
+        return updateResult;
+    }
 
     /***
      * guarda l'usuari a bbdd i assigna el nou identificador autonuméric que obté
      * @param usuari
      * @return 0 o 1 segons el numero de files insertades
      */
-    public int save(Usuari usuari) {
+    public int insert(Usuari usuari) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -73,6 +85,15 @@ public class UsuariRepository {
 
         return userUpdate;
     }
+
+    /***
+     * Obtenir llistat d'usuaris
+     * @return
+     */
+    public List findAll() {
+        return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
+    }
+
 
 
 
@@ -134,19 +155,6 @@ public class UsuariRepository {
                 );
     }
 
-    /***
-     * Actualitza els atributs guardats a la bbdd
-     * @param usuari
-     */
-    public void update(Usuari usuari) {
-        jdbcOperations.update(
-                 SQL_UPDATE_STATEMENT
-                , usuari.getEmail()
-                , usuari.getContrasenya()
-                , usuari.isAdmin()
-                , usuari.getId()
-        );
-    }
 
 
 
