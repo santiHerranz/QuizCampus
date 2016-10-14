@@ -3,6 +3,10 @@
 
 INSERT INTO usuari (email,contrasenya, admin) VALUES ('sherranzm@edu.tecnocampus.cat', '12345', true);
 INSERT INTO usuari (email,contrasenya) VALUES ('iargemi@edu.tecnocampus.cat', '12345');
+INSERT INTO usuari (email,contrasenya) VALUES ('1111111@edu.tecnocampus.cat', '12345');
+INSERT INTO usuari (email,contrasenya) VALUES ('2222222@edu.tecnocampus.cat', '12345');
+INSERT INTO usuari (email,contrasenya) VALUES ('3333333@edu.tecnocampus.cat', '12345');
+INSERT INTO usuari (email,contrasenya) VALUES ('4444444@edu.tecnocampus.cat', '12345');
 
 --TRUNCATE TABLE enquesta;
 --TRUNCATE TABLE pregunta;

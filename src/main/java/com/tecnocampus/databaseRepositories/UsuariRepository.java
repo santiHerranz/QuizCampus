@@ -94,7 +94,9 @@ public class UsuariRepository {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
     }
 
-
+    public List<Usuari> findAllLazy() {
+        return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapperLazy());
+    }
 
 
     /***

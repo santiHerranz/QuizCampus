@@ -5,10 +5,8 @@ import com.tecnocampus.useCases.PreguntaCasosUs;
 import com.tecnocampus.useCases.RespostaCasosUs;
 import com.tecnocampus.useCases.UsuariCasosUs;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class QuizCampusApplication {
@@ -33,7 +31,7 @@ public class QuizCampusApplication {
 	// http://localhost:8080/h2-console
 	// h2:mem:testdb
 
-	@Bean
+/*	@Bean
 	CommandLineRunner runner() {
 		return new CommandLineRunner() {
 			@Override
@@ -41,6 +39,6 @@ public class QuizCampusApplication {
 
 			}
 		};
-	}
+	}*/
 
 }
