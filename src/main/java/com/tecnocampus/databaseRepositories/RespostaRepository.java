@@ -6,6 +6,7 @@ import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.RespostaNumerica;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -80,7 +81,7 @@ public class RespostaRepository {
                 , new RespostaMapper());
     }
 
-    public Iterable<Resposta> llistarRespostesNumeriques() {
+    public List<Resposta> llistarRespostesNumeriques() {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new RespostaMapper());
     }
 
@@ -90,15 +91,18 @@ public class RespostaRepository {
                 , resposta.getId()
         );
         return resultDelete;
-
     }
 
-    public Resposta findOne(int respostaId) {
-        return jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + " where respostaId = ?"
-                , new Object[]{respostaId}
-                , new RespostaMapper()
-        );
+    public Resposta findOne(long respostaId) {
+        try {
+            return jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + " where respostaId = ?"
+                    , new Object[]{respostaId}
+                    , new RespostaMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
 
     }
 
@@ -137,7 +141,7 @@ public class RespostaRepository {
             resposta.setUsuari(usuari);
             usuari.afegirResposta(resposta);
 
-            Pregunta p = beansManager.preguntaRepository.findOneLazy(resultSet.getLong("usuariid"));
+            Pregunta p = beansManager.preguntaRepository.findOneLazy(resultSet.getLong("preguntaid"));
             resposta.setPregunta(p);
             p.afegirResposta(resposta);
 

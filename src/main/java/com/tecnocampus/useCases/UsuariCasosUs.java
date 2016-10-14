@@ -1,9 +1,11 @@
 package com.tecnocampus.useCases;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import com.tecnocampus.BeansManager;
+import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.UsuariDuplicatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,19 +27,15 @@ public final class UsuariCasosUs {
         return crearUsuari(email, contrasenya, contrasenya);
     }
 
-    public Usuari crearUsuari(String email, String contrasenya, String contrasenyaRepetida) {
+    public Usuari crearUsuari(String email, String contrasenya, String confirmaContrasenya) {
         if(email == null ) throw new IllegalArgumentException();
         if(contrasenya == null ) throw new IllegalArgumentException();
 
-        if(!contrasenyaRepetida.equals(contrasenya))
+        if(!confirmaContrasenya.equals(contrasenya))
             throw  new RuntimeException("La contrasenya no coincideix");
 
-        Usuari existeix = beansManager.usuariRepository.findOne(email);
-        if(existeix != null)
-            throw  new RuntimeException("No es pot guardar l'usuari, l'email ja existeix!");
-
         Usuari usuari = new Usuari(email, contrasenya);
-        beansManager.usuariRepository.save(usuari);
+        save(usuari);
 
         // Establir admin al primer usuari
         if( llistarUsuaris().size()==1)
@@ -46,6 +44,14 @@ public final class UsuariCasosUs {
         System.out.println(usuari);
 
         return usuari;
+    }
+
+    public void save(Usuari usuari) {
+        try {
+            beansManager.usuariRepository.save(usuari);
+        } catch (DuplicateKeyException e) {
+            throw new UsuariDuplicatException();
+        }
     }
 
     public boolean comprobarContrasenya(String email, String contrasenya) {
@@ -61,7 +67,7 @@ public final class UsuariCasosUs {
 
     public void promocionarAdmin(Usuari usuari) {
         usuari.setAdmin(true);
-        beansManager.usuariRepository.update(usuari);
+        beansManager.usuariRepository.save(usuari);
     }
 
     public void degradarAdmin(Usuari usuari){
@@ -70,7 +76,7 @@ public final class UsuariCasosUs {
         if(esUltimAdmin(usuari))
             throw new RuntimeException("L'usuari és l'ultim administrador, no es pot degradar!!!");
         usuari.setAdmin(false);
-        beansManager.usuariRepository.update(usuari);
+        beansManager.usuariRepository.save(usuari);
     }
 
     private boolean esUltimAdmin(Usuari usuari){
@@ -104,5 +110,9 @@ public final class UsuariCasosUs {
 
     public Usuari cercarUsuari(long usuariId) {
         return beansManager.usuariRepository.findOne(usuariId);
+    }
+
+    public void esborraResposta(Resposta resposta) {
+        beansManager.respostaRepository.delete(resposta);
     }
 }

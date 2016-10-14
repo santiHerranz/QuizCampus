@@ -5,7 +5,9 @@ import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.EnquestaDuplicadaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,21 +33,22 @@ public class EnquestaCasosUs {
     @Transactional
     public Enquesta crearEnquesta(String titol) {
         Enquesta enquesta = new Enquesta(titol);
-        try {
-            beansManager.enquestaRepository.save(enquesta);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        save(enquesta);
         return enquesta;
     }
 
     @Transactional
     public void save(Enquesta enquesta) {
-        beansManager.enquestaRepository.save(enquesta);
+        try {
+            beansManager.enquestaRepository.save(enquesta);
+        } catch (DuplicateKeyException e) {
+            throw new EnquestaDuplicadaException();
+        }
     }
 
+
     @Transactional
-    public void eliminarEnquesta(Enquesta enquesta) throws Exception {
+    public void eliminarEnquesta(Enquesta enquesta) {
         beansManager.enquestaRepository.eliminarEnquesta(enquesta);
 
     }
@@ -56,6 +59,7 @@ public class EnquestaCasosUs {
         pregunta.setEnunciat(enunciat);
         pregunta.setMinim(minim);
         pregunta.setMaxim(maxim);
+
         enquesta.afegirPregunta(pregunta);
         beansManager.preguntaRepository.save(enquesta, pregunta);
         return pregunta;
@@ -80,4 +84,7 @@ public class EnquestaCasosUs {
     }
 
 
+    public Enquesta obetenirEnquesta(long enquestaId) {
+        return beansManager.enquestaRepository.findOne(enquestaId);
+    }
 }

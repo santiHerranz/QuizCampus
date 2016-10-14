@@ -23,4 +23,12 @@ public class RespostaCasosUs {
     public List<Resposta> llistarRespostes() {
         return beansManager.respostaRepository.findAll();
     }
+
+    public void esborraResposta(Resposta r) {
+        beansManager.respostaRepository.delete(r);
+    }
+
+    public Resposta obtenirResposta(Long respostaId) {
+        return beansManager.respostaRepository.findOne(respostaId);
+    }
 }

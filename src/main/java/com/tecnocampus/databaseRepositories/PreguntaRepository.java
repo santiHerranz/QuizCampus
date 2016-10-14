@@ -5,6 +5,7 @@ import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Resposta;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -39,7 +40,17 @@ public class PreguntaRepository {
         this.jdbcOperations = jdbcOperations;
     }
 
+
     public int save(Enquesta enquesta, Pregunta pregunta) {
+        int result;
+        if(pregunta.getId() == null) {
+            result = insert(enquesta, pregunta);
+        } else {
+            result = update(pregunta);
+        }
+        return result;
+    }
+    public int insert(Enquesta enquesta, Pregunta pregunta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int preguntaUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -64,6 +75,21 @@ public class PreguntaRepository {
         return preguntaUpdate;
     }
 
+    private int update(Pregunta pregunta) {
+        PreguntaNumerica preguntaNumerica = ((PreguntaNumerica)pregunta);
+
+        int updateResult = this.jdbcOperations.update(
+                SQL_UPDATE_STATEMENT,
+                new Object[] { pregunta.getEnunciat()
+                        , preguntaNumerica.getMaxim()
+                        , preguntaNumerica.getMinim()
+                        , pregunta.getId().toString()
+                }
+        );
+        return updateResult;
+    }
+
+
     public int delete(Pregunta pregunta) {
             int resultCount = jdbcOperations.update(
                     SQL_DELETE_STATEMENT
@@ -73,21 +99,29 @@ public class PreguntaRepository {
         }
 
     public Pregunta findOne(Long preguntaId) {
-        Pregunta pregunta = jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + "where preguntaId = ?"
-                , new Object[]{preguntaId}
-                , new PreguntaMapper()
-        );
-        return pregunta;
+        try {
+            Pregunta pregunta = jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + "where preguntaId = ?"
+                    , new Object[]{preguntaId}
+                    , new PreguntaMapper()
+            );
+            return pregunta;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public Pregunta findOneLazy(Long preguntaId) {
-        Pregunta pregunta = jdbcOperations.queryForObject(
-                SQL_SELECT_STATEMENT + "where preguntaId = ?"
-                , new Object[]{preguntaId}
-                , new PreguntaMapperLazy()
-        );
-        return pregunta;
+        try {
+            Pregunta pregunta = jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + "where preguntaId = ?"
+                    , new Object[]{preguntaId}
+                    , new PreguntaMapperLazy()
+            );
+            return pregunta;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public List<Pregunta> findAll() {
