@@ -47,6 +47,7 @@ public class EnquestaCasosUs {
     @Transactional
     public void eliminarEnquesta(Enquesta enquesta) throws Exception {
         beansManager.enquestaRepository.eliminarEnquesta(enquesta);
+
     }
 
     @Transactional
