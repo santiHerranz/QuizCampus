@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css"
+          th:href="@{style.css}"/>
+    <title>Create User</title>
+</head>
+<body>
+
+
+<h1>Register</h1>
+
+<form method="POST" th:object="${usuari}">
+    <div class="errors" th:if="${#fields.hasErrors('*')}">
+        <ul>
+            <li th:each="err : ${#fields.errors('*')}"
+                th:text="${err}">Input is incorrect</li>
+        </ul>
+    </div>
+
+    <label th:class="${#fields.hasErrors('email')}? 'error'">Email</label>:
+    <input type="text" th:field="*{email}"
+           th:class="${#fields.hasErrors('email')}? 'error'" /><br/>
+
+
+    <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">contrasenya</label>:
+    <input type="text" th:field="*{contrasenya}"
+           th:class="${#fields.hasErrors('contrasenya')}? 'error'" /><br/>
+
+
+    <input type="submit" value="Create User" />
+
+
+</form>
+
+</body>
+</html>

@@ -6,10 +6,11 @@
 </head>
 <body>
 <h1>List of all Users</h1>
+
+<a th:href="@{'/registre'}" >nou usuari</a>
 <ul>
     <li th:each="usuari : ${usuariList}"
         th:id="'user_' + ${usuari.id}">
-
 
         <a th:href="@{'/usuaris/' + ${usuari.id}}" th:text="${usuari.email}" >email</a>
     </li>
