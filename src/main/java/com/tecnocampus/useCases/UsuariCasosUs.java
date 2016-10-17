@@ -3,6 +3,7 @@ package com.tecnocampus.useCases;
 import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.ContrasenyaNoValidaException;
 import com.tecnocampus.exceptions.UsuariDuplicatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -33,6 +34,9 @@ public final class UsuariCasosUs {
 
         if(!confirmaContrasenya.equals(contrasenya))
             throw  new RuntimeException("La contrasenya no coincideix");
+
+        if (contrasenya.length() < 3)
+            throw new ContrasenyaNoValidaException();
 
         Usuari usuari = new Usuari(email, contrasenya);
         save(usuari);
