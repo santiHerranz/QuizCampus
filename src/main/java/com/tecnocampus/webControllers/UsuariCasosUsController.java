@@ -27,6 +27,8 @@ public class UsuariCasosUsController {
     @Autowired
     UsuariCasosUs usuariCasosUs;
 
+
+
     @GetMapping("usuaris")
     public List<Usuari> listNotes() {
         return usuariCasosUs.llistarUsuaris();
