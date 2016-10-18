@@ -28,6 +28,10 @@ public class UsuariCasosUsController {
     UsuariCasosUs usuariCasosUs;
 
 
+    @GetMapping("/")
+    public String homePage() {
+        return "home";
+    }
 
     @GetMapping("usuaris")
     public List<Usuari> listNotes() {

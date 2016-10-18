@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../static/css/bootstrap-theme.min.css"  th:href="@{/css/bootstrap-theme.min.css}" />
-    <title>Registrat a QuizCampus</title>
+    <title>Enquesta</title>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <div class="col-md-4">
 
 
-    <form method="POST" th:object="${usuari}">
+    <form method="POST" th:object="${enquesta}">
         <div class="errors" th:if="${#fields.hasErrors('*')}">
             <ul>
                 <li th:each="err : ${#fields.errors('*')}"
@@ -31,17 +31,12 @@
             </ul>
         </div>
 
-        <label th:class="${#fields.hasErrors('email')}? 'error'">Email</label>:
-        <input type="text" th:field="*{email}"
-               th:class="${#fields.hasErrors('email')}? 'error'" /><br/>
+        <label th:class="${#fields.hasErrors('titol')}? 'titol'">Titol</label>:
+        <input type="text" th:field="*{titol}"
+               th:class="${#fields.hasErrors('titol')}? 'titol'" /><br/>
 
 
-        <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">contrasenya</label>:
-        <input type="text" th:field="*{contrasenya}"
-               th:class="${#fields.hasErrors('contrasenya')}? 'error'" /><br/>
-
-
-        <input type="submit" value="Registre" />
+        <input type="submit" value="Guardar" />
 
 
     </form>

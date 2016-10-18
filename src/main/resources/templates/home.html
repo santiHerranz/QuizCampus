@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Detall</title>
+
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    </head>
+
+<body>
+
+<div th:replace="header :: header">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">QUIZCAMPUS</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Inici</a></li>
+                <li><a href="/usuaris">Usuaris</a></li>
+                <li><a href="#">Enquestes</a></li>
+                <li><a href="#">Preguntes</a></li>
+                <li><a href="#">Estadístiques</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+                <form class="navbar-form navbar-right" role="form">
+                    <!--
+                    <div class="form-group">
+                        <input type="text" placeholder="Email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-success glyphicon glyphicon-log-in">Entrar</button>
+    -->
+                    <a  class="btn btn-success glyphicon glyphicon-user" href="/registre" > Registre</a>
+                </form>
+
+            </ul>
+        </div>
+    </nav>
+
+</div>
+
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h1>La teva valoració és important!</h1>
+        <p>Què en penses de tot plegat?</p>
+        <p><a class="btn btn-primary btn-lg" href="/enquestes" role="button">Ajudans a millorar &raquo;</a></p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Example row of columns -->
+  <div class="row">
+
+    <div class="col-md-4">
+      <h2>Laboratoris</h2>
+      <p>Tenim 8 laboratoris equipats amb les eines necesàries per fer les pràctiques. </p>
+      <p><a class="btn btn-default" href="/enquestes" role="button">Valorar els laboratoris &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+      <h2>Professors</h2>
+      <p>Avalua la tasca dels professor. </p>
+      <p><a class="btn btn-default" href="/enquestes" role="button">Valorar els professors &raquo;</a></p>
+   </div>
+    <div class="col-md-4">
+      <h2>Estadístiques</h2>
+      <p>Analitza les respostes.</p>
+      <p><a class="btn btn-default" href="#" role="button">Veure les estadístiques &raquo;</a></p>
+    </div>
+
+  </div>
+</div>
+
+
+
+<div th:replace="footer :: footer" th:align="center">
+    <footer>
+        <p>&copy; Argemi &amp; Herranz 2016</p>
+    </footer>
+</div>
+
+<!-- /container -->
+<script src="../static/js/vendor/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script src="../static/js/vendor/jquery-1.11.2.min.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+<script src="../static/js/main.js" th:src="@{/js/main.js}"></script>
+
+
+</body>
+</html>

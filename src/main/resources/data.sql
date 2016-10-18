@@ -26,7 +26,13 @@ INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,3,7.0);
 INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,4,6.0);
 
 
-INSERT INTO enquesta (titol) VALUES ('Especifica');
+INSERT INTO enquesta (titol) VALUES ('Professors en general');
+
+INSERT INTO enquesta (titol) VALUES ('Laboratoris Informàtica');
+
+INSERT INTO enquesta (titol) VALUES ('Aules');
+
+INSERT INTO enquesta (titol) VALUES ('Serveis');
 
 /*
 

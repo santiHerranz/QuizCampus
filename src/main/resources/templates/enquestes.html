@@ -17,12 +17,12 @@
 <br/>
 <br/>
 
-<a th:href="@{'/registre'}" >nou usuari</a>
+<a th:href="@{'/enquestes/nova'}" >nova enquesta</a>
 <ul>
-    <li th:each="usuari : ${usuariList}"
-        th:id="'user_' + ${usuari.id}">
+    <li th:each="enquesta : ${enquestaList}"
+        th:id="'enquesta_' + ${enquesta.id}">
 
-        <a th:href="@{'/usuaris/' + ${usuari.id}}" th:text="${usuari.email}" >email</a>
+        <a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${enquesta.titol}" >titol</a>
     </li>
 </ul>
 </body>

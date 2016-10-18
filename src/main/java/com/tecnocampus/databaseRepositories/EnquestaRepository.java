@@ -59,7 +59,9 @@ public class EnquestaRepository {
     private int update(Enquesta enquesta) {
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT,
-                new String[] { enquesta.getTitol(), enquesta.getId().toString() }
+                enquesta.getTitol(),
+                enquesta.getId().toString()
+                //new String[] { enquesta.getTitol(), enquesta.getId().toString() }
         );
         return updateResult;
     }

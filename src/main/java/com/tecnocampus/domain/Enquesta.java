@@ -12,10 +12,14 @@ public class Enquesta extends Clau {
     private List<Pregunta> preguntes;
 
     // Constructor
+    public Enquesta() {
+    }
+
     public Enquesta(String titol) {
         this.titol = titol;
         this.preguntes = new ArrayList<>();
     }
+
 
     public String getTitol() {
         return this.titol;
