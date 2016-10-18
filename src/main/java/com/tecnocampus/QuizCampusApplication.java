@@ -1,5 +1,6 @@
 package com.tecnocampus;
 
+
 import com.tecnocampus.useCases.EnquestaCasosUs;
 import com.tecnocampus.useCases.PreguntaCasosUs;
 import com.tecnocampus.useCases.RespostaCasosUs;
@@ -7,6 +8,9 @@ import com.tecnocampus.useCases.UsuariCasosUs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.devtools.autoconfigure.RemoteDevToolsProperties;
+
+
 
 @SpringBootApplication
 public class QuizCampusApplication {
