@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css"  th:href="@{/css/bootstrap-theme.min.css}" />
+    <link rel="stylesheet" href="css/main.css"  th:href="@{/css/main.css}" />
+
+    <title>Create User</title>
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">QUIZCAMPUS</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+
+
+        </div><!--/.navbar-collapse -->
+    </div>
+</nav>
+
+
+<br/>
+<br/>
+<br/>
+
+<form method="POST" th:object="${usuari}">
+    <div class="errors" th:if="${#fields.hasErrors('*')}">
+        <ul>
+            <li th:each="err : ${#fields.errors('*')}"
+                th:text="${err}">Input is incorrect</li>
+        </ul>
+    </div>
+
+    <label th:class="${#fields.hasErrors('email')}? 'error'">Email</label>:
+    <input type="text" th:field="*{email}"
+           th:class="${#fields.hasErrors('email')}? 'error'" /><br/>
+
+
+    <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">contrasenya</label>:
+    <input type="text" th:field="*{contrasenya}"
+           th:class="${#fields.hasErrors('contrasenya')}? 'error'" /><br/>
+
+
+    <input type="submit" value="Create User" />
+
+
+</form>
+
+</body>
+</html>

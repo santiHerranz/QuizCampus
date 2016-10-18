@@ -2,9 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Notes</title>
+    <title>Detall</title>
+
+    <head>
+        <title>Welcome to the Spring MVC Quickstart application! Get started quickly by signing up!</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+        <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+        <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+    </head>
+
 </head>
 <body>
+
+<div th:replace="header :: header">Header</div>
+
 <h1><span th:text="${usuari.id}"/></h1>
 Email: <span th:text="${usuari.email}" />
 
@@ -17,5 +29,8 @@ Email: <span th:text="${usuari.email}" />
         <div th:text="${noteLab.content}">Content</div>
     </li>
 </ul>-->
+
+<div th:replace="footer :: footer">&copy; 2013 The Static Templates</div>
+
 </body>
 </html>

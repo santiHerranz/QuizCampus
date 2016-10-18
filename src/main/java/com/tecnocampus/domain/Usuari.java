@@ -16,6 +16,9 @@ public class Usuari extends Clau {
 
     private List<Resposta> respostes;
 
+    public Usuari() {
+    }
+
     public Usuari(String email, String contrasenya) {
         if (email==null) throw new NullPointerException("email");
         if (contrasenya==null) throw new NullPointerException("contrasenya");
