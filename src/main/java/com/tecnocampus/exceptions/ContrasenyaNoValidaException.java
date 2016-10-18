@@ -5,4 +5,7 @@ package com.tecnocampus.exceptions;
  */
 public class ContrasenyaNoValidaException extends RuntimeException {
 
+    public ContrasenyaNoValidaException(String s) {
+        super(s);
+    }
 }

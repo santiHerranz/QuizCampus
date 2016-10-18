@@ -1,6 +1,7 @@
 package com.tecnocampus;
 
 import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.ContrasenyaNoValidaException;
 import com.tecnocampus.exceptions.UsuariDuplicatException;
 import com.tecnocampus.useCases.UsuariCasosUs;
 import org.junit.Assert;
@@ -29,20 +30,20 @@ public class UsuariCasosUsTest {
 	@Test
 	public void crearUsuariTest(){
 		//creem l'usuari
-		Usuari testAdmin = usuariCasosUs.crearUsuari("ADMIN","12345");
+		Usuari testAdmin = usuariCasosUs.crearUsuari("ADMIN","qwertyuioP53");
 		//cerquem per email
 		Usuari usuari = usuariCasosUs.cercarUsuari(testAdmin.getEmail());
 		// els dos usuaris han de tenir el mateix id
 		Assert.assertTrue(testAdmin.getId().equals(usuari.getId()));
 	}
+
 	@Test
 	public void crearUsuariRepetitTest(){
 		expectedEx.expect(UsuariDuplicatException.class);
 
-		Usuari usuari1 = usuariCasosUs.crearUsuari("usuari@domini.com","12345");
-		Usuari usuari2 = usuariCasosUs.crearUsuari("usuari@domini.com","12345");
+		Usuari usuari1 = usuariCasosUs.crearUsuari("usuari@domini.com","123Ig45aatt");
+		Usuari usuari2 = usuariCasosUs.crearUsuari("usuari@domini.com","123Ig45aatt");
 	}
-
 
 	@Test
 	public void eliminarUsuariTest(){
@@ -138,6 +139,36 @@ public class UsuariCasosUsTest {
 	public void llistarUsuarisTest(){
 		List<Usuari> usuaris = usuariCasosUs.llistarUsuaris();
 		Assert.assertTrue(usuaris.size() > 0);
+	}
+
+	@Test
+	public void ContrasenyaLongitud(){
+		expectedEx.expect(ContrasenyaNoValidaException.class);
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "gh12");
+	}
+
+	@Test
+	public void ContrasenyaNumeros(){
+		expectedEx.expect(ContrasenyaNoValidaException.class);
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "ghbansjfbdh");
+	}
+
+	@Test
+	public void ConstrasenyaMajuscules(){
+		expectedEx.expect(ContrasenyaNoValidaException.class);
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "gh12dfgfgffg");
+	}
+
+	@Test
+	public void ContrasenyaMinuscules(){
+		expectedEx.expect(ContrasenyaNoValidaException.class);
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "KLAGSFDJAHL12");
+	}
+
+	@Test
+	public void ContrasenyaNoEspaisBlancs(){
+		expectedEx.expect(ContrasenyaNoValidaException.class);
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "ghIG12 fsdyg");
 	}
 
 }
