@@ -12,18 +12,14 @@
 
 <div th:replace="header :: header">Header</div>
 
-<br/>
-<br/>
-<br/>
-<br/>
 
-<div class="row">
-    <div class="col-md-4">
-</div>
-    <div class="col-md-4">
+<div class="container">
 
+    <div class="block-title">
+        <h2><strong>Enquesta</strong></h2>
+    </div>
 
-    <form method="POST" th:object="${enquesta}">
+    <form method="POST" th:object="${enquesta}" class="form-horizontal form-bordered">
         <div class="errors" th:if="${#fields.hasErrors('*')}">
             <ul>
                 <li th:each="err : ${#fields.errors('*')}"
@@ -31,17 +27,29 @@
             </ul>
         </div>
 
-        <label th:class="${#fields.hasErrors('titol')}? 'titol'">Titol</label>:
-        <input type="text" th:field="*{titol}"
-               th:class="${#fields.hasErrors('titol')}? 'titol'" /><br/>
+
+        <div class="form-group">
+            <label class="col-md-9 control-label" for="val_name"
+                   th:class="${#fields.hasErrors('titol')}? 'col-md-3 control-label titol': 'col-md-3 control-label'"
+            >Titol<span class="text-danger">*</span></label>
+            <div class="col-md-9">
+                <input id="val_name" name="val_name" class="form-control" type="text"
+                       th:field="*{titol}"
+                       th:class="${#fields.hasErrors('titol')}? 'form-control titol' : 'form-control'" />
+            </div>
+        </div>
 
 
-        <input type="submit" value="Guardar" />
+        <div class="form-group form-actions">
+            <div class="col-md-9 col-md-offset-3">
+                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
+                <a type="submit" class="btn btn-sm btn-default" href="/enquestes"><i class="fa fa-reply"></i> Tornar</a>
+            </div>
+        </div>
 
 
     </form>
 
-    </div>
 </div>
 
 </body>

@@ -12,15 +12,12 @@
 
 <div th:replace="header :: header">Header</div>
 
-<br/>
-<br/>
-<br/>
-<br/>
 
-<div class="row">
-    <div class="col-md-4">
-</div>
-    <div class="col-md-4">
+<div class="container">
+
+    <div class="block-title">
+        <h2><strong>Nou usuari</strong></h2>
+    </div>
 
 
     <form method="POST" th:object="${usuari}">
@@ -31,22 +28,26 @@
             </ul>
         </div>
 
-        <label th:class="${#fields.hasErrors('email')}? 'error'">Email</label>:
-        <input type="text" th:field="*{email}"
-               th:class="${#fields.hasErrors('email')}? 'error'" /><br/>
+        <label th:class="${#fields.hasErrors('email')}? 'error'">correu electrònic</label>:<br/>
+        <input name="login" type="text" class="form-control" autofocus="autofocus" autocapitalize="off"
+               th:field="*{email}"
+               th:class="${#fields.hasErrors('email')}? 'form-control error': 'form-control'" /><br/>
 
 
-        <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">contrasenya</label>:
-        <input type="text" th:field="*{contrasenya}"
-               th:class="${#fields.hasErrors('contrasenya')}? 'error'" /><br/>
+        <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">contrasenya</label>:<br/>
+        <input name="contrasenya"  type="password" class="form-control"
+                th:field="*{contrasenya}"
+               th:class="${#fields.hasErrors('contrasenya')}? 'form-control error': 'form-control'" /><br/>
+        <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">confirmar contrasenya</label>:
+        <input name="contrasenya"  type="password" class="form-control"
+         /><br/>
 
 
-        <input type="submit" value="Registre" />
+        <button type="submit" class="btn btn-primary pull-left" >Registre</button>
 
 
     </form>
 
-    </div>
 </div>
 
 </body>
