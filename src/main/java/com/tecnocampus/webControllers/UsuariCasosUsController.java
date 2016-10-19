@@ -48,6 +48,8 @@ public class UsuariCasosUsController {
         return "usuari";
     }
 
+
+
     @GetMapping("registre")
     public String createUser(Model model) {
         model.addAttribute(new Usuari());
@@ -56,26 +58,33 @@ public class UsuariCasosUsController {
 
     @PostMapping("registre")
     public String processCreateUser(@Valid Usuari user, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
+
         if (errors.hasErrors())
             return "usuariForm";
 
         try {
-            usuariCasosUs.crearUsuari(user.getEmail(), user.getContrasenya());
+            user = usuariCasosUs.crearUsuari(user.getEmail(), user.getContrasenya());
 
         } catch (ContrasenyaNoValidaException e) {
-            ObjectError error = new ObjectError("contrasenya","Error contrasenya no es vàlida");
-            result.addError(error);
+
+            for (String missatgeError : e.getMessage().split("&&")) {
+                ObjectError error = new ObjectError("contrasenya", missatgeError);
+                result.addError(error);
+            }
+
             return "usuariForm";
 
-        } catch (UsuariDuplicatException e) {
+        }
+        catch (UsuariDuplicatException e) {
             ObjectError error = new ObjectError("email","Error email ja existeix");
             result.addError(error);
             return "usuariForm";
         }
 
         redirectAttributes.addAttribute("id", user.getId());
-        //return "redirect:usuaris/{id}"; //in this way username is scaped and dangerous chars changed
-        return "redirect:usuaris"; //in this way username is scaped and dangerous chars changed
+        redirectAttributes.addFlashAttribute("usuari", user);
+        return "redirect:usuaris/{id}";
+
     }
 
 }
