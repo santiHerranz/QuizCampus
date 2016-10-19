@@ -43,7 +43,13 @@ public class UsuariCasosUsController {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
         if (!model.containsAttribute("usuari")) {
-            model.addAttribute("usuari",usuariCasosUs.cercarUsuari(usuariId));
+
+            // comprobem que l'usuari existeix, en cas contrari mostrem llistat
+            Usuari usuari = usuariCasosUs.cercarUsuari(usuariId);
+            if (usuari == null)
+                return "redirect:/enquestes";
+
+            model.addAttribute("usuari",usuari);
         }
         return "usuari";
     }
@@ -83,7 +89,7 @@ public class UsuariCasosUsController {
 
         redirectAttributes.addAttribute("id", user.getId());
         redirectAttributes.addFlashAttribute("usuari", user);
-        return "redirect:usuaris/{id}";
+        return "redirect:/usuaris/{id}";
 
     }
 

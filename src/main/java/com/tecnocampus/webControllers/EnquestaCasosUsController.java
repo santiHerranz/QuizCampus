@@ -38,7 +38,12 @@ public class EnquestaCasosUsController {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
         if (!model.containsAttribute("enquesta")) {
-            model.addAttribute("enquesta",enquestaCasosUs.obetenirEnquesta(enquestaId));
+
+            // comprobem que l'enquesta existeix, en cas contrari mostrem llistat
+            Enquesta enquesta = enquestaCasosUs.obetenirEnquesta(enquestaId);
+            if (enquesta == null)
+                return "redirect:/enquestes";
+            model.addAttribute("enquesta",enquesta);
         }
         return "enquesta";
     }
@@ -51,11 +56,13 @@ public class EnquestaCasosUsController {
 
     @PostMapping("enquestes/nova")
     public String processCreateUser(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
+
+
         if (errors.hasErrors())
             return "enquestaForm";
 
         try {
-            enquestaCasosUs.crearEnquesta(enquesta.getTitol());
+            enquesta = enquestaCasosUs.crearEnquesta(enquesta.getTitol());
 
         } catch (EnquestaDuplicadaException e) {
             ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
@@ -65,8 +72,9 @@ public class EnquestaCasosUsController {
         }
 
         redirectAttributes.addAttribute("id", enquesta.getId());
-        //return "redirect:enquestes/{id}"; //in this way username is scaped and dangerous chars changed
-        return "redirect:/enquestes"; //in this way username is scaped and dangerous chars changed
+        redirectAttributes.addFlashAttribute("enquesta", enquesta);
+        return "redirect:/enquestes/{id}";
+
     }
 
 }
