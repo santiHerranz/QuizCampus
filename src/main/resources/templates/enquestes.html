@@ -5,7 +5,18 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" href="../static/css/bootstrap-theme.min.css"  th:href="@{/css/bootstrap-theme.min.css}" />
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-theme.min.css"  th:href="@{/css/bootstrap-theme.min.css}" />
+
+    <script src="../static/js/vendor/jquery-1.11.2.min.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+    <script src="../static/js/vendor/bootstrap.min.js"  th:src="@{/js/vendor/bootstrap.min.js}"></script>
+
+    <script>
+         function confirmDelete (id, name) {
+            $('#deleteModal').modal();
+        };
+
+    </script>
+
     <title>Llistat d'usuaris</title>
 </head>
 <body>
@@ -17,7 +28,7 @@
 <div class="block-title">
     <h2><strong>Llistat d'enquestes</strong></h2>
     <div class="block-options pull-right">
-        <a class="btn btn-primary"  th:href="@{'/enquestes/nova'}" >Nova enquesta</a>
+        <a class="btn btn-success"  th:href="@{'/enquestes/nova'}" >Nova enquesta</a>
     </div>
 </div>
 
@@ -35,12 +46,12 @@
                 th:id="'enquesta_' + ${enquesta.id}">
                 <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${enquesta.titol}" >titol</a></td>
                 <td class="text-center">
-                    <!--
-                    <div class="btn-group btn-group-xs">
-                        <a href="#/foods/{{food.id}}" data-toggle="tooltip" title="Modificar" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-                        <a ng-click="confirmDelete(food.id, food.name)" title="Eliminar" class="btn btn-danger"><i class="fa fa-times"></i></a>
-                    </div>
-                    -->
+
+                <div class="btn-group btn-group-xs">
+                    <a th:href="@{'/enquestes/edita/' + ${enquesta.id}}" data-toggle="tooltip" title="Modificar" class="btn btn-default">editar</a>
+                    <!--<a onclick="BootstrapDialog.confirm('Hi Apple, are you sure?');" title="Eliminar" class="btn btn-danger">esborrar</a>-->
+                </div>
+
                 </td>
             </tr>
             </tbody>
@@ -49,6 +60,28 @@
 </div>
 
 </div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Confirmació</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <form method="POST" class="form-horizontal form-bordered">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger" >Eliminar</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Delete Modal -->
 
 
 </body>
