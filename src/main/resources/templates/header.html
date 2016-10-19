@@ -8,8 +8,14 @@
 <nav class="navbar navbar-inverse" role="navigation" th:fragment="header">
     <div class="container-fluid">
         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand" href="/">QUIZCAMPUS</a>
         </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
             <li class="active"><a href="/">Inici</a></li>
             <li><a href="/usuaris">Usuaris</a></li>
@@ -28,10 +34,12 @@
 
                 <button type="submit" class="btn btn-success glyphicon glyphicon-log-in">Entrar</button>
 -->
-                <a  class="btn btn-success glyphicon glyphicon-user" href="/registre" > Registre</a>
+                <a  class="btn btn-success" href="/registre" > Registre</a>
             </form>
 
         </ul>
+            </div>
+
     </div>
 </nav>
 

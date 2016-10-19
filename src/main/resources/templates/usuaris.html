@@ -12,18 +12,35 @@
 
 <div th:replace="header :: header">Header</div>
 
+<div class="container">
 
-<br/>
-<br/>
-<br/>
+    <div class="block-title">
+        <h2><strong>Llistat d'usuaris</strong></h2>
+        <div class="block-options pull-right">
+            <a class="btn btn-primary"  th:href="@{'/registre'}" >Nou usuari</a>
+        </div>
+    </div>
 
-<a th:href="@{'/registre'}" >nou usuari</a>
-<ul>
-    <li th:each="usuari : ${usuariList}"
-        th:id="'user_' + ${usuari.id}">
+    <div id="dataView" class="block">
+        <div class="table">
+            <table id="general-table" class="table table-striped table-vcenter">
+                <thead>
+                <tr>
+                    <th><a href="#">Nom</a></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="usuari : ${usuariList}"
+                    th:id="'usuari_' + ${usuari.id}">
+                    <td><a th:href="@{'/usuaris/' + ${usuari.id}}" th:text="${usuari.email}" >email</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        <a th:href="@{'/usuaris/' + ${usuari.id}}" th:text="${usuari.email}" >email</a>
-    </li>
-</ul>
+</div>
+
+
 </body>
 </html>
