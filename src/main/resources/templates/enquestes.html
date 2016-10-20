@@ -26,9 +26,9 @@
 <div class="container">
 
 <div class="block-title">
-    <h2><strong>Llistat d'enquestes</strong></h2>
-    <div class="block-options pull-right">
-        <a class="btn btn-success"  th:href="@{'/enquestes/nova'}" >Nova enquesta</a>
+    <h2><strong>Enquestes</strong></h2>
+    <div class="block-options pull-left">
+        <a class="btn btn-success"  th:href="@{'/enquestes/nova'}" >Crear</a>
     </div>
 </div>
 
@@ -48,8 +48,9 @@
                 <td class="text-center">
 
                 <div class="btn-group btn-group-xs">
+                    <!--
                     <a th:href="@{'/enquestes/edita/' + ${enquesta.id}}" data-toggle="tooltip" title="Modificar" class="btn btn-default">editar</a>
-                    <!--<a onclick="BootstrapDialog.confirm('Hi Apple, are you sure?');" title="Eliminar" class="btn btn-danger">esborrar</a>-->
+                    <a onclick="BootstrapDialog.confirm('Hi Apple, are you sure?');" title="Eliminar" class="btn btn-danger">esborrar</a>-->
                 </div>
 
                 </td>

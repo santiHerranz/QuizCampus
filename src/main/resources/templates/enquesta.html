@@ -15,14 +15,17 @@
 
 <div class="container">
 
-    <div class="block-options pull-right">
-        <a class="btn btn-primary"  th:href="@{'/enquestes'}" >Llistat</a>
+    <div class="block-title">
+        <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
+        <div class="form-group form-actions">
+            <a class="btn btn-primary btn-sm" th:href="${'/enquestes/edita/'+ enquesta.Id}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+            <a class="btn btn-success btn-sm"  th:href="@{'/enquestes/nova'}" >Crear</a>
+        </div>
+
     </div>
 
+
 <div id="dataView" class="block">
-    <div class="block-title">
-        <h2 th:text="${enquesta.titol}">enquesta</h2>
-    </div>
 
         <fieldset>
             <legend><i class="fa fa-angle-right"></i> Informació bàsica</legend>
@@ -32,12 +35,6 @@
 
             </div>
         </fieldset>
-        <div class="form-group form-actions">
-            <div class="col-md-9 col-md-offset-3">
-                <a th:href="${'/enquestes/edita/'+ enquesta.Id}" href="/enquestes/edita/" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Editar</a>
-                <a class="btn btn-success"  th:href="@{'/enquestes/nova'}" >Nova</a>
-            </div>
-        </div>
 </div>
 
 </div>
