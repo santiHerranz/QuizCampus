@@ -13,6 +13,7 @@ CREATE TABLE enquesta
 (
   enquestaId int auto_increment PRIMARY KEY, --
   titol VARCHAR (200) NOT NULL UNIQUE
+  , data_creacio DATE DEFAULT (sysdate)
 );
 
 DROP TABLE if EXISTS pregunta;

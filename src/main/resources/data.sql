@@ -26,13 +26,13 @@ INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,3,7.0);
 INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,4,6.0);
 
 
-INSERT INTO enquesta (titol) VALUES ('Professors en general');
+INSERT INTO enquesta (titol, data_creacio) VALUES ('Professors en general', {ts '2012-09-17 18:47:52.69'} );
 
-INSERT INTO enquesta (titol) VALUES ('Laboratoris Informàtica');
+INSERT INTO enquesta (titol, data_creacio) VALUES ('Laboratoris Informàtica', {ts '2012-09-17 18:47:52.69'});
 
-INSERT INTO enquesta (titol) VALUES ('Aules');
+INSERT INTO enquesta (titol, data_creacio) VALUES ('Aules', {ts '2012-09-17 18:47:52.69'});
 
-INSERT INTO enquesta (titol) VALUES ('Serveis');
+INSERT INTO enquesta (titol, data_creacio) VALUES ('Serveis', {ts '2012-09-17 18:47:52.69'});
 
 /*
 

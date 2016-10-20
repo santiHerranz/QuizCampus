@@ -61,7 +61,6 @@ public class EnquestaRepository {
                 SQL_UPDATE_STATEMENT,
                 enquesta.getTitol(),
                 enquesta.getId().toString()
-                //new String[] { enquesta.getTitol(), enquesta.getId().toString() }
         );
         return updateResult;
     }
@@ -171,6 +170,7 @@ public class EnquestaRepository {
         public Enquesta mapRow(ResultSet resultSet, int i) throws SQLException {
             Enquesta enquesta = new Enquesta(resultSet.getString("titol"));
             enquesta.setId(resultSet.getLong("enquestaId"));
+            enquesta.setDataCreacio(resultSet.getDate("data_creacio"));
 
             Iterable<Pregunta> list = beansManager.preguntaRepository.findAllFromQuiz(enquesta.getId());
             for (Pregunta p: list) {
@@ -187,6 +187,7 @@ public class EnquestaRepository {
         public Enquesta mapRow(ResultSet resultSet, int i) throws SQLException {
             Enquesta enquesta = new Enquesta(resultSet.getString("titol"));
             enquesta.setId(resultSet.getLong("enquestaId"));
+            enquesta.setDataCreacio(resultSet.getDate("data_creacio"));
 
             return enquesta;
         }

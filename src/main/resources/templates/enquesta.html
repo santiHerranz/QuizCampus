@@ -17,24 +17,23 @@
 
     <div class="block-title">
         <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
-        <div class="form-group form-actions">
-            <a class="btn btn-primary btn-sm" th:href="${'/enquestes/edita/'+ enquesta.Id}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
-            <a class="btn btn-success btn-sm"  th:href="@{'/enquestes/nova'}" >Crear</a>
-        </div>
-
+        <hr />
+    </div>
+    <div class="form-group form-actions">
+        <a class="btn btn-primary btn-sm" th:href="${'/enquestes/edita/'+ enquesta.Id}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+        <a class="btn btn-success btn-sm"  th:href="@{'/enquestes/nova'}" >Crear</a>
     </div>
 
 
 <div id="dataView" class="block">
 
-        <fieldset>
-            <legend><i class="fa fa-angle-right"></i> Informació bàsica</legend>
             <div class="form-group">
                 <label class="col-md-3 control-label" >Titol</label>
                 <label th:text="${enquesta.titol}" >titol</label>
-
             </div>
-        </fieldset>
+    <fieldset>
+        <legend></legend>
+    </fieldset>
 </div>
 
 </div>

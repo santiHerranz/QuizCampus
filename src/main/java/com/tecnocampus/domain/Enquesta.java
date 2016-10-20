@@ -1,6 +1,7 @@
 package com.tecnocampus.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,17 +10,24 @@ import java.util.List;
 public class Enquesta extends Clau {
 
     private String titol;
+    private Date dataCreacio;
     private List<Pregunta> preguntes;
 
     // Constructor
     public Enquesta() {
     }
-
     public Enquesta(String titol) {
         this.titol = titol;
         this.preguntes = new ArrayList<>();
     }
 
+
+    public Date getDataCreacio() {
+        return dataCreacio;
+    }
+    public void setDataCreacio(Date dataCreacio) {
+        this.dataCreacio = dataCreacio;
+    }
 
     public String getTitol() {
         return this.titol;
@@ -27,7 +35,6 @@ public class Enquesta extends Clau {
     public void setTitol(String titol) {
         this.titol = titol;
     }
-
 
     public List<Pregunta> getPreguntes() {
         return this.preguntes;
@@ -42,11 +49,8 @@ public class Enquesta extends Clau {
 
     @Override
     public java.lang.String toString() {
-        return "{"
-                + super.toString()
-                +" titol: \""+ this.getTitol() +"\""
-                //+", preguntes ("+ this.preguntes.size() +")"
-                +"}";
+        return String.format("Enquesta[%s,titol:%s,data:%s]",
+                super.toString(), titol, dataCreacio);
     }
 
 }

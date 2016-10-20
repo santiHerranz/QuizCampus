@@ -29,17 +29,17 @@
         </div>
 
         <label th:class="${#fields.hasErrors('email')}? 'error'">correu electrònic</label>:<br/>
-        <input name="login" type="text" class="form-control" autofocus="autofocus" autocapitalize="off"
+        <input name="login" type="text" class="form-control" autofocus="autofocus" autocapitalize="off" autocomplete="off"
                th:field="*{email}"
                th:class="${#fields.hasErrors('email')}? 'form-control error': 'form-control'" /><br/>
 
 
         <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">contrasenya</label>:<br/>
-        <input name="contrasenya"  type="password" class="form-control"
+        <input name="contrasenya"  type="password" class="form-control" autocomplete="off"
                 th:field="*{contrasenya}"
                th:class="${#fields.hasErrors('contrasenya')}? 'form-control error': 'form-control'" /><br/>
         <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">confirmar contrasenya</label>:
-        <input name="contrasenya"  type="password" class="form-control"
+        <input name="confirmaContrasenya"  type="password" class="form-control" autocomplete="off"
          /><br/>
 
 

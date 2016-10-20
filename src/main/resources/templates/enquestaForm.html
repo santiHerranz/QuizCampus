@@ -23,19 +23,20 @@
         -->
     </div>
 
+
     <form method="POST" th:object="${enquesta}" class="form-horizontal form-bordered">
 
     <div class="block-title">
         <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
+        <hr />
         <div class="form-group form-actions">
             <button type="submit" class="btn btn-sm btn-primary"> Guardar</button>
 
             <a type="submit" class="btn btn-sm btn-default" th:href="@{'/enquestes/' + ${enquesta.id}}" th:if="${enquesta.Id != null}"> Descartar</a>
             <a type="submit" class="btn btn-sm btn-default" href="/enquestes" th:if="${enquesta.Id == null}"> Descartar</a>
         </div>
-
-
     </div>
+
 
         <div class="errors" th:if="${#fields.hasErrors('*')}">
             <ul>
@@ -48,8 +49,9 @@
         <div class="form-group">
             <div class="col-md-9">
                 <input name="val_Id" th:field="*{Id}" class="hidden"  />
+                <br />
                 <label class="col-md-9 control-label" for="val_name" th:class="${#fields.hasErrors('titol')}? 'titol'">Titol<span class="text-danger">*</span></label>
-                <input id="val_name" name="val_name" class="form-control" type="text" th:required="true" autocomplete="false"
+                <input id="val_name" name="val_name" class="form-control" type="text" th:required="true" autocomplete="off"
                        th:field="*{titol}"
                        th:class="${#fields.hasErrors('titol')}? 'form-control titol' : 'form-control'" />
             </div>
