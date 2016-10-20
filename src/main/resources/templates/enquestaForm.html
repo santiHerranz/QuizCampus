@@ -29,11 +29,9 @@
 
 
         <div class="form-group">
-            <label class="col-md-9 control-label" for="val_name"
-                   th:class="${#fields.hasErrors('titol')}? 'col-md-3 control-label titol': 'col-md-3 control-label'"
-            >Titol<span class="text-danger">*</span></label>
             <div class="col-md-9">
-                <input id="val_name" name="val_name" class="form-control" type="text"
+                <label class="col-md-9 control-label" for="val_name" th:class="${#fields.hasErrors('titol')}? 'titol'">Titol<span class="text-danger">*</span></label>
+                <input id="val_name" name="val_name" class="form-control" type="text" th:required="true" autocomplete="false"
                        th:field="*{titol}"
                        th:class="${#fields.hasErrors('titol')}? 'form-control titol' : 'form-control'" />
             </div>
@@ -49,6 +47,15 @@
 
 
     </form>
+
+    <div class="form-group form-actions pull-right">
+        <div class="col-md-9 col-md-offset-3">
+            <form method="POST" th:action="${'/enquestes/esborra/'+ enquesta.Id}"  action="/enquestes/esborra" class="form-horizontal form-bordered">
+                <button type="submit" class="btn btn-sm btn-danger" th:disabled="${enquesta.Id == null}" >Esborra</button>
+            </form>
+        </div>
+    </div>
+
 
 </div>
 

@@ -15,11 +15,15 @@
 
 <div class="container">
 
+    <div class="block-options pull-right">
+        <a class="btn btn-primary"  th:href="@{'/enquestes'}" >Llistat</a>
+    </div>
 
 <div id="dataView" class="block">
     <div class="block-title">
         <h2 th:text="${enquesta.titol}">enquesta</h2>
     </div>
+
         <fieldset>
             <legend><i class="fa fa-angle-right"></i> Informació bàsica</legend>
             <div class="form-group">
@@ -30,9 +34,8 @@
         </fieldset>
         <div class="form-group form-actions">
             <div class="col-md-9 col-md-offset-3">
-                <!--
-                <a href="/enquestes/nova" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Editar</a>
-                -->
+                <a th:href="${'/enquestes/edita/'+ enquesta.Id}" href="/enquestes/edita/" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Editar</a>
+                <a class="btn btn-success"  th:href="@{'/enquestes/nova'}" >Nova</a>
             </div>
         </div>
 </div>

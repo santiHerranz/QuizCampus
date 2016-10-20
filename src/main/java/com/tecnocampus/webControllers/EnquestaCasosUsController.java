@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.List;
 
+
 /**
  * Created by santi on 14/10/2016.
  */
@@ -49,14 +50,42 @@ public class EnquestaCasosUsController {
     }
 
     @GetMapping("enquestes/nova")
-    public String createUser(Model model) {
+    public String createItem(Model model) {
         model.addAttribute(new Enquesta());
         return "enquestaForm";
     }
 
+    @GetMapping("enquestes/edita/{enquestaId}")
+    public String editItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
+
+        Enquesta enquesta = enquestaCasosUs.obetenirEnquesta(enquestaId);
+        model.addAttribute(enquesta);
+        return "enquestaForm";
+    }
+
+
+    @PostMapping("enquestes/edita/{enquestaId}")
+    public String processEditItem(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
+        if (errors.hasErrors())
+            return "enquestaForm";
+
+        try {
+            enquestaCasosUs.save(enquesta);
+
+        } catch (EnquestaDuplicadaException e) {
+            ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
+            result.addError(error);
+            return "enquestaForm";
+        }
+
+        redirectAttributes.addAttribute("id", enquesta.getId());
+        redirectAttributes.addFlashAttribute("enquesta", enquesta);
+        return "redirect:/enquestes/{id}";
+    }
+
+
     @PostMapping("enquestes/nova")
     public String processCreateUser(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
-
 
         if (errors.hasErrors())
             return "enquestaForm";
@@ -77,4 +106,13 @@ public class EnquestaCasosUsController {
 
     }
 
-}
+    @PostMapping("enquestes/esborra/{enquestaId}")
+    public String processDeleteItem(@PathVariable("enquestaId") Long enquestaId) {
+
+        Enquesta enquesta = enquestaCasosUs.obetenirEnquesta(enquestaId);
+        enquestaCasosUs.eliminarEnquesta(enquesta);
+
+        return "redirect:/enquestes";
+    }
+
+    }
