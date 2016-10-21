@@ -38,18 +38,17 @@ public class UsuariRepository {
         this.jdbcOperations = jdbcOperations;
     }
 
-    public int save(Usuari usuari) {
-        int result;
+    public Usuari save(Usuari usuari) {
         if(usuari.getId() == null) {
-            result = insert(usuari);
+            insert(usuari);
         } else {
-            result = update(usuari);
+            update(usuari);
         }
-        return result;
+        return findOne(usuari.getId());
     }
 
 
-    private int update(Usuari usuari) {
+    private void update(Usuari usuari) {
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT
                 , usuari.getEmail()
@@ -57,7 +56,6 @@ public class UsuariRepository {
                 , usuari.isAdmin()
                 , usuari.getId()
         );
-        return updateResult;
     }
 
     /***
@@ -65,7 +63,7 @@ public class UsuariRepository {
      * @param usuari
      * @return 0 o 1 segons el numero de files insertades
      */
-    public int insert(Usuari usuari) {
+    public void insert(Usuari usuari) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -82,8 +80,6 @@ public class UsuariRepository {
         }, keyHolder);
 
         usuari.setId(keyHolder.getKey().longValue());
-
-        return userUpdate;
     }
 
     /***
@@ -166,6 +162,7 @@ public class UsuariRepository {
             Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
             usuari.setId(resultSet.getLong("usuariid"));
             usuari.setAdmin(resultSet.getBoolean("admin"));
+            usuari.setDataCreacio(resultSet.getDate("data_creacio"));
 
             Iterable<Resposta> list = beansManager.respostaRepository.findAllFromUser(usuari.getId());
             for (Resposta r: list) {
@@ -183,6 +180,7 @@ public class UsuariRepository {
             Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
             usuari.setId(resultSet.getLong("usuariid"));
             usuari.setAdmin(resultSet.getBoolean("admin"));
+            usuari.setDataCreacio(resultSet.getDate("data_creacio"));
 
             return usuari;
         }

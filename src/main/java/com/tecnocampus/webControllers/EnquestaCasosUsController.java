@@ -71,7 +71,7 @@ public class EnquestaCasosUsController {
             return "enquestaForm";
 
         try {
-            enquestaCasosUs.save(enquesta);
+            enquesta = enquestaCasosUs.save(enquesta);
 
         } catch (EnquestaDuplicadaException e) {
             ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");

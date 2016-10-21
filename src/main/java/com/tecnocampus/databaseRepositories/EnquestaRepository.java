@@ -45,27 +45,25 @@ public class EnquestaRepository {
      * @param enquesta
      * @return
      */
-    public int save(Enquesta enquesta) {
-        int result;
+    public Enquesta save(Enquesta enquesta) {
         if(enquesta.getId() == null) {
-            result = insert(enquesta);
+            insert(enquesta);
         } else {
-            result = update(enquesta);
+            update(enquesta);
         }
-        return result;
+        return findOne(enquesta.getId());
     }
 
 
-    private int update(Enquesta enquesta) {
+    private void update(Enquesta enquesta) {
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT,
                 enquesta.getTitol(),
                 enquesta.getId().toString()
         );
-        return updateResult;
     }
 
-    private int insert(Enquesta enquesta) {
+    private void insert(Enquesta enquesta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int insertResult = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -80,8 +78,6 @@ public class EnquestaRepository {
         }, keyHolder);
 
         enquesta.setId(keyHolder.getKey().longValue());
-
-        return insertResult;
     }
 
     /***

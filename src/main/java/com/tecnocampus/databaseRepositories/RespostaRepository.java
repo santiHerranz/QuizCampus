@@ -46,7 +46,7 @@ public class RespostaRepository {
         this.jdbcOperations = jdbcOperations;
     }
 
-    public int save(Pregunta pregunta, RespostaNumerica resposta) {
+    public Resposta save(Pregunta pregunta, RespostaNumerica resposta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int respostaUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -65,7 +65,7 @@ public class RespostaRepository {
 
         resposta.setId(keyHolder.getKey().longValue());
 
-        return respostaUpdate;  
+        return findOne(resposta.getId());
     }
 
     public List<Resposta> findAll(Long preguntaId) {

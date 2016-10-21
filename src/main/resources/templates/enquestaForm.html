@@ -48,7 +48,7 @@
 
         <div class="form-group">
             <div class="col-md-9">
-                <input name="val_Id" th:field="*{Id}" class="hidden"  />
+                <input th:field="*{Id}" class="hidden"  />
                 <br />
                 <label class="col-md-9 control-label" for="val_name" th:class="${#fields.hasErrors('titol')}? 'titol'">Titol<span class="text-danger">*</span></label>
                 <input id="val_name" name="val_name" class="form-control" type="text" th:required="true" autocomplete="off"

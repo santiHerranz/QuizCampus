@@ -17,18 +17,35 @@
 
 <div th:replace="header :: header">Header</div>
 
-<h1><span th:text="${usuari.id}"/></h1>
-Email: <span th:text="${usuari.email}" />
+<div class="container">
 
-<!--<h2>Notes</h2>
-<ul>
-    <li th:each="noteLab : ${userLab.notesAsList}"
-        th:id="'note_' + ${noteLab.title}">
-        <div th:text="${noteLab.title}">Note title</div>
-        <div th:text="${noteLab.dateEdit}">Edit date</div>
-        <div th:text="${noteLab.content}">Content</div>
-    </li>
-</ul>-->
+    <div class="block-title">
+        <a class=""  th:href="@{'/usuaris'}" >usuaris / </a> <span th:text="${usuari.email}">usuari</span>
+        <hr />
+    </div>
+    <div class="form-group form-actions">
+        <a class="btn btn-primary btn-sm" th:href="${'/usuaris/edita/'+ usuari.Id}" href="/usuaris/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+        <a class="btn btn-success btn-sm"  th:href="@{'/usuaris/registre'}" >Registrar</a>
+    </div>
+
+
+    <div id="dataView" class="block">
+
+        <div class="form-group">
+            <label class="col-md-3 control-label" >Titol</label>
+            <label th:text="${usuari.email}" >titol</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" >Data creació</label>
+            <label th:text="${usuari.dataCreacio}" >Data</label>
+        </div>
+
+        <fieldset>
+            <legend></legend>
+        </fieldset>
+    </div>
+
+</div>
 
 <div th:replace="footer :: footer">&copy; 2013 The Static Templates</div>
 

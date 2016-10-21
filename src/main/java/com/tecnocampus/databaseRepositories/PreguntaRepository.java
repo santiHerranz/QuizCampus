@@ -41,16 +41,16 @@ public class PreguntaRepository {
     }
 
 
-    public int save(Enquesta enquesta, Pregunta pregunta) {
-        int result;
+    public Pregunta save(Enquesta enquesta, Pregunta pregunta) {
         if(pregunta.getId() == null) {
-            result = insert(enquesta, pregunta);
+            insert(enquesta, pregunta);
         } else {
-            result = update(pregunta);
+            update(pregunta);
         }
-        return result;
+
+        return findOne(pregunta.getId());
     }
-    public int insert(Enquesta enquesta, Pregunta pregunta) {
+    public void insert(Enquesta enquesta, Pregunta pregunta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int preguntaUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -71,11 +71,9 @@ public class PreguntaRepository {
         // Enllaçar objectes
         pregunta.setEnquesta(enquesta);
         enquesta.getPreguntes().add(pregunta);
-
-        return preguntaUpdate;
     }
 
-    private int update(Pregunta pregunta) {
+    private void update(Pregunta pregunta) {
         PreguntaNumerica preguntaNumerica = ((PreguntaNumerica)pregunta);
 
         int updateResult = this.jdbcOperations.update(
@@ -86,7 +84,6 @@ public class PreguntaRepository {
                         , pregunta.getId().toString()
                 }
         );
-        return updateResult;
     }
 
 

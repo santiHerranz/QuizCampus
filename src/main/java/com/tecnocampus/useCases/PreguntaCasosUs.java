@@ -56,7 +56,8 @@ public class PreguntaCasosUs {
         pregunta.afegirResposta(resposta);
         resposta.setPregunta(pregunta);
 
-        beansManager.respostaRepository.save(pregunta, resposta);
+
+        resposta = (RespostaNumerica) beansManager.respostaRepository.save(pregunta, resposta);
         return resposta;
 
     }

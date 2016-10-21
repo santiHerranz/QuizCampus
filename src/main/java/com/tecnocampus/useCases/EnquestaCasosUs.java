@@ -38,9 +38,9 @@ public class EnquestaCasosUs {
     }
 
     @Transactional
-    public void save(Enquesta enquesta) {
+    public Enquesta save(Enquesta enquesta) {
         try {
-            beansManager.enquestaRepository.save(enquesta);
+            return beansManager.enquestaRepository.save(enquesta);
         } catch (DuplicateKeyException e) {
             throw new EnquestaDuplicadaException();
         }

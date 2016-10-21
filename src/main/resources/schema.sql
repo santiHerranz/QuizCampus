@@ -6,6 +6,7 @@ CREATE TABLE usuari
   email VARCHAR (100) NOT NULL UNIQUE ,
   contrasenya VARCHAR (100) NOT NULL,
   admin BOOLEAN NOT NULL DEFAULT (0)
+  , data_creacio DATE DEFAULT (sysdate)
 );
 
 DROP TABLE if EXISTS enquesta;
@@ -25,6 +26,7 @@ CREATE TABLE pregunta
   --ordre int,  -- Ampliació: canviar l'ordre de les preguntes de l'enquesta
   minim int,
   maxim int
+  , data_creacio DATE DEFAULT (sysdate)
   , FOREIGN KEY (enquestaId) REFERENCES enquesta(enquestaId) ON DELETE CASCADE
 );
 
@@ -36,6 +38,7 @@ CREATE TABLE resposta
   usuariId int NOT NULL,
   preguntaId int NOT NULL,
   valor int NOT NULL
+  , data_creacio DATE DEFAULT (sysdate)
   , FOREIGN KEY (usuariId) REFERENCES usuari(usuariId) ON DELETE CASCADE
 );
 /*

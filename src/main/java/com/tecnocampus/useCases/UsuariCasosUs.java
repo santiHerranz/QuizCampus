@@ -51,7 +51,7 @@ public final class UsuariCasosUs {
         }
 
         Usuari usuari = new Usuari(email, contrasenya);
-        save(usuari);
+        usuari = save(usuari);
 
         // Establir admin al primer usuari
         if( llistarUsuaris().size()==1)
@@ -63,9 +63,9 @@ public final class UsuariCasosUs {
     }
 
 
-    public void save(Usuari usuari) {
+    public Usuari save(Usuari usuari) {
         try {
-            beansManager.usuariRepository.save(usuari);
+            return beansManager.usuariRepository.save(usuari);
         } catch (DuplicateKeyException e) {
             throw new UsuariDuplicatException();
         }

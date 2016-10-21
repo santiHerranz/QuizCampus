@@ -14,10 +14,11 @@
 
 <div class="container">
 
+
     <div class="block-title">
-        <h2><strong>Llistat d'usuaris</strong></h2>
-        <div class="block-options pull-right">
-            <a class="btn btn-primary"  th:href="@{'/registre'}" >Nou usuari</a>
+        <h2><strong>Usuaris</strong></h2>
+        <div class="block-options pull-left">
+            <a class="btn btn-success"  th:href="@{'/registre'}" >Registrar</a>
         </div>
     </div>
 
@@ -27,12 +28,14 @@
                 <thead>
                 <tr>
                     <th><a href="#">Nom</a></th>
+                    <th><a href="#">Data creació</a></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="usuari : ${usuariList}"
                     th:id="'usuari_' + ${usuari.id}">
                     <td><a th:href="@{'/usuaris/' + ${usuari.id}}" th:text="${usuari.email}" >email</a></td>
+                    <td><span th:text="${usuari.dataCreacio}" >data</span></td>
                 </tr>
                 </tbody>
             </table>
