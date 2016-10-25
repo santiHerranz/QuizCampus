@@ -5,18 +5,16 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css"
           th:href="@{style.css}"/>
-    <title>Create User</title>
+    <title>Create Enquesta</title>
 </head>
 <body>
 
 
-<h1> <span th:text="${userLab.name} + ' ' + ${userLab.secondName}"/></h1>
+<h1> <span th:text="${enquesta.titol}"/></h1>
 
-<form method="POST" th:object="${noteLab}" th:action="${flowExecutionUrl}">
+<form method="POST" th:object="${pregunta}" th:action="${flowExecutionUrl}">
 
-    <input type="text" th:field="*{title}" /><br/>
-
-    <input type="text" th:field="*{content}" /><br/>
+    <input type="text" th:field="*{enunciat}" /><br/>
 
 
     <input type="submit" value="Create Note" name="_eventId_noteEntered" />
@@ -26,13 +24,10 @@
 </form>
 
 
-<h1>Bag of notes</h1>
+<h1>Bossa de preguntes</h1>
 <ul>
-    <li th:each="note : ${bagNoteLab.Notes}"
-        th:id="'note_' + ${note.title}">
-        <div th:text="${note.title}">Note title</div>
-        <div th:text="${note.dateEdit}">Edit date</div>
-        <div th:text="${note.content}">Content</div>
+    <li th:each="note : ${bossaPreguntes.preguntes}"
+        th:id="'note_' + ${pregunta.enunciat}">
     </li>
 </ul>
 

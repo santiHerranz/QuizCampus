@@ -1,12 +1,13 @@
 package com.tecnocampus.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
-public class Enquesta extends Clau {
+public class Enquesta extends Clau implements Serializable {
 
     private String titol;
     private List<Pregunta> preguntes;

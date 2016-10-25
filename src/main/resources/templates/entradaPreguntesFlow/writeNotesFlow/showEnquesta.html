@@ -5,16 +5,12 @@
     <title>Notes</title>
 </head>
 <body>
-<h1><span th:text="${userLab.name} + ' ' + ${userLab.secondName}"/></h1>
-Email: <span th:text="${userLab.email}" />
+<h1><span th:text="${enquesta.titol} "/></h1>
 
-<h2>Bag of notes</h2>
+<h2>Bossa de preguntes</h2>
 <ul>
-    <li th:each="note : ${bagNoteLab.Notes}"
-        th:id="'note_' + ${note.title}">
-        <div th:text="${note.title}">Note title</div>
-        <div th:text="${note.dateEdit}">Edit date</div>
-        <div th:text="${note.content}">Content</div>
+    <li th:each="note : ${bossaPreguntes.Preguntes}"
+        th:id="'note_' + ${pregunta.enunciat}">
     </li>
 </ul>
 

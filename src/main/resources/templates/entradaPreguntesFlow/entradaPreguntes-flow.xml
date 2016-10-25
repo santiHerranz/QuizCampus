@@ -7,8 +7,9 @@
     <var name="enquesta" class="com.tecnocampus.domain.Enquesta" />
     <var name="bossaPreguntes" class="com.tecnocampus.domain.BossaPreguntes" />
 
+
     <subflow-state id="entradaPreguntes" subflow="entradaPreguntesFlow/writeNotesFlow">
-        <input name="usuari" value="usuari"/>
+        <input name="enquesta" value="enquesta"/>
         <output name="bossaPreguntes"/>
         <transition on="finish" to="goodBye"/>
     </subflow-state>

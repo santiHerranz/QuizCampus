@@ -1,10 +1,7 @@
 package com.tecnocampus.useCases;
 
 import com.tecnocampus.BeansManager;
-import com.tecnocampus.domain.Enquesta;
-import com.tecnocampus.domain.Pregunta;
-import com.tecnocampus.domain.PreguntaNumerica;
-import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.domain.*;
 import com.tecnocampus.exceptions.EnquestaDuplicadaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;

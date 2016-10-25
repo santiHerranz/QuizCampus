@@ -2,29 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Notes</title>
+    <title>preguntes</title>
 </head>
 <body>
-<h1><span th:text="${userLab.name} + ' ' + ${userLab.secondName}"/></h1>
-Email: <span th:text="${userLab.email}" />
 
-<h2>Bag of notes</h2>
+<h1><span th:text="${enquesta.titol}"/></h1>
+
+<h2>Bag of preguntas</h2>
 <ul>
-    <li th:each="note : ${bagNoteLab.Notes}"
-        th:id="'note_' + ${note.title}">
-        <div th:text="${note.title}">Note title</div>
-        <div th:text="${note.dateEdit}">Edit date</div>
-        <div th:text="${note.content}">Content</div>
+    <li th:each="pregunta : ${bossaPreguntes.preguntes}"
+        th:id="'pregunta_' + ${pregunta.enunciat}">
+        <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
     </li>
 </ul>
 
-<h2>Notes</h2>
+<h2>preguntes</h2>
 <ul>
-    <li th:each="noteLab : ${userLab.notesAsList}"
-        th:id="'note_' + ${noteLab.title}">
-        <div th:text="${noteLab.title}">Note title</div>
-        <div th:text="${noteLab.dateEdit}">Edit date</div>
-        <div th:text="${noteLab.content}">Content</div>
+    <li th:each="pregunta : ${enquesta.preguntes}"
+        th:id="'pregunta_' + ${pregunta.enunciat}">
+        <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+
     </li>
 </ul>
 <form method="POST" th:action="${flowExecutionUrl}">

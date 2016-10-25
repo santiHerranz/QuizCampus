@@ -1,11 +1,12 @@
 package com.tecnocampus.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
-public final class PreguntaNumerica  extends Pregunta {
+public final class PreguntaNumerica  extends Pregunta implements Serializable {
 
     private int minim;
     private int maxim;
