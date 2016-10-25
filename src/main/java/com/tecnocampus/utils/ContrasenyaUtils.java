@@ -9,15 +9,11 @@ import java.util.regex.Pattern;
  */
 public class ContrasenyaUtils {
 
-    private Matcher matcher;
-    private Pattern pattern;
-    private Matcher matcher5;
-    private Pattern pattern5;
-    private final String patroLlargada =".{9,}";
+    private final Pattern patroLlargada =Pattern.compile(".{9,}");
     private final Pattern patroNumero = Pattern.compile("\\d");
     private final Pattern patroLletresMajuscules = Pattern.compile("(?=.*[A-Z])");
     private final Pattern patroLletresMinuscules = Pattern.compile("(?=.*[a-z])");
-    private final String patroNoEspais = "\\S+$";
+    private final Pattern patroNoEspais = Pattern.compile("\\S+$");
     /*
     Explanations:
 
@@ -41,8 +37,7 @@ public class ContrasenyaUtils {
 
     public boolean esValida(String contrasenya) {
 
-        pattern = Pattern.compile(patroLlargada);
-        matcher = pattern.matcher(contrasenya);
+        Matcher matcher = patroLlargada.matcher(contrasenya);
         if (!matcher.matches())
             errorList.add("La contrasenya no és prou llarga. Ha de tenir un mínim de 9 caràcters.");
 
@@ -59,9 +54,8 @@ public class ContrasenyaUtils {
             errorList.add("No hi ha lletra minúscula.");
         }
 
-        pattern5 = Pattern.compile(patroNoEspais);
-        matcher5 = pattern5.matcher(contrasenya);
-        if (!matcher5.matches()) {
+        matcher = patroNoEspais.matcher(contrasenya);
+        if (!matcher.matches()) {
             errorList.add("La contrasenya té espais en blanc.");
         }
 
