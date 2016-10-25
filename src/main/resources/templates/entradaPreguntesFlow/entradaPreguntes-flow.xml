@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <var name="enquesta" class="com.tecnocampus.domain.Enquesta" />
+    <var name="bossaPreguntes" class="com.tecnocampus.domain.BossaPreguntes" />
+
+    <subflow-state id="entradaPreguntes" subflow="entradaPreguntesFlow/writeNotesFlow">
+        <input name="usuari" value="usuari"/>
+        <output name="bossaPreguntes"/>
+        <transition on="finish" to="goodBye"/>
+    </subflow-state>
+
+    <view-state id="goodBye" view="entradaPreguntesFlow/mostrarEnquestaAcabada">
+        <transition on="proceed" to="guardaPreguntes"/>
+    </view-state>
+
+    <action-state id="guardaPreguntes">
+        <evaluate expression="enquestaCasosUs.afegirPreguntes(enquesta,bossaPreguntes)"/>
+        <transition to="endState"/>
+    </action-state>
+
+
+    <end-state id="endState" view="externalRedirect:contextRelative:/enquestes/#{enquesta.Id}"/>
+    <end-state id="cancel" view="externalRedirect:/canceledFlow.html"/>
+
+    <global-transitions>
+        <transition on="cancel" to="cancel"></transition>
+    </global-transitions>
+</flow>

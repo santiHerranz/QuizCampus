@@ -33,7 +33,7 @@ public class EnquestaCasosUs {
     @Transactional
     public Enquesta crearEnquesta(String titol) {
         Enquesta enquesta = new Enquesta(titol);
-        save(enquesta);
+        enquesta = save(enquesta);
         return enquesta;
     }
 
