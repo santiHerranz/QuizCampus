@@ -64,6 +64,10 @@ public class EnquestaCasosUs {
         return pregunta;
     }
 
+    public void afegirPreguntes(Enquesta enquesta, BossaPreguntes bossa) {
+
+    }
+
     public List<Enquesta> llistarEnquestes() {
         return beansManager.enquestaRepository.findAll();
     }

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class ContrasenyaUtils {
 
-    private final Pattern patroLlargada =Pattern.compile(".{9,}");
+    private final Pattern patroLlargada = Pattern.compile(".{9,}");
     private final Pattern patroNumero = Pattern.compile("\\d");
     private final Pattern patroLletresMajuscules = Pattern.compile("(?=.*[A-Z])");
     private final Pattern patroLletresMinuscules = Pattern.compile("(?=.*[a-z])");
