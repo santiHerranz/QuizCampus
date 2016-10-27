@@ -41,7 +41,7 @@ public class EnquestaCasosUsController {
         if (!model.containsAttribute("enquesta")) {
 
             // comprobem que l'enquesta existeix, en cas contrari mostrem llistat
-            Enquesta enquesta = enquestaCasosUs.obetenirEnquesta(enquestaId);
+            Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
             if (enquesta == null)
                 return "redirect:/enquestes";
             model.addAttribute("enquesta",enquesta);
@@ -58,7 +58,7 @@ public class EnquestaCasosUsController {
     @GetMapping("enquestes/edita/{enquestaId}")
     public String editItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
 
-        Enquesta enquesta = enquestaCasosUs.obetenirEnquesta(enquestaId);
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         model.addAttribute(enquesta);
         return "enquestaForm";
     }
@@ -110,7 +110,7 @@ public class EnquestaCasosUsController {
     @PostMapping("enquestes/esborra/{enquestaId}")
     public String processDeleteItem(@PathVariable("enquestaId") Long enquestaId) {
 
-        Enquesta enquesta = enquestaCasosUs.obetenirEnquesta(enquestaId);
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         enquestaCasosUs.eliminarEnquesta(enquesta);
 
         return "redirect:/enquestes";

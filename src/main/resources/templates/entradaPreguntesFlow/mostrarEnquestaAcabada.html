@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8"/>
     <title>preguntes</title>
+
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+
 </head>
 <body>
+
+<div th:replace="header :: header">Header</div>
 
 <h1><span th:text="${enquesta.titol}"/></h1>
 

@@ -1,12 +1,13 @@
 package com.tecnocampus.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by santi on 05/10/2016.
  */
 
-public abstract class Clau {
+public abstract class Clau implements Serializable {
 
     private Long Id;
 

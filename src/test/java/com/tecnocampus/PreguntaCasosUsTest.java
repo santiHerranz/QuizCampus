@@ -49,7 +49,7 @@ public class PreguntaCasosUsTest {
     @Before
     public void before(){
         usuari = usuariCasosUs.cercarUsuari(1L);
-        enquesta = enquestaCasosUs.obetenirEnquesta(1L);
+        enquesta = enquestaCasosUs.obtenirEnquesta(1L);
     }
 
 

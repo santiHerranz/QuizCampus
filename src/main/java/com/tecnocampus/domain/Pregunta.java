@@ -1,12 +1,13 @@
 package com.tecnocampus.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
-public abstract class Pregunta extends Clau implements IPregunta {
+public abstract class Pregunta extends Clau implements IPregunta, Serializable {
 
     private String enunciat = "";
     private Enquesta enquesta;

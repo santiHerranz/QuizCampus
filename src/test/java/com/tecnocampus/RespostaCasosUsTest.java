@@ -49,7 +49,7 @@ public class RespostaCasosUsTest {
     @Before
     public void before(){
         usuari = usuariCasosUs.cercarUsuari(1L);
-        enquesta = enquestaCasosUs.obetenirEnquesta(1L);
+        enquesta = enquestaCasosUs.obtenirEnquesta(1L);
     }
 
 
@@ -63,7 +63,7 @@ public class RespostaCasosUsTest {
     @Test
     public void esborrarRespostaPreguntaTest(){
 
-        Enquesta e = enquestaCasosUs.obetenirEnquesta(1L);
+        Enquesta e = enquestaCasosUs.obtenirEnquesta(1L);
         Pregunta p = enquestaCasosUs.afegirPregunta(e, "Test", 1, 10);
         Usuari usuari = usuariCasosUs.cercarUsuari(1L);
 

@@ -3,14 +3,29 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Notes</title>
+
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+
 </head>
 <body>
-<h1><span th:text="${enquesta.titol} "/></h1>
+
+<div th:replace="header :: header">Header</div>
+
+<h1>enquesta:<span th:text="${enquesta.titol} "/></h1>
+<ul>
+    <li th:each="pregunta : ${enquesta.preguntes}"
+        th:id="'pregunta_' + ${pregunta.enunciat}">
+        <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+    </li>
+</ul>
 
 <h2>Bossa de preguntes</h2>
 <ul>
-    <li th:each="note : ${bossaPreguntes.Preguntes}"
-        th:id="'note_' + ${pregunta.enunciat}">
+    <li th:each="pregunta : ${bossaPreguntes.Preguntes}"
+        th:id="'pregunta_' + ${pregunta.enunciat}">
+        <div th:text="${pregunta.enunciat}">pregunta enunciat</div>
     </li>
 </ul>
 

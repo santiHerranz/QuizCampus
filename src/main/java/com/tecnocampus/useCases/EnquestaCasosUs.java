@@ -15,7 +15,7 @@ import java.util.List;
  *
  */
 
-@Service
+@Service("enquestaCasosUs")
 public class EnquestaCasosUs {
 
     @Autowired
@@ -61,9 +61,25 @@ public class EnquestaCasosUs {
         return pregunta;
     }
 
-    public void afegirPreguntes(Enquesta enquesta, BossaPreguntes bossa) {
-
+/*
+    public void metodeProva() {
+        System.out.println("metodeProva");
     }
+*/
+
+
+
+
+    public void afegirPreguntes(Enquesta enquesta, BossaPreguntes bossaPreguntes) { /* */
+        System.out.println("afegirPreguntes");
+        for (Pregunta p: bossaPreguntes.getPreguntes() ) {
+            System.out.println("Pregunta:" + p.getEnunciat());
+        }
+
+        bossaPreguntes.getPreguntes().forEach(preguntaConsumer -> {afegirPregunta(enquesta,preguntaConsumer.getEnunciat(), 1, 10);});
+    }
+
+
 
     public List<Enquesta> llistarEnquestes() {
         return beansManager.enquestaRepository.findAll();
@@ -84,7 +100,9 @@ public class EnquestaCasosUs {
     }
 
 
-    public Enquesta obetenirEnquesta(long enquestaId) {
+    public Enquesta obtenirEnquesta(long enquestaId) {
+        System.out.println("obtenirEnquesta");
+
         return beansManager.enquestaRepository.findOne(enquestaId);
     }
 }
