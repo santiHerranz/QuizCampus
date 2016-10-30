@@ -22,7 +22,6 @@
     <div class="form-group form-actions">
         <a class="btn btn-primary btn-sm" th:href="${'/enquestes/edita/'+ enquesta.Id}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
         <a class="btn btn-success btn-sm" th:href="@{'/enquestes/nova'}" >Crear</a>
-        <a class="btn btn-success btn-sm" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Crear preguntes</a>
     </div>
 
 
@@ -38,7 +37,17 @@
     </div>
 
     <fieldset>
-        <legend></legend>
+        <legend>Preguntes
+        <a class="btn btn-success btn-sm pull-right" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Editar preguntes</a>
+        </legend>
+        <ul>
+                <li th:each="pregunta : ${enquesta.preguntes}"
+                    th:id="'pregunta_' + ${pregunta.enunciat}">
+                    <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+
+                </li>
+            </ul>
+
     </fieldset>
 </div>
 

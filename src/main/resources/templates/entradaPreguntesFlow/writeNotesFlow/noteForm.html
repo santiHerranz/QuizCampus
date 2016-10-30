@@ -16,27 +16,40 @@
 
 <div th:replace="header :: header">Header</div>
 
-<h1> <span th:text="${enquesta.titol}"/></h1>
+<div class="container">
 
-<form method="POST" th:object="${pregunta}" th:action="${flowExecutionUrl}">
+    <div class="block-title">
+        <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
+        <hr />
+    </div>
 
-    <input type="text" th:field="*{enunciat}" /><br/>
+    <ul>
+        <li th:each="pregunta : ${enquesta.preguntes}"
+            th:id="'pregunta_' + ${pregunta.enunciat}">
+            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+        </li>
+    </ul>
+
+    <form method="POST" th:object="${pregunta}" th:action="${flowExecutionUrl}">
+
+        <input type="text" th:field="*{enunciat}" /><br/>
 
 
-    <input type="submit" value="Nova pregunta" name="_eventId_noteEntered" />
-    <input type="submit" value="Acabar preguntes" name="_eventId_finishedNotes" />
-    <input type="submit" value="Cancelar" name="_eventId_cancel"/>
+        <input type="submit" value="Afegir pregunta" name="_eventId_noteEntered" />
+        <input type="submit" value="Acabar preguntes" name="_eventId_finishedNotes" />
+        <input type="submit" value="Cancelar" name="_eventId_cancel"/>
 
-</form>
+    </form>
 
 
-<h1>Bossa de preguntes</h1>
-<ul>
-    <li th:each="pregunta : ${bossaPreguntes.Preguntes}"
-        th:id="'pregunta_' + ${pregunta.enunciat}">
-        <div th:text="${pregunta.enunciat}">pregunta enunciat</div>
-    </li>
-</ul>
+    <h1>Bossa de preguntes</h1>
+    <ul>
+        <li th:each="pregunta : ${bossaPreguntes.Preguntes}"
+            th:id="'pregunta_' + ${pregunta.enunciat}">
+            <div th:text="${pregunta.enunciat}">pregunta enunciat</div>
+        </li>
+    </ul>
+</div>
 
 
 </body>

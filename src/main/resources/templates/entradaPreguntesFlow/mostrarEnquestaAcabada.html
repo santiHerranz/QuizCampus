@@ -13,28 +13,32 @@
 
 <div th:replace="header :: header">Header</div>
 
+<div class="container">
+
 <h1><span th:text="${enquesta.titol}"/></h1>
 
-<h2>Bag of preguntas</h2>
-<ul>
-    <li th:each="pregunta : ${bossaPreguntes.preguntes}"
-        th:id="'pregunta_' + ${pregunta.enunciat}">
-        <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
-    </li>
-</ul>
+    <h2>Bag of preguntas</h2>
+    <ul>
+        <li th:each="pregunta : ${bossaPreguntes.preguntes}"
+            th:id="'pregunta_' + ${pregunta.enunciat}">
+            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+        </li>
+    </ul>
 
-<h2>preguntes</h2>
-<ul>
-    <li th:each="pregunta : ${enquesta.preguntes}"
-        th:id="'pregunta_' + ${pregunta.enunciat}">
-        <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+    <h2>preguntes</h2>
+    <ul>
+        <li th:each="pregunta : ${enquesta.preguntes}"
+            th:id="'pregunta_' + ${pregunta.enunciat}">
+            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
 
-    </li>
-</ul>
-<form method="POST" th:action="${flowExecutionUrl}">
-    <input type="submit" value="Proceed" name="_eventId_proceed"/>
-    <input type="submit" value="Cancel" name="_eventId_cancel"/>
-</form>
+        </li>
+    </ul>
+    <form method="POST" th:action="${flowExecutionUrl}">
+        <input type="submit" value="Guardar" class="btn btn-sm btn-success" name="_eventId_proceed"/>
+        <input type="submit" value="Cancelar" class="btn btn-sm btn-danger" name="_eventId_cancel"/>
+    </form>
+
+</div>
 
 </body>
 </html>
