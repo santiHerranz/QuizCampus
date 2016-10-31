@@ -38,6 +38,7 @@
             <thead>
             <tr>
                 <th><a href="#">Titol</a></th>
+                <th><a href="#">Preguntes</a></th>
                 <th><a href="#">Data creació</a></th>
                 <th style="width: 150px;" class="text-center">&nbsp;</th>
             </tr>
@@ -46,6 +47,7 @@
             <tr th:each="enquesta : ${enquestaList}"
                 th:id="'enquesta_' + ${enquesta.id}">
                 <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${enquesta.titol}" >titol</a></td>
+                <td><span th:text="${enquesta.getPreguntes().size()}" >Preguntes</span></td>
                 <td><span th:text="${enquesta.dataCreacio}" >data</span></td>
                 <td class="text-center">
 

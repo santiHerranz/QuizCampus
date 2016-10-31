@@ -71,12 +71,10 @@ public class EnquestaCasosUs {
 
 
     public void afegirPreguntes(Enquesta enquesta, BossaPreguntes bossaPreguntes) { /* */
-        System.out.println("afegirPreguntes");
-        for (Pregunta p: bossaPreguntes.getPreguntes() ) {
-            System.out.println("Pregunta:" + p.getEnunciat());
-        }
 
-        bossaPreguntes.getPreguntes().forEach(preguntaConsumer -> {afegirPregunta(enquesta,preguntaConsumer.getEnunciat(), 1, 10);});
+        bossaPreguntes.getPreguntes().forEach(preguntaConsumer -> {
+                afegirPregunta(enquesta,preguntaConsumer.getEnunciat(), 1, 10);
+        });
     }
 
 

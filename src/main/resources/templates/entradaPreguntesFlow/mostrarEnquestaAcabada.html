@@ -17,20 +17,19 @@
 
 <h1><span th:text="${enquesta.titol}"/></h1>
 
-    <h2>Bag of preguntas</h2>
-    <ul>
-        <li th:each="pregunta : ${bossaPreguntes.preguntes}"
-            th:id="'pregunta_' + ${pregunta.enunciat}">
-            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
-        </li>
-    </ul>
-
-    <h2>preguntes</h2>
+    <h4>Preguntes</h4>
     <ul>
         <li th:each="pregunta : ${enquesta.preguntes}"
             th:id="'pregunta_' + ${pregunta.enunciat}">
             <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
 
+        </li>
+    </ul>
+    <h4>Afegir preguntes</h4>
+    <ul>
+        <li th:each="pregunta : ${bossaPreguntes.preguntes}"
+            th:id="'pregunta_' + ${pregunta.enunciat}">
+            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
         </li>
     </ul>
     <form method="POST" th:action="${flowExecutionUrl}">

@@ -6,7 +6,7 @@
     <input name="enquesta" required="true"/>
 
     <on-start>
-        <evaluate result="flowScope.bossaPreguntes" expression="new com.tecnocampus.domain.BossaPreguntes()"/>
+       <evaluate result="flowScope.bossaPreguntes" expression="new com.tecnocampus.domain.BossaPreguntes()"/>
     </on-start>
 
     <view-state id="showNotes" view="entradaPreguntesFlow/writeNotesFlow/showEnquesta" model="enquesta">

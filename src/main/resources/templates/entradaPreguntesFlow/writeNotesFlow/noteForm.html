@@ -23,8 +23,15 @@
         <hr />
     </div>
 
+    <h4>Preguntes</h4>
     <ul>
         <li th:each="pregunta : ${enquesta.preguntes}"
+            th:id="'pregunta_' + ${pregunta.enunciat}">
+            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+        </li>
+    </ul>
+    <ul>
+        <li th:each="pregunta : ${bossaPreguntes.preguntes}"
             th:id="'pregunta_' + ${pregunta.enunciat}">
             <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
         </li>
@@ -34,21 +41,11 @@
 
         <input type="text" th:field="*{enunciat}" /><br/>
 
-
         <input type="submit" value="Afegir pregunta" name="_eventId_noteEntered" />
-        <input type="submit" value="Acabar preguntes" name="_eventId_finishedNotes" />
-        <input type="submit" value="Cancelar" name="_eventId_cancel"/>
+        <input type="submit" value="Cancelar" name="_eventId_finishedNotes" />
 
     </form>
 
-
-    <h1>Bossa de preguntes</h1>
-    <ul>
-        <li th:each="pregunta : ${bossaPreguntes.Preguntes}"
-            th:id="'pregunta_' + ${pregunta.enunciat}">
-            <div th:text="${pregunta.enunciat}">pregunta enunciat</div>
-        </li>
-    </ul>
 </div>
 
 

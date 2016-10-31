@@ -6,16 +6,15 @@
 
 <!--
 -->
-    <var name="bossaPreguntes" class="com.tecnocampus.domain.BossaPreguntes" />
+    <var name="enquesta" class="com.tecnocampus.domain.Enquesta" />
 
 
     <input name="Id" type="long" required="true"/>
 
     <on-start>
         <evaluate result="flowScope.enquesta" expression="enquestaCasosUs.obtenirEnquesta(Id)"/>
+        <evaluate result="flowScope.enquesta" expression="(flowScope.enquesta == null? new com.tecnocampus.domain.Enquesta() : flowScope.enquesta)"/>
     </on-start>
-
-
 
 
     <subflow-state id="entradaPreguntes" subflow="entradaPreguntesFlow/writeNotesFlow">

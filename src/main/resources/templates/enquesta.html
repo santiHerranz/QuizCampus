@@ -38,7 +38,6 @@
 
     <fieldset>
         <legend>Preguntes
-        <a class="btn btn-success btn-sm pull-right" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Editar preguntes</a>
         </legend>
         <ul>
                 <li th:each="pregunta : ${enquesta.preguntes}"
@@ -47,7 +46,7 @@
 
                 </li>
             </ul>
-
+        <a class="btn btn-success btn-sm pull-left" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Afegir preguntes</a>
     </fieldset>
 </div>
 
