@@ -13,6 +13,8 @@ public final class PreguntaNumerica  extends Pregunta implements Serializable {
 
     public PreguntaNumerica() {
         super();
+        this.minim=0;
+        this.maxim = 10;
     }
 
     public PreguntaNumerica(Enquesta enquesta, String enunciat){

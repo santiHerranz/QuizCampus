@@ -3,11 +3,20 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css"
-          th:href="@{style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{style.css}"/>
     <title>Create Enquesta</title>
 
-    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
+          th:href="@{/css/bootstrap.min.css}"/>
+
+
+
+
+
+
+
+
+
     <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
 
@@ -27,19 +36,56 @@
     <ul>
         <li th:each="pregunta : ${enquesta.preguntes}"
             th:id="'pregunta_' + ${pregunta.enunciat}">
-            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+            <span th:text="${pregunta.enunciat}">Enunciat pregunta</span> (<span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>)
         </li>
     </ul>
     <ul>
         <li th:each="pregunta : ${bossaPreguntes.preguntes}"
             th:id="'pregunta_' + ${pregunta.enunciat}">
-            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+            <span th:text="${pregunta.enunciat}">Enunciat pregunta</span> (<span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>)
         </li>
     </ul>
 
     <form method="POST" th:object="${pregunta}" th:action="${flowExecutionUrl}">
 
-        <input type="text" th:field="*{enunciat}" /><br/>
+        <div class="row">
+            <div class="col-md-8">
+                <label for="enunciat">Enunciat</label>
+                <input type="text" id="enunciat" th:field="*{enunciat}" style="width: 100%;" />
+            </div>
+
+            <div class="col-md-8">
+                <label for="valorMinim"> Valor mínim</label>
+                <select class="selectpicker" id="valorMinim" name="valorMinim" th:field="*{minim}">
+                    <option value="1" selected="selected">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+            <div class="col-md-8">
+                <label for="valorMaxim"> Valor màxim</label>
+                <select class="selectpicker" id="valorMaxim" name="valorMaxim" th:field="*{maxim}">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10" selected="selected">10</option>
+                </select>
+            </div>
+        </div>
 
         <input type="submit" value="Afegir pregunta" name="_eventId_noteEntered" />
         <input type="submit" value="Cancelar" name="_eventId_finishedNotes" />

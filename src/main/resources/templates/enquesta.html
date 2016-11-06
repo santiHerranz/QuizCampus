@@ -42,8 +42,7 @@
         <ul>
                 <li th:each="pregunta : ${enquesta.preguntes}"
                     th:id="'pregunta_' + ${pregunta.enunciat}">
-                    <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
-
+                    <span th:text="${pregunta.enunciat}">Enunciat pregunta</span> (<span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>)
                 </li>
             </ul>
         <a class="btn btn-success btn-sm pull-left" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Afegir preguntes</a>

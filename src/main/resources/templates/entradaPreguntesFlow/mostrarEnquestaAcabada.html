@@ -21,7 +21,7 @@
     <ul>
         <li th:each="pregunta : ${enquesta.preguntes}"
             th:id="'pregunta_' + ${pregunta.enunciat}">
-            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+            <span th:text="${pregunta.enunciat}">Enunciat pregunta</span> (<span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>)
 
         </li>
     </ul>
@@ -29,7 +29,7 @@
     <ul>
         <li th:each="pregunta : ${bossaPreguntes.preguntes}"
             th:id="'pregunta_' + ${pregunta.enunciat}">
-            <div th:text="${pregunta.enunciat}">Enunciat pregunta</div>
+            <span th:text="${pregunta.enunciat}">Enunciat pregunta</span> (<span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>)
         </li>
     </ul>
     <form method="POST" th:action="${flowExecutionUrl}">

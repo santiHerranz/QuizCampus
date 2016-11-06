@@ -73,7 +73,8 @@ public class EnquestaCasosUs {
     public void afegirPreguntes(Enquesta enquesta, BossaPreguntes bossaPreguntes) { /* */
 
         bossaPreguntes.getPreguntes().forEach(preguntaConsumer -> {
-                afegirPregunta(enquesta,preguntaConsumer.getEnunciat(), 1, 10);
+                PreguntaNumerica p = (PreguntaNumerica)preguntaConsumer;
+                afegirPregunta(enquesta,p.getEnunciat(), p.getMinim(), p.getMaxim());
         });
     }
 
