@@ -2,8 +2,8 @@ package com.tecnocampus.webControllers;
 
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.exceptions.EnquestaDuplicadaException;
+import com.tecnocampus.security.SecurityService;
 import com.tecnocampus.useCases.EnquestaCasosUs;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -22,11 +23,16 @@ import java.util.List;
  * Created by santi on 14/10/2016.
  */
 @Controller
+@RequestMapping("/")
 public class EnquestaCasosUsController {
 
-    @Autowired
-    EnquestaCasosUs enquestaCasosUs;
+    private SecurityService securityService;
+    private EnquestaCasosUs enquestaCasosUs;
 
+    public EnquestaCasosUsController(EnquestaCasosUs enquestaCasosUs, SecurityService securityService) {
+        this.enquestaCasosUs = enquestaCasosUs;
+        this.securityService = securityService;
+    }
 
 
     @GetMapping("enquestes")

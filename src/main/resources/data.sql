@@ -1,12 +1,24 @@
 --TRUNCATE TABLE usuari;
 
+-- 1234567Ab -> $2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC
 
-INSERT INTO usuari (email,contrasenya, admin) VALUES ('sherranzm@edu.tecnocampus.cat', '12345', true);
-INSERT INTO usuari (email,contrasenya) VALUES ('iargemi@edu.tecnocampus.cat', '12345');
-INSERT INTO usuari (email,contrasenya) VALUES ('1111111@edu.tecnocampus.cat', '12345');
-INSERT INTO usuari (email,contrasenya) VALUES ('2222222@edu.tecnocampus.cat', '12345');
-INSERT INTO usuari (email,contrasenya) VALUES ('3333333@edu.tecnocampus.cat', '12345');
-INSERT INTO usuari (email,contrasenya) VALUES ('4444444@edu.tecnocampus.cat', '12345');
+INSERT INTO usuari (email,username, password, admin) VALUES ('sherranzm@edu.tecnocampus.cat','sherranzm', '$2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC', true);
+INSERT INTO usuari_roles (usuariId, role) VALUES (1, 'ROLE_ADMIN');
+
+INSERT INTO usuari (email,username,password, admin) VALUES ('iargemi@edu.tecnocampus.cat','iargemi', '$2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC', true);
+INSERT INTO usuari_roles (usuariId, role) VALUES (2, 'ROLE_ADMIN');
+
+INSERT INTO usuari (email,username,password) VALUES ('1111111@edu.tecnocampus.cat','111111', '$2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC');
+INSERT INTO usuari_roles (usuariId, role) VALUES (3, 'ROLE_USER');
+
+INSERT INTO usuari (email,username,password) VALUES ('2222222@edu.tecnocampus.cat','22222', '$2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC');
+INSERT INTO usuari_roles (usuariId, role) VALUES (4, 'ROLE_USER');
+
+INSERT INTO usuari (email,username,password) VALUES ('3333333@edu.tecnocampus.cat','33333', '$2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC');
+INSERT INTO usuari_roles (usuariId, role) VALUES (5, 'ROLE_USER');
+
+INSERT INTO usuari (email,username,password) VALUES ('4444444@edu.tecnocampus.cat', '44444', '$2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC');
+INSERT INTO usuari_roles (usuariId, role) VALUES (6, 'ROLE_USER');
 
 --TRUNCATE TABLE enquesta;
 --TRUNCATE TABLE pregunta;

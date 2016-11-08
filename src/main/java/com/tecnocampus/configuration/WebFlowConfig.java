@@ -10,6 +10,7 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.executor.FlowExecutor;
 import org.springframework.webflow.mvc.builder.MvcViewFactoryCreator;
+import org.springframework.webflow.security.SecurityFlowExecutionListener;
 
 import java.util.List;
 
@@ -22,15 +23,12 @@ import java.util.List;
 public class WebFlowConfig extends AbstractFlowConfiguration {
 
     @Autowired
-    private WebMvcConfig webMvcConfig;
-
-    @Autowired
     private List<ViewResolver> viewResolvers;
 
     @Bean
     public FlowExecutor flowExecutor() {
         return getFlowExecutorBuilder(flowRegistry())
-//                .addFlowExecutionListener(new SecurityFlowExecutionListener(), "*")
+                .addFlowExecutionListener(new SecurityFlowExecutionListener(), "*")
                 .build();
     }
 
@@ -52,8 +50,6 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
 
     @Bean
     public MvcViewFactoryCreator mvcViewFactoryCreator() {
-        viewResolvers.add(this.webMvcConfig.ajaxThymeleafViewResolver());
-
         MvcViewFactoryCreator factoryCreator = new MvcViewFactoryCreator();
         factoryCreator.setViewResolvers(viewResolvers);
         factoryCreator.setUseSpringBeanBinding(true);

@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -25,17 +26,20 @@ import java.util.List;
 public class UsuariRepository {
 
     private JdbcOperations jdbcOperations;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     BeansManager beansManager;
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM USUARI ";
-    private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (EMAIL, CONTRASENYA) VALUES(?,?)";
-    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET EMAIL = ?, CONTRASENYA = ?, ADMIN = ? WHERE USUARIID = ?";
+    private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (EMAIL, USERNAME, password) VALUES(?,?,?)";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET EMAIL = ?, password = ? WHERE USUARIID = ?";
     private static final String SQL_DELETE_STATEMENT = "DELETE FROM USUARI WHERE USUARIID = ?";
 
-    public UsuariRepository(JdbcOperations jdbcOperations) {
+    public UsuariRepository(JdbcOperations jdbcOperations, PasswordEncoder passwordEncoder) {
+
         this.jdbcOperations = jdbcOperations;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Usuari save(Usuari usuari) {
@@ -52,8 +56,8 @@ public class UsuariRepository {
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT
                 , usuari.getEmail()
-                , usuari.getContrasenya()
-                , usuari.isAdmin()
+                , usuari.getUsername()
+                , passwordEncoder.encode(usuari.getPassword())
                 , usuari.getId()
         );
     }
@@ -74,7 +78,8 @@ public class UsuariRepository {
                          SQL_INSERT_STATEMENT ,
                         new String[] { "usuariId" });
                 ps.setString(1, usuari.getEmail());
-                ps.setString(2, usuari.getContrasenya());
+                ps.setString(2, usuari.getUsername());
+                ps.setString(3, passwordEncoder.encode(usuari.getPassword()));
                 return ps;
             }
         }, keyHolder);
@@ -102,37 +107,48 @@ public class UsuariRepository {
      */
     public Usuari findOne(Long usuariId) {
         try {
-            return jdbcOperations.queryForObject(
+            Usuari u = jdbcOperations.queryForObject(
                     SQL_SELECT_STATEMENT + "where usuariId = ?"
                     , new Object[]{usuariId}
                     , new UsuariMapper()
             );
+
+            u.addRoles(findRoles(usuariId));
+            return u;
+
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
+
+    private List<String> findRoles(Long usuariId) {
+        return jdbcOperations.query("Select * from usuari_roles where usuariId = ?", new Object[]{usuariId}, new RoleMapper());
+    }
+
     public Usuari findOneLazy(Long usuariId) {
         try {
-            return jdbcOperations.queryForObject(
+            Usuari u = jdbcOperations.queryForObject(
                     SQL_SELECT_STATEMENT + "where usuariId = ?"
                     , new Object[]{usuariId}
                     , new UsuariMapperLazy()
             );
+            u.addRoles(findRoles(usuariId));
+            return  u;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     /***
-     * Obtenir l'usuari a partir de l'email
-     * @param email
+     * Obtenir l'usuari a partir de  username
+     * @param username
      * @return l'usuari trobat o null
      */
-    public Usuari findOne(String email) {
+    public Usuari findOne(String username) {
         try {
             return jdbcOperations.queryForObject(
-                    SQL_SELECT_STATEMENT + "where email = ?"
-                    , new Object[]{email}
+                    SQL_SELECT_STATEMENT + "where username = ?"
+                    , new Object[]{username}
                     , new UsuariMapper()
             );
         } catch (EmptyResultDataAccessException e) {
@@ -159,9 +175,8 @@ public class UsuariRepository {
     private final class UsuariMapper implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
-            Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
+            Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("username"), resultSet.getString("password"));
             usuari.setId(resultSet.getLong("usuariid"));
-            usuari.setAdmin(resultSet.getBoolean("admin"));
             usuari.setDataCreacio(resultSet.getDate("data_creacio"));
 
             Iterable<Resposta> list = beansManager.respostaRepository.findAllFromUser(usuari.getId());
@@ -177,12 +192,18 @@ public class UsuariRepository {
     private final class UsuariMapperLazy implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
-            Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
+            Usuari usuari = new Usuari(resultSet.getString("email"),resultSet.getString("username"), resultSet.getString("password"));
             usuari.setId(resultSet.getLong("usuariid"));
-            usuari.setAdmin(resultSet.getBoolean("admin"));
             usuari.setDataCreacio(resultSet.getDate("data_creacio"));
 
             return usuari;
+        }
+    }
+
+    private final class RoleMapper implements RowMapper<String> {
+        @Override
+        public String mapRow(ResultSet resultSet, int i) throws SQLException {
+            return resultSet.getString("role");
         }
     }
 }

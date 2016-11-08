@@ -2,12 +2,24 @@
 DROP TABLE if EXISTS usuari;
 CREATE TABLE usuari
 (
-  usuariId int auto_increment PRIMARY KEY , --
+  usuariId int NOT NULL auto_increment PRIMARY KEY , --
   email VARCHAR (100) NOT NULL UNIQUE ,
-  contrasenya VARCHAR (100) NOT NULL,
+  username VARCHAR(45) NOT NULL ,
+  password VARCHAR(70) NOT NULL ,
+  enabled TINYINT NOT NULL DEFAULT 1 ,
   admin BOOLEAN NOT NULL DEFAULT (0)
   , data_creacio DATE DEFAULT (sysdate)
 );
+
+DROP TABLE if EXISTS usuari_roles;
+CREATE TABLE usuari_roles (
+  user_role_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  usuariId int NOT NULL,
+  role varchar(45) NOT NULL,
+  UNIQUE KEY uni_username_role (role,usuariId),
+  CONSTRAINT fk_usuariId FOREIGN KEY (usuariId) REFERENCES usuari (usuariId));
+
+
 
 DROP TABLE if EXISTS enquesta;
 CREATE TABLE enquesta

@@ -28,11 +28,11 @@ public final class UsuariCasosUs {
 
     public UsuariCasosUs() {
     }
-    public Usuari crearUsuari(String email, String contrasenya) {
-        return crearUsuari(email, contrasenya, contrasenya);
+    public Usuari crearUsuari(String email,String username, String contrasenya) {
+        return crearUsuari(email, username, contrasenya, contrasenya);
     }
 
-    public Usuari crearUsuari(String email, String contrasenya, String confirmaContrasenya) {
+    public Usuari crearUsuari(String email,String username, String contrasenya, String confirmaContrasenya) {
         if(email == null ) throw new IllegalArgumentException();
         if(contrasenya == null ) throw new IllegalArgumentException();
 
@@ -50,7 +50,7 @@ public final class UsuariCasosUs {
             }
         }
 
-        Usuari usuari = new Usuari(email, contrasenya);
+        Usuari usuari = new Usuari(email, username, contrasenya);
         usuari = save(usuari);
 
         // Establir admin al primer usuari
@@ -79,7 +79,7 @@ public final class UsuariCasosUs {
         if( usuari == null)
             throw new RuntimeException("Email no trobat!");
 
-        return contrasenya == usuari.getContrasenya();
+        return contrasenya == usuari.getPassword();
     }
 
     public void promocionarAdmin(Usuari usuari) {

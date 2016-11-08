@@ -29,16 +29,21 @@
         </div>
 
         <label th:class="${#fields.hasErrors('email')}? 'error'">correu electrònic</label>:<br/>
-        <input name="login" type="text" class="form-control" autofocus="autofocus" autocapitalize="off" autocomplete="off"
+        <input name="email" type="text" class="form-control" autofocus="autofocus" autocapitalize="off" autocomplete="off"
                th:field="*{email}"
                th:class="${#fields.hasErrors('email')}? 'form-control error': 'form-control'" /><br/>
 
+        <input name="username" type="text" class="form-control" autofocus="autofocus" autocapitalize="off" autocomplete="off"
+               th:field="*{username}"
+               th:class="${#fields.hasErrors('username')}? 'form-control error': 'form-control'" /><br/>
 
-        <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">contrasenya</label>:<br/>
-        <input name="contrasenya"  type="password" class="form-control" autocomplete="off"
-                th:field="*{contrasenya}"
-               th:class="${#fields.hasErrors('contrasenya')}? 'form-control error': 'form-control'" /><br/>
-        <label th:class="${#fields.hasErrors('contrasenya')}? 'error'">confirmar contrasenya</label>:
+
+        <label th:class="${#fields.hasErrors('password')}? 'error'">password</label>:<br/>
+        <input name="password"  type="password" class="form-control" autocomplete="off"
+                th:field="*{password}"
+               th:class="${#fields.hasErrors('password')}? 'form-control error': 'form-control'" /><br/>
+
+        <label th:class="${#fields.hasErrors('password')}? 'error'">confirmar password</label>:
         <input name="confirmaContrasenya"  type="password" class="form-control" autocomplete="off"
          /><br/>
 

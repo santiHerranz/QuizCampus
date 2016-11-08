@@ -69,7 +69,7 @@ public class UsuariCasosUsController {
             return "usuariForm";
 
         try {
-            user = usuariCasosUs.crearUsuari(user.getEmail(), user.getContrasenya());
+            user = usuariCasosUs.crearUsuari(user.getEmail(), user.getUsername(), user.getPassword());
 
         } catch (ContrasenyaNoValidaException e) {
 
