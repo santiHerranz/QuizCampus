@@ -2,13 +2,16 @@ package com.tecnocampus.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
-public class Enquesta extends Clau implements Serializable {
+public class Enquesta implements Serializable {
 
+    private Long Id;
+    private Date dataCreacio;
     private String titol;
     private List<Pregunta> preguntes;
 
@@ -18,6 +21,20 @@ public class Enquesta extends Clau implements Serializable {
     public Enquesta(String titol) {
         this.titol = titol;
         this.preguntes = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return Id;
+    }
+    public void setId(Long Id) {
+        this.Id = Id;
+    }
+
+    public Date getDataCreacio() {
+        return dataCreacio;
+    }
+    public void setDataCreacio(Date dataCreacio) {
+        this.dataCreacio = dataCreacio;
     }
 
     public String getTitol() {
@@ -40,8 +57,8 @@ public class Enquesta extends Clau implements Serializable {
 
     @Override
     public java.lang.String toString() {
-        return String.format("Enquesta[%s,titol:%s,data:%s]",
-                super.toString(), titol);
+        return String.format("Enquesta[Id: %s, Creat:%s, titol:%s]",
+                this.Id, this.dataCreacio, titol);
     }
 
 }

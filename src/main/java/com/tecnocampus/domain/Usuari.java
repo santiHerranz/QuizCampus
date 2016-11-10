@@ -1,15 +1,19 @@
 package com.tecnocampus.domain;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by santi on 03/10/2016.
  */
 
-public class Usuari extends Clau {
+public class Usuari implements Serializable {
 
+    private Long Id;
+    private Date dataCreacio;
     private String email;
     private String password;
     private String username;
@@ -32,6 +36,21 @@ public class Usuari extends Clau {
         roles = new ArrayList<>();
         respostes = new ArrayList<>();
     }
+
+    public Long getId() {
+        return Id;
+    }
+    public void setId(Long Id) {
+        this.Id = Id;
+    }
+
+    public Date getDataCreacio() {
+        return dataCreacio;
+    }
+    public void setDataCreacio(Date dataCreacio) {
+        this.dataCreacio = dataCreacio;
+    }
+
 
     public String getEmail() {
         return email;

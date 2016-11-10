@@ -1,14 +1,17 @@
 package com.tecnocampus.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
-public abstract class Pregunta extends Clau implements IPregunta, Serializable {
+public abstract class Pregunta implements IPregunta, Serializable {
 
+    private Long Id;
+    private Date dataCreacio;
     private String enunciat = "";
     private Enquesta enquesta;
     protected List<Resposta> respostes;
@@ -21,6 +24,21 @@ public abstract class Pregunta extends Clau implements IPregunta, Serializable {
         setEnquesta(enquesta);
         setEnunciat(enunciat);
     }
+
+    public Long getId() {
+        return Id;
+    }
+    public void setId(Long Id) {
+        this.Id = Id;
+    }
+
+    public Date getDataCreacio() {
+        return dataCreacio;
+    }
+    public void setDataCreacio(Date dataCreacio) {
+        this.dataCreacio = dataCreacio;
+    }
+
 
     public String getEnunciat() {
         return enunciat;
@@ -45,10 +63,8 @@ public abstract class Pregunta extends Clau implements IPregunta, Serializable {
 
 
     public java.lang.String toString() {
-        return ""+ super.toString()
-                +" enunciat: \""+ this.enunciat +"\""
-                +", "+ this.enquesta +""
-                +"";
+        return String.format("Pregunta[Id: %s, Creat:%s, enunciat:%s, %s]",
+                Id, dataCreacio, enunciat, enquesta);
     }
 
 

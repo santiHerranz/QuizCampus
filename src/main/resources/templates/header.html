@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
 </head>
@@ -34,7 +34,21 @@
 
                 <button type="submit" class="btn btn-success glyphicon glyphicon-log-in">Entrar</button>
 -->
+                <div th:fragment="login" class="login" sec:authorize="!isAuthenticated()">
                 <a  class="btn btn-success" href="/registre" > Registre</a>
+                </div>
+
+                <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
+                    <label th:text="${#httpServletRequest.remoteUser}">Usuari</label>
+                    Logged in user: <span sec:authentication="name"></span> |
+                    Roles: <span sec:authentication="principal.authorities"></span>
+                    <div>
+                        <form action="#" th:action="@{/logout}" method="post">
+                            <input class="btn btn-success" type="submit" value="Sortir"    />
+                        </form>
+                    </div>
+                </div>
+
             </form>
 
         </ul>
