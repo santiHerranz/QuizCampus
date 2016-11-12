@@ -5,17 +5,8 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-theme.min.css"  th:href="@{/css/bootstrap-theme.min.css}" />
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" />
 
-    <script src="../static/js/vendor/jquery-1.11.2.min.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
-    <script src="../static/js/vendor/bootstrap.min.js"  th:src="@{/js/vendor/bootstrap.min.js}"></script>
-
-    <script>
-         function confirmDelete (id, name) {
-            $('#deleteModal').modal();
-        };
-
-    </script>
 
     <title>Llistat d'enquestes</title>
 </head>
@@ -39,7 +30,7 @@
             <tr>
                 <th><a href="#">Titol</a></th>
                 <th><a href="#">Preguntes</a></th>
-                <th><a href="#">Data creació</a></th>
+                <th><a href="#">Creació</a></th>
                 <th style="width: 150px;" class="text-center">&nbsp;</th>
             </tr>
             </thead>
@@ -47,17 +38,20 @@
             <tr th:each="enquesta : ${enquestaList}"
                 th:id="'enquesta_' + ${enquesta.id}">
                 <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${enquesta.titol}" >titol</a></td>
-                <td><span th:text="${enquesta.getPreguntes().size()}" >Preguntes</span></td>
+                <td>
+                    <span th:text="${enquesta.getPreguntes().size()}" >Preguntes</span>
+                    <a class="btn btn-success btn-xs" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.id}" >&plus;</a>
+                </td>
                 <td><span th:text="${enquesta.dataCreacio}" >data</span></td>
                 <td class="text-center">
-
-                <div class="btn-group btn-group-xs">
-                    <!--
-                    <a th:href="@{'/enquestes/edita/' + ${enquesta.id}}" data-toggle="tooltip" title="Modificar" class="btn btn-default">editar</a>
-                    <a onclick="BootstrapDialog.confirm('Hi Apple, are you sure?');" title="Eliminar" class="btn btn-danger">esborrar</a>-->
-                </div>
-
+                    <form th:id="'form_enquesta_' + ${enquesta.id}" action="#" th:action="@{'/enquestes/'+ ${enquesta.id} +'/esborra'}" method="post">
+                        <div class="btn-group">
+                            <a class="btn btn-default btn-xs" th:href="${'/enquestes/'+ enquesta.id +'/edita'}" role="button">Edita</a>
+                            <a class="btn btn-danger btn-xs" th:onclick="${'confirmDelete('+ enquesta.id +', ''Segur que vols eliminar &lt;b&gt;'+ enquesta.titol +'&lt;/b&gt;?'')'}" title="Eliminar">X</a>
+                        </div>
+                    </form>
                 </td>
+
             </tr>
             </tbody>
         </table>
@@ -73,21 +67,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Confirmació</h4>
+                <h4 class="modal-title" id="myModalLabel">Eliminar enquesta</h4>
             </div>
-            <div class="modal-body"></div>
+            <div class="modal-body" id="confirmDeleteMessage"></div>
             <div class="modal-footer">
-                <form method="POST" class="form-horizontal form-bordered">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger" >Eliminar</button>
-                </form>
-
+                <input type="hidden" id="itemToDelete" value="" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="$('#form_enquesta_'+ itemToDelete.value).submit();">Eliminar</button>
             </div>
         </div>
     </div>
 </div>
 <!-- END Delete Modal -->
 
+<div th:replace="links :: links">links</div>
 
 </body>
 </html>

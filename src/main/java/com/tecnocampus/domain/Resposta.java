@@ -1,5 +1,6 @@
 package com.tecnocampus.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
  *  - Qui ha respost
  *  - Quina pregunta s'ha respost
  */
-public abstract class Resposta implements IResposta {
+public abstract class Resposta implements IResposta, Serializable {
 
     private Long Id;
     private Date dataCreacio;

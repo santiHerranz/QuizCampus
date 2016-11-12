@@ -4,6 +4,7 @@
 
 INSERT INTO usuari (email,username, password, admin) VALUES ('sherranzm@edu.tecnocampus.cat','sherranzm', '$2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC', true);
 INSERT INTO usuari_roles (usuariId, role) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO usuari_roles (usuariId, role) VALUES (1, 'ROLE_USER');
 
 INSERT INTO usuari (email,username,password, admin) VALUES ('iargemi@edu.tecnocampus.cat','iargemi', '$2a$10$eg0cwZu8qqxSVbb2x1xIk.ch3UN/Gn6LBip4WrVhMsxqDUcNzIcUC', true);
 INSERT INTO usuari_roles (usuariId, role) VALUES (2, 'ROLE_ADMIN');

@@ -1,12 +1,14 @@
 package com.tecnocampus.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by santi on 03/10/2016.
  *
  *  Part específica de la resposta numérica
  *  - Valor numéric entre els valors límits de la pregunta
  */
-public final class RespostaNumerica extends Resposta {
+public final class RespostaNumerica extends Resposta implements Serializable {
 
     private int valor;
 

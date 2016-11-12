@@ -17,7 +17,8 @@ CREATE TABLE usuari_roles (
   usuariId int NOT NULL,
   role varchar(45) NOT NULL,
   UNIQUE KEY uni_username_role (role,usuariId),
-  CONSTRAINT fk_usuariId FOREIGN KEY (usuariId) REFERENCES usuari (usuariId));
+  CONSTRAINT fk_usuariId FOREIGN KEY (usuariId) REFERENCES usuari (usuariId) ON DELETE CASCADE
+);
 
 
 

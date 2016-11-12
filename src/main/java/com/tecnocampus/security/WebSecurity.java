@@ -1,5 +1,8 @@
 package com.tecnocampus.security;
 
+import com.tecnocampus.BeansManager;
+import com.tecnocampus.domain.Usuari;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +12,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebSecurity {
 
+    @Autowired
+    BeansManager beansManager;
+
     public boolean checkUserId(Authentication authentication, String id) {
 
-        return id.equals(authentication.getName());
+        Usuari u = beansManager.usuariRepository.findOne(Long.parseLong(id));
+        if (u == null) return false;
+        return u.getUsername().equals(authentication.getName());
     }
 
 

@@ -169,7 +169,11 @@ public class UsuariRepository {
                 );
     }
 
-
+    private List<String> findRoles(String usuariId) {
+        return jdbcOperations.query("Select * from usuari_roles where usuariId = ?",
+                (rs,i) -> rs.getString("role"),
+                usuariId);
+    }
 
 
     private final class UsuariMapper implements RowMapper<Usuari> {
@@ -178,6 +182,8 @@ public class UsuariRepository {
             Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("username"), resultSet.getString("password"));
             usuari.setId(resultSet.getLong("usuariid"));
             usuari.setDataCreacio(resultSet.getDate("data_creacio"));
+
+            usuari.addRoles(findRoles(resultSet.getLong("usuariid")));
 
             Iterable<Resposta> list = beansManager.respostaRepository.findAllFromUser(usuari.getId());
             for (Resposta r: list) {

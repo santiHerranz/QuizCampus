@@ -118,11 +118,11 @@ public final class UsuariCasosUs {
     }
 
     public List<Usuari> llistarUsuaris() {
-        return beansManager.usuariRepository.findAllLazy();
+        return beansManager.usuariRepository.findAll();
     }
 
-    public Usuari cercarUsuari(String email) {
-        return beansManager.usuariRepository.findOne(email);
+    public Usuari cercarUsuari(String username) {
+        return beansManager.usuariRepository.findOne(username);
     }
 
     public Usuari cercarUsuari(long usuariId) {
@@ -132,4 +132,5 @@ public final class UsuariCasosUs {
     public void esborraResposta(Resposta resposta) {
         beansManager.respostaRepository.delete(resposta);
     }
+
 }

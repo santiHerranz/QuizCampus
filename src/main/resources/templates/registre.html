@@ -16,7 +16,7 @@
 <div class="container">
 
     <div class="block-title">
-        <h2><strong>Nou usuari</strong></h2>
+        <h2><strong>Registra't</strong></h2>
     </div>
 
 
@@ -33,6 +33,7 @@
                th:field="*{email}"
                th:class="${#fields.hasErrors('email')}? 'form-control error': 'form-control'" /><br/>
 
+        <label th:class="${#fields.hasErrors('username')}? 'error'">Username</label>:<br/>
         <input name="username" type="text" class="form-control" autofocus="autofocus" autocapitalize="off" autocomplete="off"
                th:field="*{username}"
                th:class="${#fields.hasErrors('username')}? 'form-control error': 'form-control'" /><br/>

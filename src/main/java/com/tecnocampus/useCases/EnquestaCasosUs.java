@@ -104,4 +104,12 @@ public class EnquestaCasosUs {
 
         return beansManager.enquestaRepository.findOne(enquestaId);
     }
+
+
+    public Pregunta obtenirPregunta(long preguntaId) {
+        return beansManager.preguntaRepository.findOne(preguntaId);
+    }
+    public void eliminarPregunta(Pregunta pregunta) {
+        beansManager.preguntaRepository.delete(pregunta);
+    }
 }

@@ -9,40 +9,7 @@
 
 <body>
 
-<div th:replace="header :: header">
-    <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">QUIZCAMPUS</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Inici</a></li>
-                <li><a href="/usuaris">Usuaris</a></li>
-                <li><a href="#">Enquestes</a></li>
-                <li><a href="#">Preguntes</a></li>
-                <li><a href="#">Estadístiques</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-
-                <form class="navbar-form navbar-right" role="form">
-                    <!--
-                    <div class="form-group">
-                        <input type="text" placeholder="Email" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" class="form-control" />
-                    </div>
-
-                    <button type="submit" class="btn btn-success glyphicon glyphicon-log-in">Entrar</button>
-    -->
-                    <a  class="btn btn-success glyphicon glyphicon-user" href="/registre" > Registre</a>
-                </form>
-
-            </ul>
-        </div>
-    </nav>
-
-</div>
+<div th:replace="header :: header">Header</div>
 
 
 <!-- Main jumbotron for a primary marketing message or call to action -->
@@ -86,10 +53,8 @@
 </div>
 
 <!-- /container -->
-<script src="../static/js/vendor/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
-<script src="../static/js/vendor/jquery-1.11.2.min.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
-<script src="../static/js/main.js" th:src="@{/js/main.js}"></script>
 
+<div th:replace="links :: links">links</div>
 
 </body>
 </html>

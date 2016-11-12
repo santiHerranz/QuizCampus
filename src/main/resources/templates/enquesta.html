@@ -20,38 +20,86 @@
         <hr />
     </div>
     <div class="form-group form-actions">
-        <a class="btn btn-primary btn-sm" th:href="${'/enquestes/edita/'+ enquesta.Id}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+        <a class="btn btn-primary btn-sm" th:href="${'/enquestes/'+ enquesta.Id +'/edita'}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
         <a class="btn btn-success btn-sm" th:href="@{'/enquestes/nova'}" >Crear</a>
     </div>
 
 
 <div id="dataView" class="block">
 
-            <div class="form-group">
-                <label class="col-md-3 control-label" >Titol</label>
-                <label th:text="${enquesta.titol}" >titol</label>
-            </div>
-    <div class="form-group">
-        <label class="col-md-3 control-label" >Data creació</label>
+    <div class="col-md-6">
+        <label th:text="${enquesta.titol}" >titol</label>
+
+    </div>
+    <div class="col-md-6">
         <label th:text="${enquesta.dataCreacio}" >Data</label>
     </div>
 
+    <br />
+    <br />
+    <br />
+    <br />
+
     <fieldset>
-        <legend>Preguntes
-        </legend>
-        <ul>
-                <li th:each="pregunta : ${enquesta.preguntes}"
-                    th:id="'pregunta_' + ${pregunta.enunciat}">
-                    <span th:text="${pregunta.enunciat}">Enunciat pregunta</span> (<span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>)
-                </li>
-            </ul>
+        <legend>Preguntes</legend>
+        <div id="dataView" class="block">
+            <div class="table">
+                <table id="general-table" class="table table-striped table-vcenter">
+                    <thead>
+                    <tr>
+                        <th style="width: 80%;"><a href="#">enunciat</a></th>
+                        <th style="width: 15%;"><a href="#">interval</a></th>
+                        <th style="width: 150px;" class="text-center">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  th:each="pregunta : ${enquesta.preguntes}"
+                        th:id="'pregunta_' + ${pregunta.id}">
+                        <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
+                        <td>
+                            <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
+                        </td>
+                        <td class="text-center">
+                            <form th:id="'form_pregunta_' + ${pregunta.id}" action="#" th:action="@{'/preguntes/'+ ${pregunta.id} +'/esborra'}" method="post">
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-xs" th:onclick="${'confirmDelete('+ pregunta.id +', ''Segur que vols eliminar &lt;b&gt;'+ pregunta.enunciat +'&lt;/b&gt;?'')'}" title="Eliminar">X</a>
+                                </div>
+                            </form>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
         <a class="btn btn-success btn-sm pull-left" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Afegir preguntes</a>
     </fieldset>
 </div>
 
 </div>
 
-<div th:replace="footer :: footer">&copy; 2013 The Static Templates</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Eliminar pregunta</h4>
+            </div>
+            <div class="modal-body" id="confirmDeleteMessage"></div>
+            <div class="modal-footer">
+                <input type="hidden" id="itemToDelete" value="" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="$('#form_pregunta_'+ itemToDelete.value).submit();">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Delete Modal -->
+
+<div th:replace="links :: links">links</div>
 
 </body>
 </html>

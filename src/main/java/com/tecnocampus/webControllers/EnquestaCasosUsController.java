@@ -1,6 +1,7 @@
 package com.tecnocampus.webControllers;
 
 import com.tecnocampus.domain.Enquesta;
+import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.exceptions.EnquestaDuplicadaException;
 import com.tecnocampus.security.SecurityService;
 import com.tecnocampus.useCases.EnquestaCasosUs;
@@ -28,6 +29,7 @@ public class EnquestaCasosUsController {
 
     private SecurityService securityService;
     private EnquestaCasosUs enquestaCasosUs;
+
 
     public EnquestaCasosUsController(EnquestaCasosUs enquestaCasosUs, SecurityService securityService) {
         this.enquestaCasosUs = enquestaCasosUs;
@@ -61,7 +63,7 @@ public class EnquestaCasosUsController {
         return "enquestaForm";
     }
 
-    @GetMapping("enquestes/edita/{enquestaId}")
+    @GetMapping("enquestes/{enquestaId}/edita")
     public String editItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
 
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
@@ -70,7 +72,7 @@ public class EnquestaCasosUsController {
     }
 
 
-    @PostMapping("enquestes/edita/{enquestaId}")
+    @PostMapping("enquestes/{enquestaId}/edita")
     public String processEditItem(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors())
@@ -113,13 +115,29 @@ public class EnquestaCasosUsController {
 
     }
 
-    @PostMapping("enquestes/esborra/{enquestaId}")
+    @PostMapping("enquestes/{enquestaId}/esborra")
     public String processDeleteItem(@PathVariable("enquestaId") Long enquestaId) {
 
-        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
-        enquestaCasosUs.eliminarEnquesta(enquesta);
+        try {
+            Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
+            enquestaCasosUs.eliminarEnquesta(enquesta);
 
+        } catch (Exception e) {
+            return "redirect:/enquestes/"+ enquestaId;
+        }
         return "redirect:/enquestes";
     }
 
+
+    @PostMapping("preguntes/{preguntaId}/esborra")
+    public String processDeletePreguntaItem(@PathVariable("preguntaId") Long preguntaId) {
+
+        Pregunta pregunta = enquestaCasosUs.obtenirPregunta(preguntaId);
+        try {
+            enquestaCasosUs.eliminarPregunta(pregunta);
+
+        } catch (Exception e) {
+        }
+        return "redirect:/enquestes/"+ pregunta.getEnquesta().getId();
     }
+}

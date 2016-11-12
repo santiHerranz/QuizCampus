@@ -85,8 +85,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("/").permitAll()
                     .antMatchers("/static/**", "/registre/**", "/loggedInUser").permitAll()
-                    .antMatchers("/usuaris/").hasRole("USER")
-                    .antMatchers("/usuaris/{userId}/**").access("@webSecurity.checkUserId(authentication,#userId)")
+                    .mvcMatchers("/profile/").hasRole("USER")
+                    .mvcMatchers("/usuaris/**").hasRole("ADMIN")
+                    .mvcMatchers("/usuaris/{userId}/**").access("@webSecurity.checkUserId(authentication,#userId)")
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -96,7 +97,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                         .tokenValiditySeconds(2419200)
                         .key("notes")
                 .and()
-                    .logout().logoutUrl("logout").logoutSuccessUrl("/");
+                    .logout().logoutSuccessUrl("/");
 
             //Required to allow h2-console work
             http.csrf().disable();
