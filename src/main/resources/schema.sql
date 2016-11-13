@@ -3,12 +3,11 @@ DROP TABLE if EXISTS usuari;
 CREATE TABLE usuari
 (
   usuariId int NOT NULL auto_increment PRIMARY KEY , --
-  email VARCHAR (100) NOT NULL UNIQUE ,
-  username VARCHAR(45) NOT NULL ,
+  username VARCHAR(45) NOT NULL UNIQUE ,
   password VARCHAR(70) NOT NULL ,
   enabled TINYINT NOT NULL DEFAULT 1 ,
-  admin BOOLEAN NOT NULL DEFAULT (0)
-  , data_creacio DATE DEFAULT (sysdate)
+  email VARCHAR (100) NULL,
+  data_creacio DATE DEFAULT (sysdate)
 );
 
 DROP TABLE if EXISTS usuari_roles;

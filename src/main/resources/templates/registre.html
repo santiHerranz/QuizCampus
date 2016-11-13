@@ -21,17 +21,19 @@
 
 
     <form method="POST" th:object="${usuari}">
-        <div class="errors" th:if="${#fields.hasErrors('*')}">
+
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('*')}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="alert-heading">Error al registrar!</h4>
+            <p>El registre no compleix les següents normes:</p>
             <ul>
-                <li th:each="err : ${#fields.errors('*')}"
-                    th:text="${err}">Input is incorrect</li>
+            <li th:each="err : ${#fields.errors('*')}"
+                th:text="${err}">Input is incorrect</li>
             </ul>
         </div>
 
-        <label th:class="${#fields.hasErrors('email')}? 'error'">correu electrònic</label>:<br/>
-        <input name="email" type="text" class="form-control" autofocus="autofocus" autocapitalize="off" autocomplete="off"
-               th:field="*{email}"
-               th:class="${#fields.hasErrors('email')}? 'form-control error': 'form-control'" /><br/>
 
         <label th:class="${#fields.hasErrors('username')}? 'error'">Username</label>:<br/>
         <input name="username" type="text" class="form-control" autofocus="autofocus" autocapitalize="off" autocomplete="off"
@@ -55,6 +57,8 @@
     </form>
 
 </div>
+
+<div th:replace="links :: links">links</div>
 
 </body>
 </html>

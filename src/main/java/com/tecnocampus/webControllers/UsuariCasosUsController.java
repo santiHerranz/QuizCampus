@@ -60,16 +60,25 @@ public class UsuariCasosUsController {
 
 
     @PostMapping("/usuaris/{usuariId}/esborra")
-    public String processDeleteUser(@PathVariable("usuariId") Long usuariId) {
+    public String processDeleteUser(@PathVariable("usuariId") Long usuariId,
+                                    final RedirectAttributes redirectAttributes) {
+
+        Usuari user = usuariCasosUs.cercarUsuari(usuariId);
 
         try {
-            Usuari user = usuariCasosUs.cercarUsuari(usuariId);
             usuariCasosUs.eliminarUsuari(user);
 
+            redirectAttributes.addFlashAttribute("css", "success");
+            redirectAttributes.addFlashAttribute("msg", user.getUsername() +" esborrat!");
+
+            return "redirect:/usuaris";
+
         } catch (Exception e) {
-            return "redirect:/usuaris/"+ usuariId;
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", user.getUsername() +" "+ e.getMessage());
+
+            return "redirect:/usuaris";
         }
-        return "redirect:/usuaris/";
     }
 
 
@@ -97,7 +106,7 @@ public class UsuariCasosUsController {
             return "registre";
 
         try {
-            user = usuariCasosUs.crearUsuari(user.getEmail(), user.getUsername(), user.getPassword());
+            user = usuariCasosUs.crearUsuari(user.getUsername(), user.getPassword());
 
         } catch (ContrasenyaNoValidaException e) {
 
@@ -115,8 +124,8 @@ public class UsuariCasosUsController {
             return "registre";
         }
 
-        redirectAttributes.addAttribute("id", user.getId());
-        redirectAttributes.addFlashAttribute("usuari", user);
+        //redirectAttributes.addAttribute("id", user.getId());
+        //redirectAttributes.addFlashAttribute("usuari", user);
         return "redirect:/";
 
     }

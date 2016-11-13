@@ -32,7 +32,7 @@ public class UsuariCasosUsTest {
 		//creem l'usuari
 		Usuari testAdmin = usuariCasosUs.crearUsuari("ADMIN","ADMIN","qwertyuioP53");
 		//cerquem per email
-		Usuari usuari = usuariCasosUs.cercarUsuari(testAdmin.getEmail());
+		Usuari usuari = usuariCasosUs.cercarUsuari(testAdmin.getUsername());
 		// els dos usuaris han de tenir el mateix id
 		Assert.assertTrue(testAdmin.getId().equals(usuari.getId()));
 	}
@@ -66,9 +66,9 @@ public class UsuariCasosUsTest {
 	@Test
 	public void comprobarContrasenyaTest(){
 		Usuari usuari = usuariCasosUs.cercarUsuari(1L);
-		String email = usuari.getEmail();
+		String username = usuari.getUsername();
 		String password = usuari.getPassword();
-		Boolean result = usuariCasosUs.comprobarContrasenya(email, password);
+		Boolean result = usuariCasosUs.comprobarContrasenya(username, password);
 		Assert.assertTrue(result);
 	}
 
@@ -99,7 +99,7 @@ public class UsuariCasosUsTest {
 	@Test
 	public void canviarEmailTest(){
 		Usuari usuari = usuariCasosUs.cercarUsuari(2L);
-		usuari.setEmail("sherranzm");
+		usuari.setUsername("sherranzm");
 		usuariCasosUs.save(usuari);
 	}
 
@@ -109,7 +109,7 @@ public class UsuariCasosUsTest {
 
 		Usuari usuari1 = usuariCasosUs.cercarUsuari(1L);
 		Usuari usuari2 = usuariCasosUs.cercarUsuari(2L);
-		usuari1.setEmail(usuari2.getEmail());
+		usuari1.setUsername(usuari2.getUsername());
 		usuariCasosUs.save(usuari1);
 	}
 

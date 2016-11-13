@@ -14,7 +14,6 @@ public class Usuari implements Serializable {
 
     private Long Id;
     private Date dataCreacio;
-    private String email;
     private String password;
     private String username;
     private List<String> roles;
@@ -25,13 +24,10 @@ public class Usuari implements Serializable {
     public Usuari() {
     }
 
-    public Usuari(String email, String username, String contrasenya) {
-        if (username==null) throw new NullPointerException("username");
-        if (email==null) throw new NullPointerException("email");
+    public Usuari(String username, String contrasenya) {
         if (contrasenya==null) throw new NullPointerException("password");
 
         setUsername(username);
-        setEmail(email);
         setPassword(contrasenya);
         roles = new ArrayList<>();
         respostes = new ArrayList<>();
@@ -51,19 +47,9 @@ public class Usuari implements Serializable {
         this.dataCreacio = dataCreacio;
     }
 
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -95,14 +81,10 @@ public class Usuari implements Serializable {
     }
 
 
+    @Override
     public java.lang.String toString() {
-
-        return "{"
-                + super.toString()
-                +" email: \""+ this.email +"\""
-                +", admin: \""+ this.roles +"\""
-                //+", respostes("+ this.respostes.size() +") "
-                +"}";
+        return String.format("Enquesta[Id: %s, Creat:%s, roles:%s]",
+                this.Id, this.dataCreacio, roles);
     }
 
 
@@ -111,8 +93,14 @@ public class Usuari implements Serializable {
     }
 
     public void setAdmin(boolean admin) {
-        if (this.roles.indexOf("ROLE_ADMIN") == -1)
-            this.roles.add("ROLE_ADMIN");
+        if(admin)
+            if (this.roles.indexOf("ROLE_ADMIN") == -1)
+                this.roles.add("ROLE_ADMIN");
+        else {
+            int index = this.roles.indexOf("ROLE_ADMIN");
+            if ( index > -1)
+                this.roles.remove(index);
+        }
     }
 
     public boolean isAdmin() {

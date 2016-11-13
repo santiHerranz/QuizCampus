@@ -16,11 +16,13 @@
 <div class="container">
 
     <div class="form-group form-actions pull-right">
-        <form method="POST" th:action="${'/enquestes/esborra/'+ enquesta.Id}"  action="/enquestes/esborra" class="form-horizontal form-bordered">
-            <button type="submit" class="btn btn-sm btn-danger" th:disabled="${enquesta.Id == null}" >Esborra</button>
+        <form th:id="'form_enquesta_' + ${enquesta.id}" action="#" th:action="@{'/enquestes/'+ ${enquesta.id} +'/esborra'}" method="post">
+            <div class="btn-group">
+                <a class="btn btn-danger btn-xs"
+                   th:disabled="${enquesta.Id == null}"
+                   th:onclick="${'confirmDelete('+ enquesta.id +', ''Segur que vols eliminar &lt;b&gt;'+ enquesta.titol +'&lt;/b&gt;?'')'}" title="Eliminar">Eliminar</a>
+            </div>
         </form>
-        <!--
-        -->
     </div>
 
 
@@ -60,6 +62,28 @@
     </form>
 
 </div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Eliminar enquesta</h4>
+            </div>
+            <div class="modal-body" id="confirmDeleteMessage"></div>
+            <div class="modal-footer">
+                <input type="hidden" id="itemToDelete" value="" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="$('#form_enquesta_'+ itemToDelete.value).submit();">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Delete Modal -->
+
+<div th:replace="links :: links">links</div>
 
 </body>
 </html>

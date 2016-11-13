@@ -12,18 +12,28 @@
 
 <div class="container">
 
-<h3>Identificació</h3>
-<p th:if="${loginError}" class="error">Wrong user or password</p>
+<h4>Accedir</h4>
+
+    <div th:class="${'alert alert-danger'}" role="alert" th:if="${param.error}">
+        <strong>Username o contrasenya incorrectes!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
 <form name="f" th:action="@{/login}" method="post">
-    <table>
-        <tr><td>User:</td><td>
-            <input type="text" class="form-control" name="username" value="" autofocus="autofocus" /></td></tr>
-        <tr><td>Password:</td>
-            <td><input type="password" class="form-control" name="password"/></td>
-        </tr>
-        <tr><td><input type="checkbox" name="remember-me" /></td><td>Remember me on this computer.</td></tr>
-        <tr><td colspan='2'><input name="submit" type="submit" value="Login" class="btn btn-success"/></td></tr>
-    </table>
+    <div class="form-group">
+        <label for="username"> Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Entra username" />
+    </div>
+    <div class="form-group">
+        <label for="password"> Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Entra password" />
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" value=""  name="remember-me" checked="checked" />Recorda'm</label>
+    </div>
+    <button type="submit" class="btn btn-success btn-block"> Login</button>
 </form>
     <p><a href="/" th:href="@{/}">Tornar</a></p>
 

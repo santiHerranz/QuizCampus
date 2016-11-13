@@ -28,13 +28,12 @@ public final class UsuariCasosUs {
 
     public UsuariCasosUs() {
     }
-    public Usuari crearUsuari(String email,String username, String contrasenya) {
-        return crearUsuari(email, username, contrasenya, contrasenya);
+    public Usuari crearUsuari(String username, String contrasenya) {
+        return crearUsuari(username, contrasenya, contrasenya);
     }
 
-    public Usuari crearUsuari(String email,String username, String contrasenya, String confirmaContrasenya) {
-        if(email == null ) throw new IllegalArgumentException();
-        if(contrasenya == null ) throw new IllegalArgumentException();
+    public Usuari crearUsuari(String username, String contrasenya, String confirmaContrasenya) {
+         if(contrasenya == null ) throw new IllegalArgumentException();
 
         if(!confirmaContrasenya.equals(contrasenya))
             throw  new RuntimeException("La contrasenya no coincideix");
@@ -50,7 +49,7 @@ public final class UsuariCasosUs {
             }
         }
 
-        Usuari usuari = new Usuari(email, username, contrasenya);
+        Usuari usuari = new Usuari(username, contrasenya);
         usuari = save(usuari);
 
         // Establir admin al primer usuari
@@ -71,13 +70,13 @@ public final class UsuariCasosUs {
         }
     }
 
-    public boolean comprobarContrasenya(String email, String contrasenya) {
-        if(email == null ) throw new IllegalArgumentException();
+    public boolean comprobarContrasenya(String username, String contrasenya) {
+        if(username == null ) throw new IllegalArgumentException();
         if(contrasenya == null ) throw new IllegalArgumentException();
 
-        Usuari usuari = beansManager.usuariRepository.findOne(email);
+        Usuari usuari = beansManager.usuariRepository.findOne(username);
         if( usuari == null)
-            throw new RuntimeException("Email no trobat!");
+            throw new RuntimeException("Username no trobat!");
 
         return contrasenya == usuari.getPassword();
     }
@@ -112,7 +111,7 @@ public final class UsuariCasosUs {
         if(esUltimAdmin(usuari))
             throw new RuntimeException("L'usuari és l'ultim administrador, no es pot eliminar!!!");
 
-        String msg = String.format("Usuari eliminat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
+        String msg = String.format("Usuari eliminat {id:%s, username:\"%s\"} %n", usuari.getId(), usuari.getUsername());
         beansManager.usuariRepository.delete(usuari);
         System.out.print(msg);
     }

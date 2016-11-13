@@ -32,9 +32,12 @@ public class UsuariRepository {
     BeansManager beansManager;
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM USUARI ";
-    private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (EMAIL, USERNAME, password) VALUES(?,?,?)";
-    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET EMAIL = ?, password = ? WHERE USUARIID = ?";
+    private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (USERNAME, password) VALUES(?,?)";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET password = ? WHERE USUARIID = ?";
     private static final String SQL_DELETE_STATEMENT = "DELETE FROM USUARI WHERE USUARIID = ?";
+
+    private static final String SQL_INSERT_ROLE_STATEMENT = "INSERT INTO usuari_roles (usuariId, role) VALUES(?,?)";
+    private static final String SQL_DELETE_ROLE_STATEMENT = "DELETE FROM usuari_roles WHERE usuariId = ? AND role = ?";
 
     public UsuariRepository(JdbcOperations jdbcOperations, PasswordEncoder passwordEncoder) {
 
@@ -48,14 +51,42 @@ public class UsuariRepository {
         } else {
             update(usuari);
         }
+        role_update(usuari);
+
         return findOne(usuari.getId());
+    }
+
+    private void role_update(Usuari usuari) {
+
+        List<String> dbRoles = findRoles(usuari.getId());
+
+        // inserta el que falten
+        for (String role : usuari.getRoles()) {
+            if(dbRoles.contains(role)){
+                dbRoles.remove(role);
+            } else {
+                this.jdbcOperations.update(
+                        SQL_INSERT_ROLE_STATEMENT
+                        , usuari.getId()
+                        , role
+                );
+
+            }
+        }
+        // elimina els que ja no hi son
+        for (String role : dbRoles) {
+            this.jdbcOperations.update(
+                    SQL_DELETE_ROLE_STATEMENT
+                    , usuari.getId()
+                    , role
+            );
+        }
     }
 
 
     private void update(Usuari usuari) {
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT
-                , usuari.getEmail()
                 , usuari.getUsername()
                 , passwordEncoder.encode(usuari.getPassword())
                 , usuari.getId()
@@ -77,14 +108,15 @@ public class UsuariRepository {
                 PreparedStatement ps = connection.prepareStatement(
                          SQL_INSERT_STATEMENT ,
                         new String[] { "usuariId" });
-                ps.setString(1, usuari.getEmail());
-                ps.setString(2, usuari.getUsername());
-                ps.setString(3, passwordEncoder.encode(usuari.getPassword()));
+                ps.setString(1, usuari.getUsername());
+                ps.setString(2, passwordEncoder.encode(usuari.getPassword()));
                 return ps;
             }
         }, keyHolder);
 
         usuari.setId(keyHolder.getKey().longValue());
+
+
     }
 
     /***
@@ -179,7 +211,7 @@ public class UsuariRepository {
     private final class UsuariMapper implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
-            Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("username"), resultSet.getString("password"));
+            Usuari usuari = new Usuari( resultSet.getString("username"), resultSet.getString("password"));
             usuari.setId(resultSet.getLong("usuariid"));
             usuari.setDataCreacio(resultSet.getDate("data_creacio"));
 
@@ -198,7 +230,7 @@ public class UsuariRepository {
     private final class UsuariMapperLazy implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
-            Usuari usuari = new Usuari(resultSet.getString("email"),resultSet.getString("username"), resultSet.getString("password"));
+            Usuari usuari = new Usuari(resultSet.getString("username"), resultSet.getString("password"));
             usuari.setId(resultSet.getLong("usuariid"));
             usuari.setDataCreacio(resultSet.getDate("data_creacio"));
 

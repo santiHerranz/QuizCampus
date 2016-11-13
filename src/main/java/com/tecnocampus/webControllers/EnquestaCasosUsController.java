@@ -115,29 +115,52 @@ public class EnquestaCasosUsController {
 
     }
 
-    @PostMapping("enquestes/{enquestaId}/esborra")
-    public String processDeleteItem(@PathVariable("enquestaId") Long enquestaId) {
+
+        @PostMapping("enquestes/{enquestaId}/esborra")
+    public String processDeleteUser(@PathVariable("enquestaId") Long enquestaId,
+                                    final RedirectAttributes redirectAttributes) {
+
+            Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
 
         try {
-            Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
             enquestaCasosUs.eliminarEnquesta(enquesta);
 
+            redirectAttributes.addFlashAttribute("css", "success");
+            redirectAttributes.addFlashAttribute("msg", enquesta.getTitol() +" esborrat!");
+
+            return "redirect:/enquestes";
+
         } catch (Exception e) {
-            return "redirect:/enquestes/"+ enquestaId;
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", enquesta.getTitol() +" "+ e.getMessage());
+
+            return "redirect:/enquestes";
         }
-        return "redirect:/enquestes";
     }
+
+
 
 
     @PostMapping("preguntes/{preguntaId}/esborra")
-    public String processDeletePreguntaItem(@PathVariable("preguntaId") Long preguntaId) {
+    public String processPreguntaUser(@PathVariable("preguntaId") Long preguntaId,
+                                    final RedirectAttributes redirectAttributes) {
 
         Pregunta pregunta = enquestaCasosUs.obtenirPregunta(preguntaId);
+
         try {
             enquestaCasosUs.eliminarPregunta(pregunta);
 
+            redirectAttributes.addFlashAttribute("css", "success");
+            redirectAttributes.addFlashAttribute("msg", pregunta.getEnunciat() +" esborrat!");
+
+            return "redirect:/enquestes/"+ pregunta.getEnquesta().getId();
+
         } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", pregunta.getEnunciat() +" "+ e.getMessage());
+
+            return "redirect:/enquestes/"+ pregunta.getEnquesta().getId();
         }
-        return "redirect:/enquestes/"+ pregunta.getEnquesta().getId();
     }
+
 }

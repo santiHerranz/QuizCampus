@@ -84,7 +84,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
             http.authorizeRequests()
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/static/**", "/registre/**", "/loggedInUser").permitAll()
+                    .antMatchers("/static/**", "/registre/**").permitAll()
                     .mvcMatchers("/profile/").hasRole("USER")
                     .mvcMatchers("/usuaris/**").hasRole("ADMIN")
                     .mvcMatchers("/usuaris/{userId}/**").access("@webSecurity.checkUserId(authentication,#userId)")
@@ -95,7 +95,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .and()
                     .rememberMe()
                         .tokenValiditySeconds(2419200)
-                        .key("notes")
+                        .key("quizcampus")
                 .and()
                     .logout().logoutSuccessUrl("/");
 

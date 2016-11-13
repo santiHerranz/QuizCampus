@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@WithMockUser(username="xxxxxx", roles={"USER", "ADMIN"})
-public @interface WithXXXXXXUser {
+@WithMockUser(username="normal", roles={"USER"})
+public @interface WithNORMALUser {
 
 }

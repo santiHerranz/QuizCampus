@@ -19,14 +19,20 @@
         <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
         <hr />
     </div>
+
+
     <div class="form-group form-actions">
-        <a class="btn btn-primary btn-sm" th:href="${'/enquestes/'+ enquesta.Id +'/edita'}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
-        <a class="btn btn-success btn-sm" th:href="@{'/enquestes/nova'}" >Crear</a>
+        <div class="btn-group">
+            <a class="btn btn-primary btn-sm" th:href="${'/enquestes/'+ enquesta.Id +'/edita'}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+            <a class="btn btn-success btn-sm" th:href="@{'/enquestes/nova'}" >Crear</a>
+        </div>
+
     </div>
 
 
 <div id="dataView" class="block">
 
+    <!--
     <div class="col-md-6">
         <label th:text="${enquesta.titol}" >titol</label>
 
@@ -35,13 +41,18 @@
         <label th:text="${enquesta.dataCreacio}" >Data</label>
     </div>
 
-    <br />
-    <br />
-    <br />
-    <br />
+    -->
 
     <fieldset>
         <legend>Preguntes</legend>
+
+        <div th:class="${'alert alert-'+ css +''}" role="alert" th:if="${msg != null}">
+            <strong th:text="${msg}">resultat</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
         <div id="dataView" class="block">
             <div class="table">
                 <table id="general-table" class="table table-striped table-vcenter">

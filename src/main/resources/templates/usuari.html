@@ -20,29 +20,13 @@
 <div class="container">
 
     <div class="block-title">
-        <a class=""  th:href="@{'/usuaris'}" >usuaris / </a> <span th:text="${usuari.email}">usuari</span>
+        <a class=""  th:href="@{'/usuaris'}" >Usuaris / </a> <span th:text="${usuari.username}">usuari</span>
         <hr />
     </div>
     <div class="form-group form-actions">
         <a class="btn btn-primary btn-sm" th:href="${'/usuaris/'+ usuari.Id +'/edita'}" href="/usuaris/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
     </div>
 
-
-    <div id="dataView" class="block">
-
-        <div class="form-group">
-            <label class="col-md-3 control-label" >Titol</label>
-            <label th:text="${usuari.email}" >titol</label>
-        </div>
-        <div class="form-group">
-            <label class="col-md-3 control-label" >Data creació</label>
-            <label th:text="${usuari.dataCreacio}" >Data</label>
-        </div>
-
-        <fieldset>
-            <legend></legend>
-        </fieldset>
-    </div>
 
 </div>
 

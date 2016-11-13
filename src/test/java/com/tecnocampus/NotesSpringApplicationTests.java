@@ -31,26 +31,33 @@ public class NotesSpringApplicationTests {
 	@Test
 	public void formHasErrors() throws Exception {
 		mockMvc.perform(post("/registre")
-						.param("name", "sergi"))
+						.param("username", "sergi"))
 		.andExpect(model().hasErrors());
 	}
 	
 	@Test
 	@WithAnonymousUser
-	public void testWithAnonymousUser() throws Exception {
-		mockMvc.perform(get("/usuaris/xxxxxx"))
+	public void testUsuarisWithAnonymousUser() throws Exception {
+		mockMvc.perform(get("/usuaris/1"))
 		.andExpect(redirectedUrl("http://localhost/login"));
 	}
-	
+
 	@Test
-	@WithMockUser("sergi")
+	@WithAnonymousUser
+	public void testEnquestesWithAnonymousUser() throws Exception {
+		mockMvc.perform(get("/enquestes/1"))
+				.andExpect(redirectedUrl("http://localhost/login"));
+	}
+
+	@Test
+	@WithMockUser("sherranzm")
 	public void testWithInvalidUser() throws Exception {
-		mockMvc.perform(get("/usuaris/xxxxxx"))
+		mockMvc.perform(get("/usuaris/1"))
 		.andExpect(status().isForbidden());
 	}
 	
 	@Test
-	@WithXXXXXXUser
+	@WithADMINUser
 	public void testWithValidUser() throws Exception {
 		mockMvc.perform(get("/usuaris/xxxxxx"))
 		.andExpect(status().isOk())
