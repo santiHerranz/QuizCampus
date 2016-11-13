@@ -1,6 +1,7 @@
 package com.tecnocampus.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public abstract class Pregunta implements IPregunta, Serializable {
     protected List<Resposta> respostes;
 
     public Pregunta(){
+        respostes = new ArrayList<Resposta>();
     }
 
     public Pregunta(Enquesta enquesta, String enunciat) {

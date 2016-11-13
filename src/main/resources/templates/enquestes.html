@@ -49,15 +49,12 @@
                 <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${enquesta.titol}" >titol</a></td>
                 <td>
                     <span th:text="${enquesta.getPreguntes().size()}" >Preguntes</span>
-                    <a class="btn btn-success btn-xs" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.id}" >&plus;</a>
+                    <a class="btn btn-success btn-sm" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.id}" >&plus;</a>
                 </td>
                 <td><span th:text="${enquesta.dataCreacio}" >data</span></td>
                 <td class="text-center">
                     <form th:id="'form_enquesta_' + ${enquesta.id}" action="#" th:action="@{'/enquestes/'+ ${enquesta.id} +'/esborra'}" method="post">
-                        <div class="btn-group">
-                            <a class="btn btn-default btn-xs" th:href="${'/enquestes/'+ enquesta.id +'/edita'}" role="button">Edita</a>
-                            <a class="btn btn-danger btn-xs" th:onclick="${'confirmDelete('+ enquesta.id +', ''Segur que vols eliminar &lt;b&gt;'+ enquesta.titol +'&lt;/b&gt;?'')'}" title="Eliminar">X</a>
-                        </div>
+                        <a class="btn btn-danger btn-sm" th:onclick="${'confirmDelete('+ enquesta.id +', ''Segur que vols eliminar &lt;b&gt;'+ enquesta.titol +'&lt;/b&gt;?'')'}" title="Eliminar">X</a>
                     </form>
                 </td>
 

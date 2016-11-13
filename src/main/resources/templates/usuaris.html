@@ -54,11 +54,10 @@
                     <td><span th:text="${usuari.dataCreacio}" >data</span></td>
                     <td><span th:text="${usuari.roles}" >roles</span></td>
                     <td>
-                        <div class="btn-group btn-group-xs">
-                            <form th:id="'form_usuari_' + ${usuari.id}" action="#" th:action="@{'/usuaris/'+ ${usuari.id} +'/esborra'}" method="post">
-                            </form>
-                            <a th:onclick="${'confirmDelete('+ usuari.id +', ''Segur que vols eliminar &lt;b&gt;'+ usuari.username +'&lt;/b&gt;?'')'}" title="Eliminar" class="btn btn-danger">X</a>
-                        </div>
+                        <form th:id="'form_usuari_' + ${usuari.id}" action="#" th:action="@{'/usuaris/'+ ${usuari.id} +'/esborra'}" method="post">
+                        </form>
+                        <a th:onclick="${'confirmDelete('+ usuari.id +', ''Segur que vols eliminar &lt;b&gt;'+ usuari.username +'&lt;/b&gt;?'')'}" title="Eliminar"
+                           class="btn btn-danger btn-sm">X</a>
                     </td>
                 </tr>
                 </tbody>

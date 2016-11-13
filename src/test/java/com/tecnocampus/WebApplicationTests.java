@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class NotesSpringApplicationTests {
+public class WebApplicationTests {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -50,7 +50,7 @@ public class NotesSpringApplicationTests {
 	}
 
 	@Test
-	@WithMockUser("sherranzm")
+	@WithMockUser("InvalidUser")
 	public void testWithInvalidUser() throws Exception {
 		mockMvc.perform(get("/usuaris/1"))
 		.andExpect(status().isForbidden());
@@ -59,8 +59,8 @@ public class NotesSpringApplicationTests {
 	@Test
 	@WithADMINUser
 	public void testWithValidUser() throws Exception {
-		mockMvc.perform(get("/usuaris/xxxxxx"))
+		mockMvc.perform(get("/usuaris/1"))
 		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("userLab"));
+		.andExpect(model().attributeExists("usuari"));
 	}
 }

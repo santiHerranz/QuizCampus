@@ -37,10 +37,15 @@ INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Valora la b
 INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Valora la cafeteria', 1, 10);
 
 
-INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,1,7.0);
-INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,2,6.0);
-INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,3,7.0);
-INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (1,4,6.0);
+INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (3,1,7.0);
+INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (3,1,7.0);
+INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (3,2,6.0);
+INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (3,3,7.0);
+INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (3,4,6.0);
+
+INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (4,1,7.0);
+INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (4,1,7.0);
+INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (4,2,6.0);
 
 
 INSERT INTO enquesta (titol, data_creacio) VALUES ('Professors en general', {ts '2012-09-17 18:47:52.69'} );
