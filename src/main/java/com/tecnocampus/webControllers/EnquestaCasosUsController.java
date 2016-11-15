@@ -37,6 +37,7 @@ public class EnquestaCasosUsController {
     }
 
 
+
     @GetMapping("enquestes")
     public List<Enquesta> listNotes() {
         return enquestaCasosUs.llistarEnquestes();

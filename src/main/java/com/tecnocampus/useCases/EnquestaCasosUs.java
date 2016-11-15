@@ -61,6 +61,16 @@ public class EnquestaCasosUs {
         return pregunta;
     }
 
+
+    @Transactional
+    public Resposta afegirResposta(Pregunta pregunta, int valor) {
+
+        RespostaNumerica resposta = new RespostaNumerica();
+        resposta.setValor(valor);
+
+        beansManager.respostaRepository.save(pregunta, resposta);
+        return resposta;
+    }
 /*
     public void metodeProva() {
         System.out.println("metodeProva");
@@ -78,6 +88,13 @@ public class EnquestaCasosUs {
         });
     }
 
+    public void afegirRespostes(Enquesta enquesta, BossaRespostes bossaRespostes) { /* */
+
+        bossaRespostes.getRespostes().forEach(respostaConsumer -> {
+            RespostaNumerica r = (RespostaNumerica)respostaConsumer;
+            afegirResposta(r.getPregunta(), r.getValor());
+        });
+    }
 
 
     public List<Enquesta> llistarEnquestes() {

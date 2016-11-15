@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class ContrasenyaUtils {
 
-    private final Pattern patroLlargada = Pattern.compile(".{9,}");
+    private final Pattern patroLlargada = Pattern.compile(".{6,}");
     private final Pattern patroNumero = Pattern.compile("\\d");
     private final Pattern patroLletresMajuscules = Pattern.compile("(?=.*[A-Z])");
     private final Pattern patroLletresMinuscules = Pattern.compile("(?=.*[a-z])");
@@ -21,7 +21,7 @@ public class ContrasenyaUtils {
     (?=.*[a-z]) a lower case letter must occur at least once
     (?=.*[A-Z]) an upper case letter must occur at least once
     (?=\\S+$) no whitespace allowed in the entire string
-    .{8,} at least 8 characters
+    .{8,} at least 6 characters
      */
 
     private ArrayList<String> errorList;
@@ -39,7 +39,7 @@ public class ContrasenyaUtils {
 
         Matcher matcher = patroLlargada.matcher(contrasenya);
         if (!matcher.matches())
-            errorList.add("La contrasenya no és prou llarga. Ha de tenir un mínim de 9 caràcters.");
+            errorList.add("La contrasenya no és prou llarga. Ha de tenir un mínim de 6 caràcters.");
 
 
         if (!patroNumero.matcher(contrasenya).find()) {
