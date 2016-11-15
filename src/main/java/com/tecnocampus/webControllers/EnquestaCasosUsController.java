@@ -72,11 +72,24 @@ public class EnquestaCasosUsController {
         return "enquestaForm";
     }
 
-    @GetMapping("enquestes/{enquestaId}/ordenarTaula")
+    @GetMapping("enquestes/{enquestaId}/reordena")
     public String ordenaItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         model.addAttribute(enquesta);
-        return "ordenarTaula";
+        return "enquestaReordenaPreguntes";
+    }
+
+    @PostMapping("enquestes/{enquestaId}/reordena")
+    public String processReordenaItem(@PathVariable("enquestaId") Long enquestaId, RedirectAttributes redirectAttributes) {
+
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
+
+        String orderedKeyList = "4,3,2,1";
+        enquestaCasosUs.reordenarPreguntes(enquesta, orderedKeyList);
+
+        redirectAttributes.addAttribute("id", enquesta.getId());
+        redirectAttributes.addFlashAttribute("enquesta", enquesta);
+        return "redirect:/enquestes/{id}";
     }
 
 

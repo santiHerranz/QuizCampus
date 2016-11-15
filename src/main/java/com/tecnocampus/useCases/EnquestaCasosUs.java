@@ -8,6 +8,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -78,6 +79,19 @@ public class EnquestaCasosUs {
 */
 
 
+    public void reordenarPreguntes(Enquesta enquesta, String orderedKeyList) {
+
+        List<String> keys = Arrays.asList(orderedKeyList.split(","));
+        for (Pregunta p : enquesta.getPreguntes()) {
+            Long Id = p.getId();
+            int posicio = keys.indexOf(Id.toString());
+            if ( posicio != -1)
+                p.setOrdre(posicio+1);
+            beansManager.preguntaRepository.save(enquesta, p);
+        }
+    }
+
+
 
 
     public void afegirPreguntes(Enquesta enquesta, BossaPreguntes bossaPreguntes) { /* */
@@ -129,4 +143,5 @@ public class EnquestaCasosUs {
     public void eliminarPregunta(Pregunta pregunta) {
         beansManager.preguntaRepository.delete(pregunta);
     }
+
 }

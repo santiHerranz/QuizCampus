@@ -14,6 +14,7 @@ public abstract class Pregunta implements IPregunta, Serializable {
     private Long Id;
     private Date dataCreacio;
     private String enunciat = "";
+    private int ordre;
     private Enquesta enquesta;
     protected List<Resposta> respostes;
 
@@ -65,9 +66,16 @@ public abstract class Pregunta implements IPregunta, Serializable {
 
 
     public java.lang.String toString() {
-        return String.format("Pregunta[Id: %s, Creat:%s, enunciat:%s, %s]",
-                Id, dataCreacio, enunciat, enquesta);
+        return String.format("Pregunta[Id: %s, Creat:%s, ordre:%s, enunciat:%s, %s]",
+                Id, dataCreacio, ordre, enunciat, enquesta);
     }
 
+
+    public void setOrdre(int ordre) {
+        this.ordre = ordre;
+    }
+    public int getOrdre() {
+        return ordre;
+    }
 
 }

@@ -21,7 +21,8 @@
         <hr />
     </div>
 
-    <h4>Preguntes</h4>
+    <h4>Ordenar preguntes</h4>
+    <h5>Arrosega els enunciats de les preguntes amb l'ordre que vulguis</h5>
 
 
     <div id="dataView" class="block">
@@ -29,16 +30,17 @@
             <table id="general-table" class="table table-striped table-vcenter">
                 <thead>
                 <tr>
+                    <th style="width: 150px;" class="text-center">&nbsp;</th>
                     <th style="width: 80%;"><a href="#">enunciat</a></th>
                     <th style="width: 15%;"><a href="#">interval</a></th>
-                    <th style="width: 150px;" class="text-center">&nbsp;</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr  th:each="pregunta : ${enquesta.preguntes}"
+                <tbody  id="sortable">
+                <tr th:each="pregunta, row : ${enquesta.preguntes}"
                      th:id="'pregunta_' + ${pregunta.id}">
-                    <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
-                    <td>
+                    <td class="ui-state-default"><span th:text="${row.index+1}">0</span></td>
+                    <td class="ui-state-default"><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
+                    <td class="ui-state-default">
                         <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
                     </td>
                 </tr>
@@ -47,13 +49,15 @@
         </div>
     </div>
     <script type="text/javascript">
-        $('tbody').sortable();
+        $('#sortable').sortable();
     </script>
 
 
     <div class="btn-group">
-        <input type="submit" value="Guardar" class="btn btn-sm btn-success" name="_eventId_preguntesAcabades"/>
-        <input type="submit" value="Cancelar" class="btn btn-sm btn-default" name="_eventId_cancel" />
+        <form method="POST" th:object="${enquesta}" class="form-horizontal form-bordered">
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success"/>
+            <a th:href="@{'/enquestes/' + ${enquesta.id}}" class="btn btn-sm btn-default">Cancelar</a>
+        </form>
     </div>
 
 </div>

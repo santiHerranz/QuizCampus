@@ -35,7 +35,7 @@ CREATE TABLE pregunta
   preguntaId int auto_increment PRIMARY KEY, --
   enquestaId int NOT NULL,
   enunciat VARCHAR (500) NOT NULL,
-  --ordre int,  -- Ampliació: canviar l'ordre de les preguntes de l'enquesta
+  ordre int DEFAULT(0),  -- Ampliació: canviar l'ordre de les preguntes de l'enquesta
   minim int,
   maxim int
   , data_creacio DATE DEFAULT (sysdate)

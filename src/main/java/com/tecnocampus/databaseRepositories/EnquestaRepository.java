@@ -17,6 +17,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -168,7 +170,13 @@ public class EnquestaRepository {
             enquesta.setId(resultSet.getLong("enquestaId"));
             enquesta.setDataCreacio(resultSet.getDate("data_creacio"));
 
-            Iterable<Pregunta> list = beansManager.preguntaRepository.findAllFromQuiz(enquesta.getId());
+            List<Pregunta> list = beansManager.preguntaRepository.findAllFromQuiz(enquesta.getId());
+
+            Collections.sort(list, new Comparator<Pregunta>() {
+                public int compare(Pregunta o1, Pregunta o2) {
+                    return o2.getOrdre() - o1.getOrdre();
+                }});
+
             for (Pregunta p: list) {
                 p.setEnquesta(enquesta);
                 enquesta.afegirPregunta(p);

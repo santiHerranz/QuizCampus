@@ -31,10 +31,10 @@ INSERT INTO usuari_roles (usuariId, role) VALUES (6, 'ROLE_USER');
 
 
 INSERT INTO enquesta (titol) VALUES ('General');
-INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Valora les instalacions', 1, 10);
-INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Valora els laboratoris', 1, 10);
-INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Valora la biblioteca', 1, 10);
-INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Valora la cafeteria', 1, 10);
+INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'1.Valora les instalacions', 1, 10);
+INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'2.Valora els laboratoris', 1, 10);
+INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'3.Valora la biblioteca', 1, 10);
+INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'4.Valora la cafeteria', 1, 10);
 
 
 INSERT INTO resposta (usuariId, preguntaId, valor) VALUES (3,1,7.0);

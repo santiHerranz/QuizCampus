@@ -32,8 +32,8 @@ public class PreguntaRepository {
     RespostaRepository respostaRepository;
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM PREGUNTA ";
-    private static final String SQL_INSERT_STATEMENT = "INSERT INTO PREGUNTA (ENQUESTAID, ENUNCIAT, MAXIM, MINIM) VALUES(?,?,?,?)";
-    private static final String SQL_UPDATE_STATEMENT = "UPDATE PREGUNTA SET ENUNCIAT = ?, MAXIM = ?, MINIM = ? WHERE PREGUNTAID = ?";
+    private static final String SQL_INSERT_STATEMENT = "INSERT INTO PREGUNTA (ENQUESTAID, ORDRE, ENUNCIAT, MAXIM, MINIM) VALUES(?,?,?,?,?)";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE PREGUNTA SET ORDRE = ?, ENUNCIAT = ?, MAXIM = ?, MINIM = ? WHERE PREGUNTAID = ?";
     private static final String SQL_DELETE_STATEMENT = "DELETE PREGUNTA WHERE PREGUNTAID = ?";
 
     public PreguntaRepository(JdbcOperations jdbcOperations) {
@@ -60,9 +60,10 @@ public class PreguntaRepository {
                         SQL_INSERT_STATEMENT,
                         new String[] { "preguntaId" });
                 ps.setLong(1, enquesta.getId());
-                ps.setString(2, pregunta.getEnunciat());
-                ps.setInt(3, ((PreguntaNumerica)pregunta).getMaxim());
-                ps.setInt(4, ((PreguntaNumerica)pregunta).getMinim());
+                ps.setInt(2, pregunta.getOrdre());
+                ps.setString(3, pregunta.getEnunciat());
+                ps.setInt(4, ((PreguntaNumerica)pregunta).getMaxim());
+                ps.setInt(5, ((PreguntaNumerica)pregunta).getMinim());
                 return ps;
             }
         }, keyHolder);
@@ -78,7 +79,9 @@ public class PreguntaRepository {
 
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT,
-                new Object[] { pregunta.getEnunciat()
+                new Object[] {
+                          pregunta.getOrdre()
+                        , pregunta.getEnunciat()
                         , preguntaNumerica.getMaxim()
                         , preguntaNumerica.getMinim()
                         , pregunta.getId().toString()
@@ -123,7 +126,7 @@ public class PreguntaRepository {
 
     public List<Pregunta> findAll() {
         List<Pregunta> list = jdbcOperations.query(
-                SQL_SELECT_STATEMENT
+                SQL_SELECT_STATEMENT +" ORDER BY Ordre ASC"
                 , new PreguntaMapper()
         );
         return  list;
@@ -133,9 +136,9 @@ public class PreguntaRepository {
      * Aquesta funció llista totes les preguntes que pertanyin a l'esquesta que passem per parametre
      * @param enquestaId
      */
-    public Iterable<Pregunta> findAllFromQuiz(Long enquestaId) {
+    public List<Pregunta> findAllFromQuiz(Long enquestaId) {
         return jdbcOperations.query(
-                SQL_SELECT_STATEMENT +" WHERE enquestaId = ?"
+                SQL_SELECT_STATEMENT +" WHERE enquestaId = ? ORDER BY Ordre DESC"
                 , new Object[]{ enquestaId}
                 , new PreguntaMapper());
     }
@@ -150,6 +153,7 @@ public class PreguntaRepository {
 
             pregunta.setId(resultSet.getLong("preguntaid"));
             //pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
+            pregunta.setOrdre(resultSet.getInt("ordre"));
             pregunta.setEnunciat(resultSet.getString("enunciat"));
             pregunta.setMaxim(resultSet.getInt("maxim"));
             pregunta.setMinim(resultSet.getInt("minim"));
@@ -175,6 +179,7 @@ public class PreguntaRepository {
 
             pregunta.setId(resultSet.getLong("preguntaid"));
             //pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
+            pregunta.setOrdre(resultSet.getInt("ordre"));
             pregunta.setEnunciat(resultSet.getString("enunciat"));
             pregunta.setMaxim(resultSet.getInt("maxim"));
             pregunta.setMinim(resultSet.getInt("minim"));
