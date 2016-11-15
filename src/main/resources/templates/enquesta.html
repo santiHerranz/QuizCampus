@@ -6,7 +6,7 @@
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
     <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+
 </head>
 <body>
 
@@ -45,7 +45,7 @@
         <legend>
             <div class="md-12">
                 Preguntes
-                <a class="btn btn-primary btn-xs pull-right">ordenar</a>
+                <a class="btn btn-primary btn-xs pull-right" th:href="${'/enquestes/'+ enquesta.Id +'/ordenarTaula'}" href="/enquestes/ordenarTaula/">Ordenar</a>
             </div>
         </legend>
 
@@ -95,9 +95,6 @@
     </fieldset>
 </div>
 </div>
-<script type="text/javascript">
-    $('tbody').sortable();
-</script>
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

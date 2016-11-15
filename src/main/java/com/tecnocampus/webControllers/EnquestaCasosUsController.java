@@ -71,6 +71,13 @@ public class EnquestaCasosUsController {
         return "enquestaForm";
     }
 
+    @GetMapping("enquestes/{enquestaId}/ordenarTaula")
+    public String ordenaItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
+        model.addAttribute(enquesta);
+        return "ordenarTaula";
+    }
+
 
     @PostMapping("enquestes/{enquestaId}/edita")
     public String processEditItem(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
