@@ -3,8 +3,8 @@ package com.tecnocampus.webControllers;
 import com.tecnocampus.domain.Usuari;
 import com.tecnocampus.exceptions.ContrasenyaNoValidaException;
 import com.tecnocampus.exceptions.UsuariDuplicatException;
+import com.tecnocampus.security.SecurityService;
 import com.tecnocampus.useCases.UsuariCasosUs;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -28,8 +28,15 @@ import java.util.List;
 @Controller
 public class UsuariCasosUsController {
 
-    @Autowired
-    UsuariCasosUs usuariCasosUs;
+    private UsuariCasosUs usuariCasosUs;
+    private SecurityService securityService;
+
+    public UsuariCasosUsController (UsuariCasosUs usuariCasosUs, SecurityService securityService){
+
+        this.usuariCasosUs = usuariCasosUs;
+        this.securityService = securityService;
+    }
+
 
 
     @GetMapping("/")
@@ -106,7 +113,9 @@ public class UsuariCasosUsController {
             return "registre";
 
         try {
-            user = usuariCasosUs.crearUsuari(user.getUsername(), user.getPassword());
+            user = this.usuariCasosUs.crearUsuari(user.getUsername(), user.getPassword());
+            this.securityService.login(user.getUsername(), user.getPassword());
+            return "redirect:/";
 
         } catch (ContrasenyaNoValidaException e) {
 
@@ -126,7 +135,7 @@ public class UsuariCasosUsController {
 
         //redirectAttributes.addAttribute("id", user.getId());
         //redirectAttributes.addFlashAttribute("usuari", user);
-        return "redirect:/";
+        //return "redirect:/";
 
     }
 
