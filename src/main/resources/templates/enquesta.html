@@ -42,7 +42,12 @@
     -->
 
     <fieldset>
-        <legend>Preguntes</legend>
+        <legend>
+            <div class="md-12">
+                Preguntes
+                <a class="btn btn-primary btn-xs pull-right">ordenar</a>
+            </div>
+        </legend>
 
         <div th:class="${'alert alert-'+ css +''}" role="alert" th:if="${msg != null}">
             <strong th:text="${msg}">resultat</strong>
@@ -52,6 +57,7 @@
         </div>
 
         <div id="dataView" class="block">
+
             <div class="table">
                 <table id="general-table" class="table table-bordered pagin-table">
                     <thead>
