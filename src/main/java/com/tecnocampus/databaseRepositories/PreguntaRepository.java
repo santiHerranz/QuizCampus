@@ -138,7 +138,7 @@ public class PreguntaRepository {
      */
     public List<Pregunta> findAllFromQuiz(Long enquestaId) {
         return jdbcOperations.query(
-                SQL_SELECT_STATEMENT +" WHERE enquestaId = ? ORDER BY Ordre DESC"
+                SQL_SELECT_STATEMENT +" WHERE enquestaId = ? ORDER BY Ordre ASC"
                 , new Object[]{ enquestaId}
                 , new PreguntaMapper());
     }

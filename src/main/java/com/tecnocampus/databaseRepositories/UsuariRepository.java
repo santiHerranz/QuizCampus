@@ -59,27 +59,28 @@ public class UsuariRepository {
     private void role_update(Usuari usuari) {
 
         List<String> dbRoles = findRoles(usuari.getId());
-
+        List<String> wantedRoles = usuari.getRoles();
+        
         // inserta el que falten
-        for (String role : usuari.getRoles()) {
-            if(dbRoles.contains(role)){
-                dbRoles.remove(role);
-            } else {
+        for (String role : wantedRoles) {
+            if(! dbRoles.contains(role)) {
                 this.jdbcOperations.update(
                         SQL_INSERT_ROLE_STATEMENT
                         , usuari.getId()
                         , role
                 );
-
             }
         }
+
         // elimina els que ja no hi son
         for (String role : dbRoles) {
-            this.jdbcOperations.update(
-                    SQL_DELETE_ROLE_STATEMENT
-                    , usuari.getId()
-                    , role
-            );
+            if(wantedRoles.contains(role)){
+                this.jdbcOperations.update(
+                        SQL_DELETE_ROLE_STATEMENT
+                        , usuari.getId()
+                        , role
+                );
+            }
         }
     }
 
@@ -140,7 +141,7 @@ public class UsuariRepository {
     public Usuari findOne(Long usuariId) {
         try {
             Usuari u = jdbcOperations.queryForObject(
-                    SQL_SELECT_STATEMENT + "where usuariId = ?"
+                    SQL_SELECT_STATEMENT + " where usuariId = ?"
                     , new Object[]{usuariId}
                     , new UsuariMapper()
             );

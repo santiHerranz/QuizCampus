@@ -97,11 +97,13 @@ public class UsuariCasosUsController {
 
     @PostMapping("logout")
     public String logoutPage() {
+        SecurityContextHolder.clearContext();
         return "logout";
     }
 
     @GetMapping("registre")
     public String createUser(Model model) {
+        SecurityContextHolder.clearContext();
         model.addAttribute(new Usuari());
         return "registre";
     }
@@ -113,8 +115,12 @@ public class UsuariCasosUsController {
             return "registre";
 
         try {
-            user = this.usuariCasosUs.crearUsuari(user.getUsername(), user.getPassword());
-            this.securityService.login(user.getUsername(), user.getPassword());
+
+            String username = user.getUsername();
+            String plainPassword = user.getPassword();
+
+            user = this.usuariCasosUs.crearUsuari(username, plainPassword);
+            this.securityService.login(username, plainPassword);
             return "redirect:/";
 
         } catch (ContrasenyaNoValidaException e) {
