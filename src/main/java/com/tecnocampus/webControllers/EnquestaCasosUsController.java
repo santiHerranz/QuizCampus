@@ -10,10 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -72,19 +69,24 @@ public class EnquestaCasosUsController {
         return "enquestaForm";
     }
 
+    class orderedKeyList {
+        String list;
+    }
+
     @GetMapping("enquestes/{enquestaId}/reordena")
     public String ordenaItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         model.addAttribute(enquesta);
+        model.addAttribute(new orderedKeyList());
         return "enquestaReordenaPreguntes";
     }
 
     @PostMapping("enquestes/{enquestaId}/reordena")
-    public String processReordenaItem(@PathVariable("enquestaId") Long enquestaId, RedirectAttributes redirectAttributes) {
+    public String processReordenaItem(@PathVariable("enquestaId") Long enquestaId, @RequestParam("orderedKeyList") String orderedKeyList, RedirectAttributes redirectAttributes) {
 
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
 
-        String orderedKeyList = "4,3,2,1";
+        //String orderedKeyList = "4,3,2,1";
         enquestaCasosUs.reordenarPreguntes(enquesta, orderedKeyList);
 
         redirectAttributes.addAttribute("id", enquesta.getId());

@@ -70,7 +70,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="pregunta, row : ${lists.sort(enquesta.preguntes,ordre)}"
+                    <tr th:each="pregunta, row : ${#lists.sort(enquesta.preguntes)}"
                         th:id="'pregunta_' + ${pregunta.id}">
                         <td><span th:text="${pregunta.ordre}">0</span></td>
                         <td><a th:href="@{'/preguntes/' + ${pregunta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>

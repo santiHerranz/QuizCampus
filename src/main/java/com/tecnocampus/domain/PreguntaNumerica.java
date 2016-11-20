@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Created by ignasiargemipuig on 4/10/16.
  */
-public final class PreguntaNumerica  extends Pregunta implements Serializable {
+public final class PreguntaNumerica  extends Pregunta implements Serializable, Comparable {
 
     private int minim;
     private int maxim;
@@ -64,5 +64,12 @@ public final class PreguntaNumerica  extends Pregunta implements Serializable {
                 +"}";
     }
 
+    public int compareTo(Pregunta other){
+        return this.getOrdre() - other.getOrdre();
+    }
 
+    @Override
+    public int compareTo(Object o) {
+        return this.getOrdre() - ((PreguntaNumerica)o).getOrdre();
+    }
 }
