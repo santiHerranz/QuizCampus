@@ -65,7 +65,7 @@
                         <th style="width: 150px;" class="text-center">&nbsp;</th>
                         <th style="width: 70%;"><a href="#">enunciat</a></th>
                         <th style="width: 10%;"><a href="#">interval</a></th>
-                        <th style="width: 10%;"><a href="#">respostes</a></th>
+                        <th style="width: 10%;"><a href="#">valoració</a></th>
                         <th style="width: 150px;" class="text-center">&nbsp;</th>
                     </tr>
                     </thead>
@@ -77,7 +77,7 @@
                         <td>
                             <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
                         </td>
-                        <td><a href="#" th:text="${pregunta.getRespostes().size()}" >respostes</a></td>
+                        <td><a href="#" th:text="${pregunta.getValoracioMitjana()}" >respostes</a></td>
                         <td class="text-center">
                             <form th:id="'form_pregunta_' + ${pregunta.id}" action="#" th:action="@{'/preguntes/'+ ${pregunta.id} +'/esborra'}" method="post">
                                 <div class="btn-group">

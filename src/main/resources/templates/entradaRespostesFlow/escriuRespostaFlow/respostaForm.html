@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" th:href="@{style.css}"/>
-    <title>Create Enquesta</title>
+    <title>Valorar</title>
 
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
           th:href="@{/css/bootstrap.min.css}"/>
@@ -13,6 +13,75 @@
 
     <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+
+
+    <style>
+        /*
+         * Selectable CSS3 Rating Stars by Martin Ivanov (@wemakesitesnet)
+         * @version 1.0
+         * @author Martin Ivanov
+         * @url portfolio http://wemakesites.net/
+         * @url twitter https://twitter.com/wemakesitesnet
+         * @url blog http://acidmartin.wordpress.com/
+         **/
+        .acidjs-rating-stars,
+        .acidjs-rating-stars label::before
+        {
+            display: inline-block;
+        }
+
+        .acidjs-rating-stars label:hover,
+        .acidjs-rating-stars label:hover ~ label
+        {
+            color: #189800;
+        }
+
+        .acidjs-rating-stars *
+        {
+            margin: 0;
+            padding: 0;
+        }
+
+        .acidjs-rating-stars input
+        {
+            display: none;
+        }
+
+        .acidjs-rating-stars
+        {
+            unicode-bidi: bidi-override;
+            direction: rtl;
+        }
+
+        .acidjs-rating-stars label
+        {
+            color: #ccc;
+        }
+
+        .acidjs-rating-stars label::before
+        {
+            content: "\2605";
+            width: 18px;
+            line-height: 18px;
+            text-align: center;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .acidjs-rating-stars input:checked ~ label
+        {
+            color: #f5b301;
+        }
+
+        .acidjs-rating-disabled
+        {
+            opacity: .50;
+
+            -webkit-pointer-events: none;
+            -moz-pointer-events: none;
+            pointer-events: none;
+        }
+    </style>
 
 </head>
 <body>
@@ -29,62 +98,72 @@
     <h4>Respostes</h4>
 
 
-    <div id="dataView" class="block">
-        <div class="table">
-            <table id="general-table" class="table table-striped table-vcenter">
-                <thead>
-                <tr>
-                    <th style="width: 80%;"><a href="#">enunciat</a></th>
-                    <th style="width: 15%;"><a href="#">interval</a></th>
-                    <th style="width: 150px;" class="text-center">&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr  th:each="pregunta : ${enquesta.preguntes}"
-                     th:id="'pregunta_' + ${pregunta.id}">
-                    <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
-                    <td>
-                        <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
-                    </td>
-                </tr>
-                <tr  th:each="resposta : ${bossaRespostes.respostes}"
-                     th:id="'resposta_' + ${resposta.id}">
-                    <td>
-                        <span th:text="${resposta.valor}">Valor</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <form method="POST" th:object="${resposta}" th:action="${flowExecutionUrl}">
 
-        <div class="row">
-            <div class="col-md-2">
-                <label for="valor"> Valoracio</label><br />
-                <select class="form-control selectpicker" id="valor" name="valor" th:field="*{valor}" style="width: 100%;">
-                    <option value="1" selected="selected">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
+
+        <div id="dataView" class="block" th:if="${resposta != null}">
+            <div class="table">
+                <table id="general-table" class="table table-striped table-vcenter">
+                    <thead>
+                    <tr>
+                        <th style="width: 50%;"><a href="#">enunciat</a></th>
+                        <th style="width: 40%;"><a href="#">valorar</a></th>
+                        <th style="width: 10%;">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:id="'pregunta_' + ${resposta.pregunta.id}">
+                        <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
+                        <td>
+                            <div class="acidjs-rating-stars">
+           <input type="radio" th:id="'pregunta-0'" th:name="'pregunta'" th:field="*{valor}" value="5" /><label th:for="'pregunta-0'"></label><!--
+        --><input type="radio" th:id="'pregunta-1'" th:name="'pregunta'" th:field="*{valor}" value="4" /><label th:for="'pregunta-1'"></label><!--
+        --><input type="radio" th:id="'pregunta-2'" th:name="'pregunta'" th:field="*{valor}" value="3" /><label th:for="'pregunta-2'"></label><!--
+        --><input type="radio" th:id="'pregunta-3'" th:name="'pregunta'" th:field="*{valor}" value="2" /><label th:for="'pregunta-3'"></label><!--
+        --><input type="radio" th:id="'pregunta-4'" th:name="'pregunta'" th:field="*{valor}" value="1" /><label th:for="'pregunta-4'"></label>
+                            </div>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td>
+                            <input type="submit" value="Següent" class="btn btn-sm btn-success" name="_eventId_respostaEntrada" />
+                            <input type="submit" value="Cancelar" class="btn btn-sm btn-default" name="_eventId_cancel" />
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div th:if="${resposta == null}">
+
+
+            <div id="dataView" class="block">
+                <div class="table">
+                    <table id="general-table" class="table table-striped table-vcenter">
+                        <thead>
+                        <tr>
+                            <th style="width: 50%;"><a href="#">enunciat</a></th>
+                            <th style="width: 40%;"><a href="#">valoració</a></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="resposta : ${bossaRespostes.getRespostes()}"
+                            th:id="'pregunta_' + ${resposta.pregunta.id}">
+                            <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
+                            <td><span th:text="${resposta.valor}" >titol</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
 
-        </div>
-        <br />
-
-        <input type="submit" value="Afegir resposta" class="btn btn-sm btn-success" name="_eventId_respostaEntrada" />
-        <hr/>
-        <div class="btn-group">
-            <input type="submit" value="Guardar" class="btn btn-sm btn-success" name="_eventId_respostesAcabades"/>
+            <input type="submit" value="Enviar" class="btn btn-sm btn-success" name="_eventId_respostesAcabades"/>
             <input type="submit" value="Cancelar" class="btn btn-sm btn-default" name="_eventId_cancel" />
         </div>
 
@@ -92,6 +171,11 @@
 
 </div>
 
+<script>
+    function valorat(pregunta, value) {
+        $(pregunta).val(value);
+    }
+</script>
 
 </body>
 </html>

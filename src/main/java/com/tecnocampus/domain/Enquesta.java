@@ -55,6 +55,26 @@ public class Enquesta implements Serializable {
         return this.preguntes.add(p1);
     }
 
+
+    public List<Resposta> getValoracions() {
+        List<Resposta> respostes = new ArrayList<Resposta>();
+        for (Pregunta p : this.preguntes ) {
+            respostes.addAll(p.getRespostes()) ;
+        }
+        return respostes;
+    }
+
+    public List<RespostaNumerica> createRespostes( ) {
+        List<RespostaNumerica> respostes = new ArrayList<RespostaNumerica>();
+        for (Pregunta p : this.preguntes ) {
+            RespostaNumerica r = new RespostaNumerica();
+            r.setPregunta(p);
+            respostes.add(r);
+        }
+        return respostes;
+    }
+
+
     @Override
     public java.lang.String toString() {
         return String.format("Enquesta[Id: %s, Creat:%s, titol:%s]",

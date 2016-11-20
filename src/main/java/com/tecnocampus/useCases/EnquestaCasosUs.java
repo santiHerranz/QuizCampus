@@ -64,9 +64,10 @@ public class EnquestaCasosUs {
 
 
     @Transactional
-    public Resposta afegirResposta(Pregunta pregunta, int valor) {
+    public Resposta afegirResposta(Pregunta pregunta, Usuari u,  int valor) {
 
         RespostaNumerica resposta = new RespostaNumerica();
+        resposta.setUsuari(u);
         resposta.setValor(valor);
 
         beansManager.respostaRepository.save(pregunta, resposta);
@@ -102,11 +103,17 @@ public class EnquestaCasosUs {
         });
     }
 
-    public void afegirRespostes(Enquesta enquesta, BossaRespostes bossaRespostes) { /* */
+    public void afegirRespostes(Enquesta enquesta, BossaRespostes bossaRespostes) throws Exception { /* */
+        if ( bossaRespostes == null )
+            throw new IllegalArgumentException("La bossa de respostes es null");
+        if ( bossaRespostes.getRespostes().size() == 0 )
+            throw new IllegalArgumentException("La bossa de respostes esta buida");
+
+        Usuari u = beansManager.usuariRepository.findOne(1L);
 
         bossaRespostes.getRespostes().forEach(respostaConsumer -> {
             RespostaNumerica r = (RespostaNumerica)respostaConsumer;
-            afegirResposta(r.getPregunta(), r.getValor());
+            afegirResposta(r.getPregunta(), u, r.getValor());
         });
     }
 

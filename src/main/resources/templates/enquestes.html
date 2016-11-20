@@ -40,6 +40,7 @@
             <tr>
                 <th><a href="#">Titol</a></th>
                 <th><a href="#">Preguntes</a></th>
+                <th><a href="#">Valoracions</a></th>
                 <th><a href="#">Creació</a></th>
                 <th style="width: 150px;" class="text-center">&nbsp;</th>
             </tr>
@@ -49,9 +50,20 @@
                 th:id="'enquesta_' + ${enquesta.id}">
                 <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${enquesta.titol}" >titol</a></td>
                 <td>
+                    <div class="center-block">
                     <span th:text="${enquesta.getPreguntes().size()}" >Preguntes</span>
                     <a class="btn btn-success btn-sm" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.id}" >&plus;</a>
+                    </div>
                 </td>
+                <td>
+                    <div class="center-block">
+                    <span th:text="${enquesta.getValoracions().size()}" >Valoracions</span>
+                    <a class="btn btn-success btn-sm" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >&plus;</a>
+                    </div>
+                </td>
+
+
+
                 <td><span th:text="${enquesta.dataCreacio}" >data</span></td>
                 <td class="text-center">
                     <form th:id="'form_enquesta_' + ${enquesta.id}" action="#" th:action="@{'/enquestes/'+ ${enquesta.id} +'/esborra'}" method="post">

@@ -41,7 +41,7 @@ public class EnquestaCasosUsController {
     }
 
     @GetMapping("enquestes/{enquestaId}")
-    public String showUser(@PathVariable("enquestaId") Long enquestaId, Model model) {
+    public String showEnquesta(@PathVariable("enquestaId") Long enquestaId, Model model) {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
         if (!model.containsAttribute("enquesta")) {
@@ -117,7 +117,7 @@ public class EnquestaCasosUsController {
 
 
     @PostMapping("enquestes/nova")
-    public String processCreateUser(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
+    public String processCreateEnquesta(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors())
             return "enquestaForm";
@@ -140,7 +140,7 @@ public class EnquestaCasosUsController {
 
 
         @PostMapping("enquestes/{enquestaId}/esborra")
-    public String processDeleteUser(@PathVariable("enquestaId") Long enquestaId,
+    public String processDeleteEnquesta(@PathVariable("enquestaId") Long enquestaId,
                                     final RedirectAttributes redirectAttributes) {
 
             Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
@@ -165,7 +165,7 @@ public class EnquestaCasosUsController {
 
 
     @PostMapping("preguntes/{preguntaId}/esborra")
-    public String processPreguntaUser(@PathVariable("preguntaId") Long preguntaId,
+    public String processPreguntaDelete(@PathVariable("preguntaId") Long preguntaId,
                                     final RedirectAttributes redirectAttributes) {
 
         Pregunta pregunta = enquestaCasosUs.obtenirPregunta(preguntaId);

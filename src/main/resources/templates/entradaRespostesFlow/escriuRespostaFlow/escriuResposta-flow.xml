@@ -7,16 +7,19 @@
 
     <on-start>
        <evaluate result="flowScope.bossaRespostes" expression="new com.tecnocampus.domain.BossaRespostes()"/>
+       <evaluate expression="bossaRespostes.setRespostes(enquesta.createRespostes())"></evaluate>
+
     </on-start>
 
     <view-state id="veureRespostes" view="entradaRespostesFlow/escriuRespostaFlow/respostaForm" model="resposta">
         <on-entry>
-            <set name="flowScope.resposta" value="new com.tecnocampus.domain.RespostaNumerica()"/>
+            <set name="flowScope.resposta" value="bossaRespostes.getSeguent()"/>
         </on-entry>
         <transition on="respostaEntrada" to="veureRespostes">
-            <evaluate expression="bossaRespostes.addResposta(flowScope.resposta)"/>
         </transition>
-        <transition on="respostesAcabades" to="acabar"/>
+
+        <transition on="respostesAcabades" to="acabar" >
+        </transition>
         <transition on="cancel" to="cancel"/>
     </view-state>
 

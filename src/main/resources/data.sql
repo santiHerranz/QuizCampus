@@ -56,6 +56,14 @@ INSERT INTO enquesta (titol, data_creacio) VALUES ('Aules', {ts '2012-09-17 18:4
 
 INSERT INTO enquesta (titol, data_creacio) VALUES ('Serveis', {ts '2012-09-17 18:47:52.69'});
 
+
+INSERT INTO enquesta (titol, data_creacio) VALUES ('Compra online', {ts '2012-09-17 18:47:52.69'});
+INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (6,'1.Atenció al client', 1, 10);
+INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (6,'2.Discreción', 1, 10);
+INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (6,'3.Producto', 1, 10);
+INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (6,'4.Rapidessa d''entrega', 1, 10);
+
+
 /*
 
 
