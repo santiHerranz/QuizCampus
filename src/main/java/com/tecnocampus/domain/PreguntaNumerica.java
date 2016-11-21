@@ -56,15 +56,15 @@ public final class PreguntaNumerica  extends Pregunta implements Serializable, C
     }
 
     public float getValoracioMitjana() {
-        int acum = 0, count = 0;
+        float acum = 0.0f, count = 0.0f;
         for (Resposta r : this.respostes ) {
             count ++;
             acum += ((RespostaNumerica)r).getValor();
         }
-        if ( count>0)
+        if ( count>0.0f)
             return acum/count;
         else
-            return 0;
+            return 0.0f;
     }
 
     @Override

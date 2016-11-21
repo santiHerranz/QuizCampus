@@ -3,17 +3,13 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" th:href="@{style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{css/main.css}"/>
     <title>Valorar</title>
 
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
           th:href="@{/css/bootstrap.min.css}"/>
-
-
-
     <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
-
 
     <style>
         /*
@@ -61,10 +57,10 @@
         .acidjs-rating-stars label::before
         {
             content: "\2605";
-            width: 18px;
+            width: 32px;
             line-height: 18px;
             text-align: center;
-            font-size: 18px;
+            font-size: 28px;
             cursor: pointer;
         }
 
@@ -98,7 +94,7 @@
     <h4>Respostes</h4>
 
 
-    <form method="POST" th:object="${resposta}" th:action="${flowExecutionUrl}">
+    <form id="formResposta" method="POST" th:object="${resposta}" th:action="${flowExecutionUrl}">
 
 
         <div id="dataView" class="block" th:if="${resposta != null}">
@@ -116,11 +112,11 @@
                         <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
                         <td>
                             <div class="acidjs-rating-stars">
-           <input type="radio" th:id="'pregunta-0'" th:name="'pregunta'" th:field="*{valor}" value="5" /><label th:for="'pregunta-0'"></label><!--
-        --><input type="radio" th:id="'pregunta-1'" th:name="'pregunta'" th:field="*{valor}" value="4" /><label th:for="'pregunta-1'"></label><!--
-        --><input type="radio" th:id="'pregunta-2'" th:name="'pregunta'" th:field="*{valor}" value="3" /><label th:for="'pregunta-2'"></label><!--
-        --><input type="radio" th:id="'pregunta-3'" th:name="'pregunta'" th:field="*{valor}" value="2" /><label th:for="'pregunta-3'"></label><!--
-        --><input type="radio" th:id="'pregunta-4'" th:name="'pregunta'" th:field="*{valor}" value="1" /><label th:for="'pregunta-4'"></label>
+           <input type="radio" th:id="'pregunta-0'" th:name="'pregunta'" th:field="*{valor}" value="5" /><label th:for="'pregunta-0'" ondblclick="$('#btnSeguent').click();"></label><!--
+        --><input type="radio" th:id="'pregunta-1'" th:name="'pregunta'" th:field="*{valor}" value="4" /><label th:for="'pregunta-1'" ondblclick="$('#btnSeguent').click();"></label><!--
+        --><input type="radio" th:id="'pregunta-2'" th:name="'pregunta'" th:field="*{valor}" value="3" /><label th:for="'pregunta-2'" ondblclick="$('#btnSeguent').click();"></label><!--
+        --><input type="radio" th:id="'pregunta-3'" th:name="'pregunta'" th:field="*{valor}" value="2" /><label th:for="'pregunta-3'" ondblclick="$('#btnSeguent').click();"></label><!--
+        --><input type="radio" th:id="'pregunta-4'" th:name="'pregunta'" th:field="*{valor}" value="1" /><label th:for="'pregunta-4'" ondblclick="$('#btnSeguent').click();"></label>
                             </div>
                         </td>
                         <td>
@@ -130,7 +126,7 @@
                     <tfoot>
                     <tr>
                         <td>
-                            <input type="submit" value="Següent" class="btn btn-sm btn-success" name="_eventId_respostaEntrada" />
+                            <input id="btnSeguent" type="submit" value="Següent" class="btn btn-sm btn-success" name="_eventId_respostaEntrada" />
                             <input type="submit" value="Cancelar" class="btn btn-sm btn-default" name="_eventId_cancel" />
                         </td>
                     </tr>
