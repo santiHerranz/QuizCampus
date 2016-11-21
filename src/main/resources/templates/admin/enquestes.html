@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap-theme.min.css" th:href="@{/css/bootstrap-theme.min.css}" />
+
+    <title>Llistat d'enquestes</title>
+</head>
+<body>
+
+<div th:replace="header :: header">Header</div>
+
+
+
+<div class="container">
+
+<div class="block-title">
+    <h2><strong>Enquestes d'opinió</strong></h2>
+    <div class="block-options pull-left">
+        <a class="btn btn-success"  th:href="@{'/enquestes/nova'}" >Crear</a>
+    </div>
+</div>
+
+    <br />
+
+    <div th:class="${'alert alert-'+ css +''}" role="alert" th:if="${msg != null}">
+        <strong th:text="${msg}">resultat</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+<div id="dataView" class="block">
+    <div class="table">
+        <table id="general-table" class="table table-striped table-vcenter">
+            <thead>
+            <tr>
+                <th><a href="#">Titol</a></th>
+                <th><a href="#">Preguntes</a></th>
+                <th><a href="#">Valoracions</a></th>
+                <th><a href="#">Creació</a></th>
+                <th style="width: 150px;" class="text-center">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="enquesta : ${enquestaList}"
+                th:id="'enquesta_' + ${enquesta.id}">
+                <td><a th:href="@{'/admin_enquestes/' + ${enquesta.id}}" th:text="${enquesta.titol}" >titol</a></td>
+                <td>
+                    <div class="center-block">
+                    <span th:text="${enquesta.getPreguntes().size()}" >Preguntes</span>
+                    <a class="btn btn-success btn-sm" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.id}" >&plus;</a>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="center-block">
+                        <span th:text="${enquesta.getOpinions().size()}" >Opinions</span>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="center-block">
+                    <span th:text="${enquesta.getValoracions().size()}" >Valoracions</span>
+                    <a class="btn btn-success btn-sm" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >&plus;</a>
+                    </div>
+                </td>
+
+                <td><span th:text="${enquesta.dataCreacio}" >data</span></td>
+                <td class="text-center">
+                    <form th:id="'form_enquesta_' + ${enquesta.id}" action="#" th:action="@{'/enquestes/'+ ${enquesta.id} +'/esborra'}" method="post">
+                        <a class="btn btn-danger btn-sm" th:onclick="${'confirmDelete('+ enquesta.id +', ''Segur que vols eliminar &lt;b&gt;'+ enquesta.titol +'&lt;/b&gt;?'')'}" title="Eliminar">X</a>
+                    </form>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Eliminar enquesta</h4>
+            </div>
+            <div class="modal-body" id="confirmDeleteMessage"></div>
+            <div class="modal-footer">
+                <input type="hidden" id="itemToDelete" value="" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="$('#form_enquesta_'+ itemToDelete.value).submit();">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Delete Modal -->
+
+<div th:replace="links :: links">links</div>
+
+</body>
+</html>

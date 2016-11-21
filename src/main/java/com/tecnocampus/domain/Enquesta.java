@@ -64,6 +64,7 @@ public class Enquesta implements Serializable {
         return respostes;
     }
 
+
     public List<RespostaNumerica> createRespostes( ) {
         List<RespostaNumerica> respostes = new ArrayList<RespostaNumerica>();
         for (Pregunta p : this.preguntes ) {

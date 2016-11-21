@@ -33,15 +33,31 @@ public class EnquestaCasosUsController {
         this.securityService = securityService;
     }
 
-
-
     @GetMapping("enquestes")
-    public List<Enquesta> listNotes() {
+    public List<Enquesta> listEnquestes() {
         return enquestaCasosUs.llistarEnquestes();
     }
 
     @GetMapping("enquestes/{enquestaId}")
     public String showEnquesta(@PathVariable("enquestaId") Long enquestaId, Model model) {
+
+        if (!model.containsAttribute("enquesta")) {
+            // comprobem que l'enquesta existeix, en cas contrari mostrem llistat
+            Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
+            if (enquesta == null)
+                return "redirect:/enquestes";
+            model.addAttribute("enquesta",enquesta);
+        }
+        return "enquesta";
+    }
+
+    @GetMapping("admin/enquestes")
+    public List<Enquesta> listAdminEnquestes() {
+        return enquestaCasosUs.llistarEnquestes();
+    }
+
+    @GetMapping("admin_enquestes/{enquestaId}")
+    public String showAdminEnquesta(@PathVariable("enquestaId") Long enquestaId, Model model) {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
         if (!model.containsAttribute("enquesta")) {
@@ -52,36 +68,36 @@ public class EnquestaCasosUsController {
                 return "redirect:/enquestes";
             model.addAttribute("enquesta",enquesta);
         }
-        return "enquesta";
+        return "admin_enquesta";
     }
 
-    @GetMapping("enquestes/nova")
+    @GetMapping("admin_enquestes/nova")
     public String createItem(Model model) {
         model.addAttribute(new Enquesta());
-        return "enquestaForm";
+        return "admin_enquestaForm";
     }
 
-    @GetMapping("enquestes/{enquestaId}/edita")
+    @GetMapping("admin_enquestes/{enquestaId}/edita")
     public String editItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
 
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         model.addAttribute(enquesta);
-        return "enquestaForm";
+        return "admin_enquestaForm";
     }
 
     class orderedKeyList {
         String list;
     }
 
-    @GetMapping("enquestes/{enquestaId}/reordena")
+    @GetMapping("admin_enquestes/{enquestaId}/reordena")
     public String ordenaItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         model.addAttribute(enquesta);
         model.addAttribute(new orderedKeyList());
-        return "enquestaReordenaPreguntes";
+        return "admin_enquestaReordenaPreguntes";
     }
 
-    @PostMapping("enquestes/{enquestaId}/reordena")
+    @PostMapping("admin_enquestes/{enquestaId}/reordena")
     public String processReordenaItem(@PathVariable("enquestaId") Long enquestaId, @RequestParam("orderedKeyList") String orderedKeyList, RedirectAttributes redirectAttributes) {
 
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
@@ -95,11 +111,11 @@ public class EnquestaCasosUsController {
     }
 
 
-    @PostMapping("enquestes/{enquestaId}/edita")
+    @PostMapping("admin_enquestes/{enquestaId}/edita")
     public String processEditItem(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors())
-            return "enquestaForm";
+            return "admin_enquestaForm";
 
         try {
             enquesta = enquestaCasosUs.save(enquesta);
@@ -107,7 +123,7 @@ public class EnquestaCasosUsController {
         } catch (EnquestaDuplicadaException e) {
             ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
             result.addError(error);
-            return "enquestaForm";
+            return "admin_enquestaForm";
         }
 
         redirectAttributes.addAttribute("id", enquesta.getId());
@@ -116,11 +132,11 @@ public class EnquestaCasosUsController {
     }
 
 
-    @PostMapping("enquestes/nova")
+    @PostMapping("admin_enquestes/nova")
     public String processCreateEnquesta(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors())
-            return "enquestaForm";
+            return "admin_enquestaForm";
 
         try {
             enquesta = enquestaCasosUs.crearEnquesta(enquesta.getTitol());
@@ -128,7 +144,7 @@ public class EnquestaCasosUsController {
         } catch (EnquestaDuplicadaException e) {
             ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
             result.addError(error);
-            return "enquestaForm";
+            return "admin_enquestaForm";
 
         }
 
@@ -139,7 +155,7 @@ public class EnquestaCasosUsController {
     }
 
 
-        @PostMapping("enquestes/{enquestaId}/esborra")
+        @PostMapping("admin_enquestes/{enquestaId}/esborra")
     public String processDeleteEnquesta(@PathVariable("enquestaId") Long enquestaId,
                                     final RedirectAttributes redirectAttributes) {
 

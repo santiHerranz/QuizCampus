@@ -55,6 +55,10 @@ public final class PreguntaNumerica  extends Pregunta implements Serializable, C
         return this.getRespostes().add(new RespostaNumerica(this,usuari, valor));
     }
 
+    public float getOpinions() {
+        return this.respostes.size();
+    }
+
     public float getValoracioMitjana() {
         float acum = 0.0f, count = 0.0f;
         for (Resposta r : this.respostes ) {
