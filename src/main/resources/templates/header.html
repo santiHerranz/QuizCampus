@@ -19,7 +19,7 @@
         <ul class="nav navbar-nav">
             <li class="active"><a href="/">Inici</a></li>
             <li sec:authorize="isAuthenticated()"><a href="/enquestes">Enquestes</a></li>
-            <li sec:authorize="hasRole('ADMIN')"><a href="/admin_enquestes">Admin Enquestes</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a href="/admin/enquestes">Admin Enquestes</a></li>
             <li sec:authorize="hasRole('ADMIN')"><a href="/usuaris">Usuaris</a></li>
         </ul>
 

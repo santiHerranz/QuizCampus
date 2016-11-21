@@ -58,14 +58,7 @@
 
                 <td>
                     <div class="center-block">
-                        <span th:text="${enquesta.getOpinions().size()}" >Opinions</span>
-                    </div>
-                </td>
-
-                <td>
-                    <div class="center-block">
-                    <span th:text="${enquesta.getValoracions().size()}" >Valoracions</span>
-                    <a class="btn btn-success btn-sm" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >&plus;</a>
+                    <span th:text="${enquesta.getValoracioMitjana()}" >Valoracions</span>
                     </div>
                 </td>
 

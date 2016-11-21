@@ -56,15 +56,6 @@ public class Enquesta implements Serializable {
     }
 
 
-    public List<Resposta> getValoracions() {
-        List<Resposta> respostes = new ArrayList<Resposta>();
-        for (Pregunta p : this.preguntes ) {
-            respostes.addAll(p.getRespostes()) ;
-        }
-        return respostes;
-    }
-
-
     public List<RespostaNumerica> createRespostes( ) {
         List<RespostaNumerica> respostes = new ArrayList<RespostaNumerica>();
         for (Pregunta p : this.preguntes ) {
@@ -73,6 +64,27 @@ public class Enquesta implements Serializable {
             respostes.add(r);
         }
         return respostes;
+    }
+
+
+    public List<Resposta> getValoracions() {
+        List<Resposta> respostes = new ArrayList<Resposta>();
+        for (Pregunta p : this.preguntes ) {
+            respostes.addAll(p.getRespostes()) ;
+        }
+        return respostes;
+    }
+
+    public float getValoracioMitjana() {
+        float acum = 0.0f, count = 0.0f;
+        for (Pregunta p : this.preguntes ) {
+            count ++;
+            acum += ((PreguntaNumerica)p).getValoracioMitjana();
+        }
+        if ( count>0.0f)
+            return acum/count;
+        else
+            return 0.0f;
     }
 
 

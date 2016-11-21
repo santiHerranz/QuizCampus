@@ -112,11 +112,16 @@
                         <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
                         <td>
                             <div class="acidjs-rating-stars">
-           <input type="radio" th:id="'pregunta-0'" th:name="'pregunta'" th:field="*{valor}" value="5" /><label th:for="'pregunta-0'" ondblclick="$('#btnSeguent').click();"></label><!--
-        --><input type="radio" th:id="'pregunta-1'" th:name="'pregunta'" th:field="*{valor}" value="4" /><label th:for="'pregunta-1'" ondblclick="$('#btnSeguent').click();"></label><!--
-        --><input type="radio" th:id="'pregunta-2'" th:name="'pregunta'" th:field="*{valor}" value="3" /><label th:for="'pregunta-2'" ondblclick="$('#btnSeguent').click();"></label><!--
-        --><input type="radio" th:id="'pregunta-3'" th:name="'pregunta'" th:field="*{valor}" value="2" /><label th:for="'pregunta-3'" ondblclick="$('#btnSeguent').click();"></label><!--
-        --><input type="radio" th:id="'pregunta-4'" th:name="'pregunta'" th:field="*{valor}" value="1" /><label th:for="'pregunta-4'" ondblclick="$('#btnSeguent').click();"></label>
+<th:block th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.pregunta.maxim)}">
+                                <input type="radio"
+
+                                    th:id="${'valor-'+ (i-1)}"
+                                    th:field="*{valor}"
+                                           th:value="${(resposta.pregunta.maxim-(i-1))}"
+                                /><label
+                                    th:for="${'valor-'+ (i-1)}" ondblclick="$('#btnSeguent').click();"></label>
+</th:block>
+
                             </div>
                         </td>
                         <td>
@@ -151,7 +156,11 @@
                         <tr th:each="resposta : ${bossaRespostes.getRespostes()}"
                             th:id="'pregunta_' + ${resposta.pregunta.id}">
                             <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
-                            <td><span th:text="${resposta.valor}" >titol</span></td>
+                            <td>
+                                <div class="acidjs-rating-stars">
+                                <label th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.valor)}" style="color: #f5b301;" ></label>
+                                </div>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
