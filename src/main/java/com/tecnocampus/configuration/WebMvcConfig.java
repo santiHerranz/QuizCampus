@@ -83,6 +83,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         public void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
                     .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/forecast").permitAll()
                     .antMatchers("/").permitAll()
                     .antMatchers("/static/**", "/registre/**").permitAll()
                     .mvcMatchers("/profile/").hasRole("USER")
