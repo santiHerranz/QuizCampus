@@ -44,6 +44,8 @@ public class WeatherService {
 
         URL url = new URL("http://api.openweathermap.org/data/2.5/forecast?q="
                 + city
+                + "&units=metric"
+                + "&lang=es"
                 + "&APPID=18941878d8bee31166d6201ef9886fb2");
         URLConnection urlConnection = url.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(

@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 
-/**
- * Created by santi on 22/11/16.
- */
-
 @Controller
 public class ForecastController {
 

@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8" />
 
-    <title>Current weather</title>
+    <title>El temps</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
@@ -18,39 +18,46 @@
 <div th:replace="header :: header">Header</div>
 
 <div class="container">
-
-    <div class="page-header pull-left">
-        <h4 th:text="${weather.city.name}">Current weather </h4>
-    </div>
-
     <form class="form-inline pull-right" id="searchForm" method="get" action="" onsubmit="this.action = '/forecast/'+ searchForm.city.value ;">
         <div class="form-group">
-            <input type="text" class="form-control" id="city" placeholder="enter city..." />
+            <input type="text" class="form-control" id="city" placeholder="Ciutat..." />
             <button type="submit" id="bth-search"
-                    class="btn btn-primary">Search
-            </button>
+                    class="btn btn-primary">Buscar </button>
         </div>
-        <div id="error-field"></div>
+        <div class="">
+            powered by <a href="http://www.openweathermap.org" target="_blank">openweathermap.org</a>
+        </div>
     </form>
 
 
+    <div class="page-header">
+        <h4 th:text="${weather.city.name +' - Previsió cada 5 hores'}">Current weather </h4>
+    </div>
+
         <div id="weather-table">
 
-            <table class="table table-striped table-bordered">
+
+
+            <table class="table table-striped table-bordered sm">
                 <thead>
+                <tr>
+                    <td colspan="5"><span  class="pull-right" >dades en ºC</span></td>
+                </tr>
                     <tr>
+                        <td>Dia Hora</td>
                         <td>Temperatura</td>
-                        <td>TempMin</td>
-                        <td>TempMax</td>
-                        <td>Humetat</td>
+                        <td>Min</td>
+                        <td>Max</td>
+                        <td>Humitat %</td>
                     </tr>
                 </thead>
                 <tbody>
                 <tr th:each=" item: ${weather.Forecasts}">
-                    <td th:text="${item.temp}"><b>Temperatura</b></td>
-                    <td th:text="${item.tempMin}"><b>TempMin</b></td>
-                    <td th:text="${item.tempMax}"><b>TempMax</b></td>
-                    <td th:text="${item.humidity}"><b>Humidity</b></td>
+                    <td th:text="${#dates.format(new java.util.Date(item.getCalcDateTime()*1000), 'dd/MM/yyyy HH:mm' )}"></td>
+                    <td th:text="${#numbers.formatDecimal(item.temp, 1, 'COMMA', 1, 'POINT')}"><b>Temperatura</b></td>
+                    <td th:text="${#numbers.formatDecimal(item.tempMin, 1, 'COMMA', 1, 'POINT')}"><b>TempMin</b></td>
+                    <td th:text="${#numbers.formatDecimal(item.tempMax, 1, 'COMMA', 1, 'POINT')}"><b>TempMax</b></td>
+                    <td th:text="${#numbers.formatDecimal(item.humidity, 1, 'COMMA', 1, 'POINT')}"><b>Humidity</b></td>
                 </tr>
                 </tbody>
             </table>
