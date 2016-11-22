@@ -26,12 +26,12 @@ import java.util.List;
  * Created by santi on 14/10/2016.
  */
 @Controller
-public class UsuariCasosUsController {
+public class UsuariController {
 
     private UsuariCasosUs usuariCasosUs;
     private SecurityService securityService;
 
-    public UsuariCasosUsController (UsuariCasosUs usuariCasosUs, SecurityService securityService){
+    public UsuariController(UsuariCasosUs usuariCasosUs, SecurityService securityService){
 
         this.usuariCasosUs = usuariCasosUs;
         this.securityService = securityService;

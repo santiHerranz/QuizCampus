@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -15,13 +15,15 @@
 
 <body>
 
+<div th:replace="header :: header">Header</div>
+
 <div class="container">
 
-    <div class="page-header">
-        <h4>Current weather</h4>
+    <div class="page-header pull-left">
+        <h4 th:text="${weather.city.name}">Current weather </h4>
     </div>
 
-    <form class="form-inline" id="search-form" method="post">
+    <form class="form-inline pull-right" id="searchForm" method="get" action="" onsubmit="this.action = '/forecast/'+ searchForm.city.value ;">
         <div class="form-group">
             <input type="text" class="form-control" id="city" placeholder="enter city..." />
             <button type="submit" id="bth-search"
@@ -35,34 +37,23 @@
         <div id="weather-table">
 
             <table class="table table-striped table-bordered">
-
                 <thead>
-                <strong><div class="panel-heading" id="city-name"></div></strong>
+                    <tr>
+                        <td>Temperatura</td>
+                        <td>TempMin</td>
+                        <td>TempMax</td>
+                        <td>Humetat</td>
+                    </tr>
                 </thead>
-
                 <tbody>
-                <tr>
-                    <td><b>Temperature</b></td>
-                    <td>
-                        <div id="temp"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Description</b></td>
-                    <td>
-                        <div id="description"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Wind</b></td>
-                    <td>
-                        <div id="wind"></div>
-                    </td>
+                <tr th:each=" item: ${weather.Forecasts}">
+                    <td th:text="${item.temp}"><b>Temperatura</b></td>
+                    <td th:text="${item.tempMin}"><b>TempMin</b></td>
+                    <td th:text="${item.tempMax}"><b>TempMax</b></td>
+                    <td th:text="${item.humidity}"><b>Humidity</b></td>
                 </tr>
                 </tbody>
-
             </table>
-
         </div>
 
 

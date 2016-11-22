@@ -85,6 +85,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("/forecast").permitAll()
                     .antMatchers("/").permitAll()
+                    .antMatchers("/forecast/**").permitAll()
                     .antMatchers("/static/**", "/registre/**").permitAll()
                     .mvcMatchers("/profile/").hasRole("USER")
                     .mvcMatchers("/usuaris/**").hasRole("ADMIN")

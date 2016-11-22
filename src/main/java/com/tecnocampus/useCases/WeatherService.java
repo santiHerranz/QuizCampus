@@ -1,7 +1,7 @@
 package com.tecnocampus.useCases;
 
-import com.tecnocampus.domain.Weather;
-import com.tecnocampus.utils.JsonWeatherParser;
+import com.tecnocampus.Forecast.WeatherForecastResponse;
+import org.json.JSONObject;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +19,9 @@ import java.util.regex.Pattern;
 @Service
 public class WeatherService {
 
-    private final JsonWeatherParser parser = new JsonWeatherParser();
     private final Pattern pattern = Pattern.compile("^*[^0-9/]*$");
 
-    public Weather getWeather(String city) throws IOException, ParseException {
+    public WeatherForecastResponse getWeather(String city) throws IOException, ParseException {
         if (!validate(city)) {
             throw new ParseException(0, city);
         }
@@ -34,9 +33,9 @@ public class WeatherService {
         return matcher.matches();
     }
 
-    private Weather getWeatherFromJson(String json) throws ParseException {
-        parser.setJsonToParsing(json);
-        return parser.getWeather();
+    private WeatherForecastResponse getWeatherFromJson(String json) throws ParseException {
+        WeatherForecastResponse weatherForecastResponse = new WeatherForecastResponse(new JSONObject(json));
+        return weatherForecastResponse;
     }
 
     private String getJsonFromServer(String city) throws IOException {

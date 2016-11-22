@@ -22,13 +22,13 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/")
-public class EnquestaCasosUsController {
+public class EnquestaController {
 
     private SecurityService securityService;
     private EnquestaCasosUs enquestaCasosUs;
 
 
-    public EnquestaCasosUsController(EnquestaCasosUs enquestaCasosUs, SecurityService securityService) {
+    public EnquestaController(EnquestaCasosUs enquestaCasosUs, SecurityService securityService) {
         this.enquestaCasosUs = enquestaCasosUs;
         this.securityService = securityService;
     }
