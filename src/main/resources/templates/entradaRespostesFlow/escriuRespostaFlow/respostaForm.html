@@ -112,7 +112,7 @@
                         <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
                         <td>
                             <div class="acidjs-rating-stars">
-<th:block th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.pregunta.maxim)}">
+                            <th:block th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.pregunta.maxim)}">
                                 <input type="radio"
 
                                     th:id="${'valor-'+ (i-1)}"
@@ -120,7 +120,7 @@
                                            th:value="${(resposta.pregunta.maxim-(i-1))}"
                                 /><label
                                     th:for="${'valor-'+ (i-1)}" ondblclick="$('#btnSeguent').click();"></label>
-</th:block>
+                            </th:block>
 
                             </div>
                         </td>
@@ -158,7 +158,8 @@
                             <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
                             <td>
                                 <div class="acidjs-rating-stars">
-                                <label th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.valor)}" style="color: #f5b301;" ></label>
+                                    <label th:each="i : ${#numbers.sequence( resposta.valor, resposta.pregunta.maxim)}" style="color: #ccc;" ></label>
+                                    <label th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.valor)}" style="color: #f5b301;" ></label>
                                 </div>
                             </td>
                         </tr>

@@ -5,6 +5,7 @@ import com.tecnocampus.domain.Pregunta;
 import com.tecnocampus.exceptions.EnquestaDuplicadaException;
 import com.tecnocampus.security.SecurityService;
 import com.tecnocampus.useCases.EnquestaCasosUs;
+import com.tecnocampus.useCases.PreguntaCasosUs;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,11 +27,13 @@ public class EnquestaController {
 
     private SecurityService securityService;
     private EnquestaCasosUs enquestaCasosUs;
+    private PreguntaCasosUs preguntaCasosUs;
 
 
-    public EnquestaController(EnquestaCasosUs enquestaCasosUs, SecurityService securityService) {
+    public EnquestaController(EnquestaCasosUs enquestaCasosUs, SecurityService securityService, PreguntaCasosUs preguntaCasosUs) {
         this.enquestaCasosUs = enquestaCasosUs;
         this.securityService = securityService;
+        this.preguntaCasosUs = preguntaCasosUs;
     }
 
     @GetMapping("enquestes")
@@ -56,7 +59,7 @@ public class EnquestaController {
         return enquestaCasosUs.llistarEnquestes();
     }
 
-    @GetMapping("admin_enquestes/{enquestaId}")
+    @GetMapping("/admin/enquestes/{enquestaId}")
     public String showAdminEnquesta(@PathVariable("enquestaId") Long enquestaId, Model model) {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
@@ -68,26 +71,45 @@ public class EnquestaController {
                 return "redirect:/enquestes";
             model.addAttribute("enquesta",enquesta);
         }
-        return "admin_enquesta";
+        return "/admin/enquesta";
     }
 
-    @GetMapping("admin_enquestes/nova")
+    @GetMapping("/admin/enquestes/nova")
     public String createItem(Model model) {
         model.addAttribute(new Enquesta());
-        return "admin_enquestaForm";
+        return "/admin/enquestaForm";
     }
 
-    @GetMapping("admin_enquestes/{enquestaId}/edita")
+    @GetMapping("/admin/enquestes/{enquestaId}/edita")
     public String editItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
 
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         model.addAttribute(enquesta);
-        return "admin_enquestaForm";
+        return "/admin/enquestaForm";
     }
 
     class orderedKeyList {
         String list;
     }
+
+
+    @GetMapping("/admin/preguntes")
+    public List<Pregunta> listpreguntes() {
+        return preguntaCasosUs.llistarPreguntes();
+    }
+
+    @GetMapping("/admin/preguntes/{preguntaId}")
+    public String preguntaDetall(@PathVariable("preguntaId") Long preguntaId, Model model) {
+        Pregunta pregunta = preguntaCasosUs.obtenirPregunta(preguntaId);
+        model.addAttribute("pregunta", pregunta);
+        return "/admin/pregunta";
+    }
+
+    @PostMapping("/admin/preguntes/{preguntaId}")
+    public String processPregunta() {
+        return null;
+    }
+
 
     @GetMapping("admin_enquestes/{enquestaId}/reordena")
     public String ordenaItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
@@ -201,5 +223,8 @@ public class EnquestaController {
             return "redirect:/enquestes/"+ pregunta.getEnquesta().getId();
         }
     }
+
+
+
 
 }

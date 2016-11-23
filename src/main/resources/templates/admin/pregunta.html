@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Enquesta</title>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+
+</head>
+<body>
+
+<div th:replace="header :: header">Header</div>
+
+<div class="container">
+    <div class="block-title">
+        <a class="" href="'/enquestes/" >Enquestes</a> /  <a class="" th:href="@{'/enquestes/' + ${pregunta.enquesta.Id}}" th:text="${pregunta.enquesta.titol}" >Enquesta </a> / <span th:text="${pregunta.enunciat}" >enquesta</span>
+        <hr />
+    </div>
+
+    <div class="form-group form-actions">
+        <div class="btn-group">
+            <a class="btn btn-primary btn-sm" th:href="${'/preguntes/'+ pregunta.Id +'/edita'}" href="/preguntes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+        </div>
+
+    </div>
+
+    <div id="dataView" class="block">
+
+        <fieldset>
+            <legend>
+                <div class="md-12">
+                    Pregunta
+                    <a th:text="${pregunta.enunciat}">enunciat</a>
+                </div>
+            </legend>
+
+            <div th:class="${'alert alert-'+ css +''}" role="alert" th:if="${msg != null}">
+                <strong th:text="${msg}">resultat</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div id="dataView" class="block">
+
+                <div class="table">
+                    <table id="general-table" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th style="width: 70%;"><a href="#">Data</a></th>
+                            <th style="width: 10%;"><a href="#">Usuari</a></th>
+                            <th style="width: 10%;"><a href="#">Valoració</a></th>
+                            <th style="width: 150px;" class="text-center">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="resposta, row : ${pregunta.respostes}"
+                            th:id="'resposta_' + ${resposta.Id}">
+                            <td><a th:text="${resposta.dataCreacio}">Enunciat</a></td>
+                            <td>
+                                <a th:text="${resposta.usuari.username}">Usuari</a>
+                            </td>
+                            <td><a th:text="${resposta.valor}" >Valor</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>
