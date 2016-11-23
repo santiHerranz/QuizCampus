@@ -54,10 +54,15 @@ public class EnquestaCasosUs {
 
     @Transactional
     public Pregunta afegirPregunta(Enquesta enquesta, String enunciat, int minim, int maxim) {
+
         PreguntaNumerica pregunta = new PreguntaNumerica();
         pregunta.setEnunciat(enunciat);
         pregunta.setMinim(minim);
         pregunta.setMaxim(maxim);
+
+        //TODO obtenir el valor d'ordre més gran
+        int max = enquesta.getPreguntes().size();
+        pregunta.setOrdre(max+1);
 
         enquesta.afegirPregunta(pregunta);
         beansManager.preguntaRepository.save(enquesta, pregunta);
@@ -75,12 +80,6 @@ public class EnquestaCasosUs {
         beansManager.respostaRepository.save(pregunta, resposta);
         return resposta;
     }
-/*
-    public void metodeProva() {
-        System.out.println("metodeProva");
-    }
-*/
-
 
     public void reordenarPreguntes(Enquesta enquesta, String orderedKeyList) {
 

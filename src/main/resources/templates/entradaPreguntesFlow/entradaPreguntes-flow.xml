@@ -29,8 +29,8 @@
     </action-state>
 
 
-    <end-state id="endState" view="externalRedirect:contextRelative:/enquestes/#{enquesta.Id}"/>
-    <end-state id="cancel" view="externalRedirect:/enquestes.html"/>
+    <end-state id="endState" view="externalRedirect:contextRelative:/admin/enquestes/#{enquesta.Id}"/>
+    <end-state id="cancel" view="externalRedirect:/admin/enquestes"/>
 
     <global-transitions>
         <transition on="cancel" to="cancel"></transition>

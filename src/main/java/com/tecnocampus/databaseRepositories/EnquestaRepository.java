@@ -3,6 +3,7 @@ package com.tecnocampus.databaseRepositories;
 import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
+import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -170,12 +171,14 @@ public class EnquestaRepository {
             enquesta.setId(resultSet.getLong("enquestaId"));
             enquesta.setDataCreacio(resultSet.getDate("data_creacio"));
 
-            List<Pregunta> list = beansManager.preguntaRepository.findAllFromQuiz(enquesta.getId());
+            List<PreguntaNumerica> list = beansManager.preguntaRepository.findAllFromQuiz(enquesta.getId());
 
+            //Ordenar les preguntes
             Collections.sort(list, new Comparator<Pregunta>() {
                 public int compare(Pregunta o1, Pregunta o2) {
-                    return o2.getOrdre() - o1.getOrdre();
-                }});
+                    return o1.getOrdre() - o2.getOrdre();
+                }
+            });
 
             for (Pregunta p: list) {
                 p.setEnquesta(enquesta);

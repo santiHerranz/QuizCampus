@@ -8,7 +8,7 @@ import java.io.Serializable;
  *  Part específica de la resposta numérica
  *  - Valor numéric entre els valors límits de la pregunta
  */
-public final class RespostaNumerica extends Resposta implements Serializable {
+public final class RespostaNumerica extends Resposta implements Serializable, Comparable {
 
     private int valor;
 
@@ -33,6 +33,15 @@ public final class RespostaNumerica extends Resposta implements Serializable {
                 + super.toString()
                 +", valor: \""+ this.valor +"\""
                 +"}";
+    }
+
+    public int compareTo(RespostaNumerica other){
+        return this.getPregunta().getOrdre() - other.getPregunta().getOrdre();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.getPregunta().getOrdre() - ((RespostaNumerica)o).getPregunta().getOrdre();
     }
 
 }

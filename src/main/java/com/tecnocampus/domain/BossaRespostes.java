@@ -14,7 +14,6 @@ public class BossaRespostes implements Serializable {
         }
 
         public void addResposta(RespostaNumerica note) {
-            System.out.println(((RespostaNumerica)note).getValor());
             respostes.add(note);
         }
 
@@ -28,11 +27,11 @@ public class BossaRespostes implements Serializable {
 
     public RespostaNumerica getSeguent() {
 
-        for (RespostaNumerica r : this.respostes) {
+
+        for (RespostaNumerica r : this.respostes ) {
             if (r.getValor() == 0)
                 return r;
         }
         return  null;
     }
-
 }

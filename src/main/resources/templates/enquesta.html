@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Enquesta</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
-    <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
-    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
 
 </head>
 <body>
@@ -21,20 +23,10 @@
 
 <div id="dataView" class="block">
 
-    <!--
-    <div class="col-md-6">
-        <label th:text="${enquesta.titol}" >titol</label>
-
-    </div>
-    <div class="col-md-6">
-        <label th:text="${enquesta.dataCreacio}" >Data</label>
-    </div>
-
-    -->
-
     <fieldset>
 
 
+        <a sec:authorize="hasRole('ADMIN')" class="btn btn-success btn-sm pull-right" th:href="${'/admin/enquestes/'+ enquesta.Id}" >Editar</a>
 
 
         <div id="dataView" class="block">
@@ -43,25 +35,41 @@
                 <table id="general-table" class="table table-striped">
                     <thead>
                     <tr>
-                        <th style="width: 70%;"><a href="#">pregunta</a></th>
-                        <th style="width: 10%;"><a href="#">valoració</a></th>
+                        <th style="width: 10%;"><a href="#">#</a></th>
+                        <th style="width: 50%;"><a href="#">pregunta</a></th>
+                        <th style="width: 40%;"><a href="#">valoració</a></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="pregunta, row : ${#lists.sort(enquesta.preguntes)}"
                         th:id="'pregunta_' + ${pregunta.id}">
+                        <td><span th:text="${pregunta.ordre}">ordre</span></td>
                         <td><span th:text="${pregunta.enunciat}">titol</span></td>
-                        <td>
-                            <span th:text="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}" >0.0</span>
+                        <td th:title="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT') +' / '+ 5}">
+                            <div class="acidjs-rating-stars">
+                                <label th:each="i : ${#numbers.sequence(5,1,-1)}" th:style="${pregunta.getValoracioMitjana() lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
+                            </div>
                         </td>
+
                     </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><span></span></td>
+                            <td><strong>Total</strong></td>
+                            <td th:title="${#numbers.formatDecimal(enquesta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT') +' / '+ 5}">
+                                <div class="acidjs-rating-stars">
+                                    <label th:each="i : ${#numbers.sequence(5,1,-1)}" th:style="${enquesta.getValoracioMitjana() lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+
                 </table>
             </div>
         </div>
 
         <a class="btn btn-primary btn-sm pull-left" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >Respondre</a>
-
     </fieldset>
 </div>
 </div>

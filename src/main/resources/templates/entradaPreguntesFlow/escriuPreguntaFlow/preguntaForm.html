@@ -41,7 +41,7 @@
                 <thead>
                 <tr>
                     <th style="width: 80%;"><a href="#">enunciat</a></th>
-                    <th style="width: 15%;"><a href="#">interval</a></th>
+                    <th style="width: 15%;"><a href="#">màxim estrelles</a></th>
                     <th style="width: 150px;" class="text-center">&nbsp;</th>
                 </tr>
                 </thead>
@@ -50,14 +50,14 @@
                      th:id="'pregunta_' + ${pregunta.id}">
                     <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
                     <td>
-                        <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
+                         <span th:text="${pregunta.maxim}">Valor màxim</span>
                     </td>
                 </tr>
                 <tr  th:each="pregunta : ${bossaPreguntes.preguntes}"
                      th:id="'pregunta_' + ${pregunta.id}">
                     <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
                     <td>
-                        <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
+                        <span th:text="${pregunta.maxim}">Valor màxim</span>
                     </td>
                 </tr>
                 </tbody>
@@ -67,41 +67,39 @@
 
     <form method="POST" th:object="${pregunta}" th:action="${flowExecutionUrl}">
 
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('*')}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}"
+                    th:text="${err}">Input is incorrect</li>
+            </ul>
+        </div>
+
+
         <div class="row">
             <div class="col-md-8">
                 <label for="enunciat">Enunciat</label>
                 <input type="text" id="enunciat" th:field="*{enunciat}" class="form-control" autocomplete="off" style="width: 100%;" />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-2 hide">
                 <label for="valorMinim"> Mínim</label><br />
-                <select class="form-control selectpicker" id="valorMinim" name="valorMinim" th:field="*{minim}" style="width: 100%;">
-                    <option value="1" selected="selected">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
+                <select class="form-control selectpicker" id="valorMinim" name="valorMinim"
+                        required="required"
+                        th:field="*{minim}" style="width: 100%;" >
+                    <option th:each="o : ${#numbers.sequence(1,10)}"
+                            th:value="${o}" th:text="${o}" >5</option>
                 </select>
             </div>
 
             <div class="col-md-2">
-                <label for="valorMaxim"> Màxim</label><br />
-                <select class="form-control selectpicker" id="valorMaxim" name="valorMaxim" th:field="*{maxim}" style="width: 100%;">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10" selected="selected">10</option>
+                <label for="valorMaxim"> Màxim estrelles</label><br />
+                <select class="form-control selectpicker" id="valorMaxim" name="valorMaxim"
+                        th:field="*{maxim}" style="width: 100%;">
+                        <option th:each="o : ${#numbers.sequence(1,10)}"
+                                th:value="${o}" th:text="${o}" >5</option>
                 </select>
             </div>
         </div>

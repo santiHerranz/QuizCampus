@@ -50,6 +50,15 @@ public class PreguntaRepository {
 
         return findOne(pregunta.getId());
     }
+
+    public PreguntaNumerica save(PreguntaNumerica pregunta) {
+        if(pregunta.getId() != null) {
+            update(pregunta);
+        }
+        return findOne(pregunta.getId());
+    }
+
+
     public void insert(Enquesta enquesta, Pregunta pregunta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -98,9 +107,9 @@ public class PreguntaRepository {
             return resultCount;
         }
 
-    public Pregunta findOne(Long preguntaId) {
+    public PreguntaNumerica findOne(Long preguntaId) {
         try {
-            Pregunta pregunta = jdbcOperations.queryForObject(
+            PreguntaNumerica pregunta = jdbcOperations.queryForObject(
                     SQL_SELECT_STATEMENT + "where preguntaId = ?"
                     , new Object[]{preguntaId}
                     , new PreguntaMapper()
@@ -124,8 +133,8 @@ public class PreguntaRepository {
         }
     }
 
-    public List<Pregunta> findAll() {
-        List<Pregunta> list = jdbcOperations.query(
+    public List<PreguntaNumerica> findAll() {
+        List<PreguntaNumerica> list = jdbcOperations.query(
                 SQL_SELECT_STATEMENT +" ORDER BY Ordre ASC"
                 , new PreguntaMapper()
         );
@@ -136,7 +145,7 @@ public class PreguntaRepository {
      * Aquesta funció llista totes les preguntes que pertanyin a l'esquesta que passem per parametre
      * @param enquestaId
      */
-    public List<Pregunta> findAllFromQuiz(Long enquestaId) {
+    public List<PreguntaNumerica> findAllFromQuiz(Long enquestaId) {
         return jdbcOperations.query(
                 SQL_SELECT_STATEMENT +" WHERE enquestaId = ? ORDER BY Ordre ASC"
                 , new Object[]{ enquestaId}
@@ -145,9 +154,9 @@ public class PreguntaRepository {
 
 
 
-    private final class PreguntaMapper implements RowMapper<Pregunta> {
+    private final class PreguntaMapper implements RowMapper<PreguntaNumerica> {
         @Override
-        public Pregunta mapRow(ResultSet resultSet, int i) throws SQLException {
+        public PreguntaNumerica mapRow(ResultSet resultSet, int i) throws SQLException {
 
             PreguntaNumerica pregunta = new PreguntaNumerica();
 
@@ -173,7 +182,7 @@ public class PreguntaRepository {
 
     private final class PreguntaMapperLazy implements RowMapper<Pregunta> {
         @Override
-        public Pregunta mapRow(ResultSet resultSet, int i) throws SQLException {
+        public PreguntaNumerica mapRow(ResultSet resultSet, int i) throws SQLException {
 
             PreguntaNumerica pregunta = new PreguntaNumerica();
 

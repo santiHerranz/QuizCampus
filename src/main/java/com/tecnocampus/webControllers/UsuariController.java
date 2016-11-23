@@ -44,12 +44,12 @@ public class UsuariController {
         return "home";
     }
 
-    @GetMapping("usuaris")
+    @GetMapping("/admin/usuaris")
     public List<Usuari> listNotes() {
         return usuariCasosUs.llistarUsuaris();
     }
 
-    @GetMapping("usuaris/{usuariId}")
+    @GetMapping("/admin/usuaris/{usuariId}")
     public String showUser(@PathVariable("usuariId") Long usuariId, Model model) {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
@@ -58,15 +58,15 @@ public class UsuariController {
             // comprobem que l'usuari existeix, en cas contrari mostrem llistat
             Usuari usuari = usuariCasosUs.cercarUsuari(usuariId);
             if (usuari == null)
-                return "redirect:/enquestes";
+                return "redirect:/admin/usuaris";
 
             model.addAttribute("usuari",usuari);
         }
-        return "usuari";
+        return "/admin/usuari";
     }
 
 
-    @PostMapping("/usuaris/{usuariId}/esborra")
+    @PostMapping("/admin/usuaris/{usuariId}/esborra")
     public String processDeleteUser(@PathVariable("usuariId") Long usuariId,
                                     final RedirectAttributes redirectAttributes) {
 
@@ -78,13 +78,13 @@ public class UsuariController {
             redirectAttributes.addFlashAttribute("css", "success");
             redirectAttributes.addFlashAttribute("msg", user.getUsername() +" esborrat!");
 
-            return "redirect:/usuaris";
+            return "redirect:/admin/usuaris";
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("css", "danger");
             redirectAttributes.addFlashAttribute("msg", user.getUsername() +" "+ e.getMessage());
 
-            return "redirect:/usuaris";
+            return "redirect:/admin/usuaris";
         }
     }
 

@@ -8,76 +8,7 @@
 
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
           th:href="@{/css/bootstrap.min.css}"/>
-    <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
-    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
 
-    <style>
-        /*
-         * Selectable CSS3 Rating Stars by Martin Ivanov (@wemakesitesnet)
-         * @version 1.0
-         * @author Martin Ivanov
-         * @url portfolio http://wemakesites.net/
-         * @url twitter https://twitter.com/wemakesitesnet
-         * @url blog http://acidmartin.wordpress.com/
-         **/
-        .acidjs-rating-stars,
-        .acidjs-rating-stars label::before
-        {
-            display: inline-block;
-        }
-
-        .acidjs-rating-stars label:hover,
-        .acidjs-rating-stars label:hover ~ label
-        {
-            color: #189800;
-        }
-
-        .acidjs-rating-stars *
-        {
-            margin: 0;
-            padding: 0;
-        }
-
-        .acidjs-rating-stars input
-        {
-            display: none;
-        }
-
-        .acidjs-rating-stars
-        {
-            unicode-bidi: bidi-override;
-            direction: rtl;
-        }
-
-        .acidjs-rating-stars label
-        {
-            color: #ccc;
-        }
-
-        .acidjs-rating-stars label::before
-        {
-            content: "\2605";
-            width: 32px;
-            line-height: 18px;
-            text-align: center;
-            font-size: 28px;
-            cursor: pointer;
-        }
-
-        .acidjs-rating-stars input:checked ~ label
-        {
-            color: #f5b301;
-        }
-
-        .acidjs-rating-disabled
-        {
-            opacity: .50;
-
-            -webkit-pointer-events: none;
-            -moz-pointer-events: none;
-            pointer-events: none;
-        }
-    </style>
 
 </head>
 <body>
@@ -91,52 +22,45 @@
         <hr />
     </div>
 
-    <h4>Respondre</h4>
 
 
     <form id="formResposta" method="POST" th:object="${resposta}" th:action="${flowExecutionUrl}">
 
 
+
         <div id="dataView" class="block" th:if="${resposta != null}">
+
+
+            <h5>
+                <span th:text="'Pregunta: '+ ${resposta.pregunta.ordre }+' de '+ ${bossaRespostes.getRespostes().size()}"></span>
+            </h5>
+
             <div class="table">
-                <table id="general-table" class="table table-striped table-vcenter">
-                    <thead>
-                    <tr>
-                        <th style="width: 50%;"><a href="#">pregunta</a></th>
-                        <th style="width: 40%;"><a href="#">valoració</a></th>
-                        <th style="width: 10%;">&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:id="'pregunta_' + ${resposta.pregunta.id}">
-                        <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
-                        <td>
-                            <div class="acidjs-rating-stars">
-                            <th:block th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.pregunta.maxim)}">
-                                <input type="radio"
 
-                                    th:id="${'valor-'+ (i-1)}"
-                                    th:field="*{valor}"
-                                           th:value="${(resposta.pregunta.maxim-(i-1))}"
-                                /><label
-                                    th:for="${'valor-'+ (i-1)}" ondblclick="$('#btnSeguent').click();"></label>
-                            </th:block>
 
-                            </div>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td>
-                            <input id="btnSeguent" type="submit" value="Següent" class="btn btn-sm btn-success" name="_eventId_respostaEntrada" />
-                            <input type="submit" value="Cancelar" class="btn btn-sm btn-default" name="_eventId_cancel" />
-                        </td>
-                    </tr>
-                    </tfoot>
-                </table>
+                <h2><span th:text="${resposta.pregunta.enunciat}" >titol</span></h2>
+
+                <hr />
+
+                <div class="acidjs-rating-stars">
+                    <th:block th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.pregunta.maxim)}">
+                        <input type="radio"
+
+                               th:id="${'valor-'+ (i-1)}"
+                               th:field="*{valor}"
+                               th:value="${(resposta.pregunta.maxim-(i-1))}"
+                        /><label
+                            th:for="${'valor-'+ (i-1)}" ondblclick="$('#btnSeguent').click();"></label>
+                    </th:block>
+
+                </div>
+
+                <hr />
+
+                <input id="btnSeguent" type="submit" value="Següent" class="btn btn-sm btn-success" name="_eventId_respostaEntrada" />
+                <input type="submit" value="Cancelar" class="btn btn-sm btn-default" name="_eventId_cancel" />
+
+
             </div>
         </div>
 
@@ -146,20 +70,14 @@
             <div id="dataView" class="block">
                 <div class="table">
                     <table id="general-table" class="table table-striped table-vcenter">
-                        <thead>
-                        <tr>
-                            <th style="width: 50%;"><a href="#">enunciat</a></th>
-                            <th style="width: 40%;"><a href="#">valoració</a></th>
-                        </tr>
-                        </thead>
                         <tbody>
                         <tr th:each="resposta : ${bossaRespostes.getRespostes()}"
                             th:id="'pregunta_' + ${resposta.pregunta.id}">
+                            <td><span th:text="${resposta.pregunta.ordre}" >ordre</span></td>
                             <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
-                            <td>
+                            <td th:title="${resposta.valor +' / '+ resposta.pregunta.maxim}">
                                 <div class="acidjs-rating-stars">
-                                    <label th:each="i : ${#numbers.sequence( resposta.valor, resposta.pregunta.maxim)}" style="color: #ccc;" ></label>
-                                    <label th:each="i : ${#numbers.sequence( resposta.pregunta.minim, resposta.valor)}" style="color: #f5b301;" ></label>
+                                    <label th:each="i : ${#numbers.sequence(resposta.pregunta.maxim,1,-1)}" th:style="${resposta.valor lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
                                 </div>
                             </td>
                         </tr>
@@ -182,6 +100,8 @@
         $(pregunta).val(value);
     }
 </script>
+
+<div th:replace="links :: links">links</div>
 
 </body>
 </html>

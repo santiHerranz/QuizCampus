@@ -31,12 +31,6 @@
     <div class="block-title">
         <a class=""  th:href="@{'/admin/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
         <hr />
-        <div class="form-group form-actions">
-            <button type="submit" class="btn btn-sm btn-primary"> Guardar</button>
-
-            <a type="submit" class="btn btn-sm btn-default" th:href="@{'/admin/enquestes/' + ${enquesta.id}}" th:if="${enquesta.Id != null}"> Descartar</a>
-            <a type="submit" class="btn btn-sm btn-default" href="/admin/enquestes" th:if="${enquesta.Id == null}"> Descartar</a>
-        </div>
     </div>
 
 
@@ -49,7 +43,7 @@
 
 
         <div class="form-group">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <input th:field="*{Id}" class="hidden"  />
                 <br />
                 <label class="col-md-9 control-label" for="val_name" th:class="${#fields.hasErrors('titol')}? 'titol'">Titol<span class="text-danger">*</span></label>
@@ -57,6 +51,13 @@
                        th:field="*{titol}"
                        th:class="${#fields.hasErrors('titol')}? 'form-control titol' : 'form-control'" />
             </div>
+        </div>
+
+        <div class="form-group form-actions">
+            <button type="submit" class="btn btn-sm btn-primary"> Guardar</button>
+
+            <a type="submit" class="btn btn-sm btn-default" th:href="@{'/admin/enquestes/' + ${enquesta.id}}" th:if="${enquesta.Id != null}"> Descartar</a>
+            <a type="submit" class="btn btn-sm btn-default" href="/admin/enquestes" th:if="${enquesta.Id == null}"> Descartar</a>
         </div>
 
     </form>

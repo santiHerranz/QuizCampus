@@ -2,6 +2,7 @@ package com.tecnocampus.webControllers;
 
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
+import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.exceptions.EnquestaDuplicadaException;
 import com.tecnocampus.security.SecurityService;
 import com.tecnocampus.useCases.EnquestaCasosUs;
@@ -88,13 +89,95 @@ public class EnquestaController {
         return "/admin/enquestaForm";
     }
 
-    class orderedKeyList {
-        String list;
+    @PostMapping("/admin/enquestes/{enquestaId}/edita")
+    public String processEditItem(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
+
+        if (errors.hasErrors())
+            return "/admin/enquestaForm";
+
+        try {
+            enquesta = enquestaCasosUs.save(enquesta);
+
+        } catch (EnquestaDuplicadaException e) {
+            ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
+            result.addError(error);
+            return "/admin/enquestaForm";
+        }
+
+        redirectAttributes.addAttribute("id", enquesta.getId());
+        redirectAttributes.addFlashAttribute("enquesta", enquesta);
+        return "redirect:/admin/enquestes/{id}";
     }
 
 
+    @PostMapping("/admin/enquestes/nova")
+    public String processCreateEnquesta(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
+
+        if (errors.hasErrors())
+            return "/admin/enquestaForm";
+
+        try {
+            enquesta = enquestaCasosUs.crearEnquesta(enquesta.getTitol());
+
+        } catch (EnquestaDuplicadaException e) {
+            ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
+            result.addError(error);
+            return "/admin/enquestaForm";
+
+        }
+
+        redirectAttributes.addAttribute("id", enquesta.getId());
+        redirectAttributes.addFlashAttribute("enquesta", enquesta);
+        return "redirect:/admin/enquestes/{id}";
+
+    }
+
+
+    @PostMapping("/admin/enquestes/{enquestaId}/esborra")
+    public String processDeleteEnquesta(@PathVariable("enquestaId") Long enquestaId,
+                                        final RedirectAttributes redirectAttributes) {
+
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
+
+        try {
+            enquestaCasosUs.eliminarEnquesta(enquesta);
+
+            redirectAttributes.addFlashAttribute("css", "success");
+            redirectAttributes.addFlashAttribute("msg", enquesta.getTitol() +" esborrat!");
+
+            return "redirect:/admin/enquestes";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", enquesta.getTitol() +" "+ e.getMessage());
+
+            return "redirect:/admin/enquestes";
+        }
+    }
+
+    @GetMapping("/admin/enquestes/{enquestaId}/reordena")
+    public String ordenaItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
+        model.addAttribute(enquesta);
+        return "/admin/reordenaPreguntes";
+    }
+
+    @PostMapping("/admin/enquestes/{enquestaId}/reordena")
+    public String processReordenaItem(@PathVariable("enquestaId") Long enquestaId, @RequestParam("orderedKeyList") String orderedKeyList, RedirectAttributes redirectAttributes) {
+
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
+
+        enquestaCasosUs.reordenarPreguntes(enquesta, orderedKeyList);
+
+        redirectAttributes.addAttribute("id", enquesta.getId());
+        redirectAttributes.addFlashAttribute("enquesta", enquesta);
+        return "redirect:/admin/enquestes/{id}";
+    }
+
+
+
     @GetMapping("/admin/preguntes")
-    public List<Pregunta> listpreguntes() {
+    public List<PreguntaNumerica> listpreguntes() {
         return preguntaCasosUs.llistarPreguntes();
     }
 
@@ -105,98 +188,25 @@ public class EnquestaController {
         return "/admin/pregunta";
     }
 
-    @PostMapping("/admin/preguntes/{preguntaId}")
-    public String processPregunta() {
-        return null;
+
+    @GetMapping("/admin/preguntes/{preguntaId}/edita")
+    public String preguntaEdita(@PathVariable("preguntaId") Long preguntaId, Model model) {
+        Pregunta pregunta = preguntaCasosUs.obtenirPregunta(preguntaId);
+        model.addAttribute("pregunta", pregunta);
+        return "/admin/preguntaForm";
     }
 
-
-    @GetMapping("admin_enquestes/{enquestaId}/reordena")
-    public String ordenaItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
-        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
-        model.addAttribute(enquesta);
-        model.addAttribute(new orderedKeyList());
-        return "admin_enquestaReordenaPreguntes";
-    }
-
-    @PostMapping("admin_enquestes/{enquestaId}/reordena")
-    public String processReordenaItem(@PathVariable("enquestaId") Long enquestaId, @RequestParam("orderedKeyList") String orderedKeyList, RedirectAttributes redirectAttributes) {
-
-        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
-
-        //String orderedKeyList = "4,3,2,1";
-        enquestaCasosUs.reordenarPreguntes(enquesta, orderedKeyList);
-
-        redirectAttributes.addAttribute("id", enquesta.getId());
-        redirectAttributes.addFlashAttribute("enquesta", enquesta);
-        return "redirect:/enquestes/{id}";
-    }
-
-
-    @PostMapping("admin_enquestes/{enquestaId}/edita")
-    public String processEditItem(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
+    @PostMapping("/admin/preguntes/{preguntaId}/edita")
+    public String processPreguntaEditItem(@Valid PreguntaNumerica pregunta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors())
-            return "admin_enquestaForm";
+            return "/admin/preguntaForm";
 
-        try {
-            enquesta = enquestaCasosUs.save(enquesta);
+        pregunta = preguntaCasosUs.save(pregunta);
 
-        } catch (EnquestaDuplicadaException e) {
-            ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
-            result.addError(error);
-            return "admin_enquestaForm";
-        }
-
-        redirectAttributes.addAttribute("id", enquesta.getId());
-        redirectAttributes.addFlashAttribute("enquesta", enquesta);
-        return "redirect:/enquestes/{id}";
-    }
-
-
-    @PostMapping("admin_enquestes/nova")
-    public String processCreateEnquesta(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
-
-        if (errors.hasErrors())
-            return "admin_enquestaForm";
-
-        try {
-            enquesta = enquestaCasosUs.crearEnquesta(enquesta.getTitol());
-
-        } catch (EnquestaDuplicadaException e) {
-            ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
-            result.addError(error);
-            return "admin_enquestaForm";
-
-        }
-
-        redirectAttributes.addAttribute("id", enquesta.getId());
-        redirectAttributes.addFlashAttribute("enquesta", enquesta);
-        return "redirect:/enquestes/{id}";
-
-    }
-
-
-        @PostMapping("admin_enquestes/{enquestaId}/esborra")
-    public String processDeleteEnquesta(@PathVariable("enquestaId") Long enquestaId,
-                                    final RedirectAttributes redirectAttributes) {
-
-            Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
-
-        try {
-            enquestaCasosUs.eliminarEnquesta(enquesta);
-
-            redirectAttributes.addFlashAttribute("css", "success");
-            redirectAttributes.addFlashAttribute("msg", enquesta.getTitol() +" esborrat!");
-
-            return "redirect:/enquestes";
-
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("css", "danger");
-            redirectAttributes.addFlashAttribute("msg", enquesta.getTitol() +" "+ e.getMessage());
-
-            return "redirect:/enquestes";
-        }
+        redirectAttributes.addAttribute("id", pregunta.getId());
+        redirectAttributes.addFlashAttribute("pregunta", pregunta);
+        return "redirect:/admin/preguntes/{id}";
     }
 
 
@@ -214,13 +224,13 @@ public class EnquestaController {
             redirectAttributes.addFlashAttribute("css", "success");
             redirectAttributes.addFlashAttribute("msg", pregunta.getEnunciat() +" esborrat!");
 
-            return "redirect:/enquestes/"+ pregunta.getEnquesta().getId();
+            return "redirect:/admin/enquestes/"+ pregunta.getEnquesta().getId();
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("css", "danger");
             redirectAttributes.addFlashAttribute("msg", pregunta.getEnunciat() +" "+ e.getMessage());
 
-            return "redirect:/enquestes/"+ pregunta.getEnquesta().getId();
+            return "redirect:/admin/enquestes/"+ pregunta.getEnquesta().getId();
         }
     }
 

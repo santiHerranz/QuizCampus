@@ -135,6 +135,7 @@ public class RespostaRepository {
 
             Resposta resposta = new RespostaNumerica();
             resposta.setId(resultSet.getLong("respostaid"));
+            resposta.setDataCreacio(resultSet.getDate("data_creacio"));
             ((RespostaNumerica)resposta).setValor(resultSet.getInt("valor"));
 
             Usuari usuari = beansManager.usuariRepository.findOneLazy(resultSet.getLong("usuariid"));

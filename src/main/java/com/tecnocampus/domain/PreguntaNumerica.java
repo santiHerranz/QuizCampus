@@ -8,13 +8,16 @@ import java.util.ArrayList;
  */
 public final class PreguntaNumerica  extends Pregunta implements Serializable, Comparable {
 
+    public final static int MINIM_ESTRELLES = 1;
+    public final static int MAXIM_ESTRELLES = 5;
+
     private int minim;
     private int maxim;
 
     public PreguntaNumerica() {
         super();
-        this.minim=0;
-        this.maxim = 10;
+        this.minim = MINIM_ESTRELLES;
+        this.maxim = MAXIM_ESTRELLES;
     }
 
     public PreguntaNumerica(Enquesta enquesta, String enunciat){

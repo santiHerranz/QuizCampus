@@ -7,6 +7,7 @@ import com.tecnocampus.exceptions.RespostaDuplicadaException;
 import com.tecnocampus.exceptions.RespostaForaDeLimitsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -66,6 +67,10 @@ public class PreguntaCasosUs {
         return beansManager.preguntaRepository.findOne(preguntaId);
     }
 
+    @Transactional
+    public PreguntaNumerica save(PreguntaNumerica pregunta) {
+        return beansManager.preguntaRepository.save(pregunta);
+    }
 
     /***
      *
@@ -90,7 +95,7 @@ public class PreguntaCasosUs {
         }
     }
 
-    public List<Pregunta> llistarPreguntes() {
+    public List<PreguntaNumerica> llistarPreguntes() {
         return beansManager.preguntaRepository.findAll();
     }
 

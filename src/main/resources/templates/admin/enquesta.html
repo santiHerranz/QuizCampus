@@ -14,15 +14,15 @@
 
 <div class="container">
     <div class="block-title">
-        <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
+        <a class=""  th:href="@{'/admin/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
         <hr />
     </div>
 
 
     <div class="form-group form-actions">
         <div class="btn-group">
-            <a class="btn btn-primary btn-sm" th:href="${'/enquestes/'+ enquesta.Id +'/edita'}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
-            <a class="btn btn-success btn-sm" th:href="@{'/enquestes/nova'}" >Crear</a>
+            <a class="btn btn-primary btn-sm" th:href="${'/admin/enquestes/'+ enquesta.Id +'/edita'}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+            <a class="btn btn-success btn-sm" th:href="@{'/admin/enquestes/nova'}" >Crear</a>
         </div>
 
     </div>
@@ -45,10 +45,14 @@
         <legend>
             <div class="md-12">
                 Preguntes
+
                 <a class="btn btn-primary btn-xs pull-right"
                    th:if="${ enquesta.preguntes.size() > 1 }"
                    th:href="${'/admin/enquestes/'+ enquesta.Id +'/reordena'}"
                    href="/admin/enquestes/0/reordena">Ordenar</a>
+
+                <a class="btn btn-primary  btn-xs pull-right" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Afegir preguntes</a>
+
             </div>
         </legend>
 
@@ -65,8 +69,9 @@
                 <table id="general-table" class="table table-striped">
                     <thead>
                     <tr>
+                        <th style="width: 100px;"><a href="#">#</a></th>
                         <th style="width: 70%;"><a href="#">enunciat</a></th>
-                        <th style="width: 10%;"><a href="#">interval</a></th>
+                        <th style="width: 10%;"><a href="#">estrelles</a></th>
                         <th style="width: 10%;"><a href="#">valoració</a></th>
                         <th style="width: 150px;" class="text-center">&nbsp;</th>
                     </tr>
@@ -74,9 +79,13 @@
                     <tbody>
                     <tr th:each="pregunta, row : ${#lists.sort(enquesta.preguntes)}"
                         th:id="'pregunta_' + ${pregunta.id}">
+                        <td>
+                            <span th:text="${pregunta.ordre}">ordre</span>
+                        </td>
+
                         <td><a th:href="@{'/admin/preguntes/' + ${pregunta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
                         <td>
-                            <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
+                            <span th:text="${pregunta.maxim}">Valor màxim</span>
                         </td>
                         <td><a href="#" th:text="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}" >respostes</a></td>
                         <td class="text-center">
@@ -94,9 +103,8 @@
         </div>
 
 
-        <a class="btn btn-success btn-sm pull-left" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Afegir preguntes</a>
 
-        <a class="btn btn-primary btn-sm pull-left" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >Respondre enquesta</a>
+        <a class="btn btn-primary btn-sm" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >Respondre enquesta</a>
 
     </fieldset>
 </div>

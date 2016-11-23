@@ -13,7 +13,9 @@ public abstract class Pregunta implements IPregunta, Serializable {
 
     private Long Id;
     private Date dataCreacio;
+
     private String enunciat = "";
+
     private int ordre;
     private Enquesta enquesta;
     protected List<Resposta> respostes;

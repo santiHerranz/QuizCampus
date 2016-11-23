@@ -15,7 +15,6 @@ public class BossaPreguntes implements Serializable {
         }
 
         public void addPregunta(Pregunta note) {
-            System.out.println(note.getEnunciat());
             preguntes.add(note);
         }
 
