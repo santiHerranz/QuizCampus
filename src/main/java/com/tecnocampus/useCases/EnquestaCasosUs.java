@@ -5,6 +5,8 @@ import com.tecnocampus.domain.*;
 import com.tecnocampus.exceptions.EnquestaDuplicadaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,7 +111,9 @@ public class EnquestaCasosUs {
         if ( bossaRespostes.getRespostes().size() == 0 )
             throw new IllegalArgumentException("La bossa de respostes esta buida");
 
-        Usuari u = beansManager.usuariRepository.findOne(1L);
+        //Usuari u = beansManager.usuariRepository.findOne(1L);
+        Usuari u = beansManager.usuariRepository.findOne( getPrincipal());
+
 
         bossaRespostes.getRespostes().forEach(respostaConsumer -> {
             RespostaNumerica r = (RespostaNumerica)respostaConsumer;
@@ -151,4 +155,17 @@ public class EnquestaCasosUs {
         beansManager.preguntaRepository.delete(pregunta);
     }
 
+
+
+    private String getPrincipal(){
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails)principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        return userName;
+    }
 }

@@ -88,6 +88,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                     .antMatchers("/forecast/**").permitAll()
                     .antMatchers("/static/**", "/registre/**").permitAll()
                     .mvcMatchers("/profile/").hasRole("USER")
+                    .mvcMatchers("/admin/**").hasRole("ADMIN")
                     .mvcMatchers("/usuaris/**").hasRole("ADMIN")
                     .mvcMatchers("/usuaris/{userId}/**").access("@webSecurity.checkUserId(authentication,#userId)")
                     .anyRequest().authenticated()

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{style.css}"/>
+    <title>Create Enquesta</title>
+
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+
+</head>
+<body>
+
+<div th:replace="header :: header">Header</div>
+
+<div class="container">
+
+    <div class="block-title">
+        <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
+        <hr />
+    </div>
+
+    <h4>Pregunta</h4>
+
+    <form method="POST" th:object="${pregunta}">
+
+        <div class="row">
+            <div class="col-md-8">
+                <label for="enunciat">Enunciat</label>
+                <input type="text" id="enunciat" th:field="*{enunciat}" class="form-control" autocomplete="off" style="width: 100%;" />
+            </div>
+
+            <div class="col-md-2">
+                <label for="valorMinim"> Mínim</label><br />
+                <select class="form-control selectpicker" id="valorMinim" name="valorMinim" th:field="*{minim}" style="width: 100%;">
+                    <option value="1" selected="selected">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label for="valorMaxim"> Màxim</label><br />
+                <select class="form-control selectpicker" id="valorMaxim" name="valorMaxim" th:field="*{maxim}" style="width: 100%;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5" selected="selected">5</option>
+                </select>
+            </div>
+        </div>
+        <br />
+        <hr/>
+        <div class="btn-group">
+            <input type="hidden" id="orderedKeyList" name="orderedKeyList" value="" />
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success"/>
+            <a th:href="@{'/enquestes/' + ${enquesta.id}}" class="btn btn-sm btn-default">Cancelar</a>
+        </div>
+
+    </form>
+
+</div>
+
+
+</body>
+</html>
