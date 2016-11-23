@@ -28,7 +28,7 @@
 <div class="container">
 
     <div class="block-title">
-        <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
+        <a class=""  th:href="@{'/admin/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
         <hr />
     </div>
 
@@ -48,14 +48,14 @@
                 <tbody>
                 <tr  th:each="pregunta : ${enquesta.preguntes}"
                      th:id="'pregunta_' + ${pregunta.id}">
-                    <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
+                    <td><a th:href="@{'/admin/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
                     <td>
                         <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
                     </td>
                 </tr>
                 <tr  th:each="pregunta : ${bossaPreguntes.preguntes}"
                      th:id="'pregunta_' + ${pregunta.id}">
-                    <td><a th:href="@{'/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
+                    <td><a th:href="@{'/admin/enquestes/' + ${enquesta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
                     <td>
                         <span th:text="${pregunta.minim}">Valor mínim</span> - <span th:text="${pregunta.maxim}">Valor màxim</span>
                     </td>

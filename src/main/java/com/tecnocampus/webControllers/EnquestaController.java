@@ -68,7 +68,7 @@ public class EnquestaController {
             // comprobem que l'enquesta existeix, en cas contrari mostrem llistat
             Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
             if (enquesta == null)
-                return "redirect:/enquestes";
+                return "redirect:/admin/enquestes";
             model.addAttribute("enquesta",enquesta);
         }
         return "/admin/enquesta";
@@ -80,6 +80,8 @@ public class EnquestaController {
         return "/admin/" +
                 "enquestaForm";
     }
+
+    //@GetMapping("admin/preguntes")
 
     @GetMapping("admin/enquestes/{enquestaId}/edita")
     public String editItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
@@ -130,7 +132,7 @@ public class EnquestaController {
 
         redirectAttributes.addAttribute("id", enquesta.getId());
         redirectAttributes.addFlashAttribute("enquesta", enquesta);
-        return "redirect:/enquestes/{id}";
+        return "redirect:/admin/enquestes/{id}";
     }
 
 
@@ -151,7 +153,7 @@ public class EnquestaController {
 
         redirectAttributes.addAttribute("id", enquesta.getId());
         redirectAttributes.addFlashAttribute("enquesta", enquesta);
-        return "redirect:/enquestes/{id}";
+        return "redirect:/admin/enquestes/{id}";
     }
 
 
@@ -178,7 +180,7 @@ public class EnquestaController {
     }
 
 
-        @PostMapping("admin_enquestes/{enquestaId}/esborra")
+        @PostMapping("admin/enquestes/{enquestaId}/esborra")
     public String processDeleteEnquesta(@PathVariable("enquestaId") Long enquestaId,
                                     final RedirectAttributes redirectAttributes) {
 
@@ -190,13 +192,13 @@ public class EnquestaController {
             redirectAttributes.addFlashAttribute("css", "success");
             redirectAttributes.addFlashAttribute("msg", enquesta.getTitol() +" esborrat!");
 
-            return "redirect:/enquestes";
+            return "redirect:/admin/enquestes";
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("css", "danger");
             redirectAttributes.addFlashAttribute("msg", enquesta.getTitol() +" "+ e.getMessage());
 
-            return "redirect:/enquestes";
+            return "redirect:/admin/enquestes";
         }
     }
 

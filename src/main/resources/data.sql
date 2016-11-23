@@ -24,3 +24,8 @@ INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Discreció'
 INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Producte', 1, 5);
 INSERT INTO pregunta (enquestaId, enunciat, minim, maxim) VALUES (1,'Rapidessa d''entrega', 1, 5);
 
+
+INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (1,1,5);
+INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (1,2,5);
+INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (1,3,5);
+INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (1,4,4);
