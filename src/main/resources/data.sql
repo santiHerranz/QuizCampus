@@ -24,3 +24,8 @@ INSERT INTO pregunta (enquestaId, ordre, enunciat, minim, maxim) VALUES (1,2,'Di
 INSERT INTO pregunta (enquestaId, ordre, enunciat, minim, maxim) VALUES (1,3,'Producte', 1, 5);
 INSERT INTO pregunta (enquestaId, ordre, enunciat, minim, maxim) VALUES (1,4,'Rapidessa d''entrega', 1, 5);
 
+
+INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (1,1,5);
+INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (1,2,5);
+INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (1,3,5);
+INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (1,4,4);
