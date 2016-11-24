@@ -2,7 +2,6 @@ package com.tecnocampus.useCases;
 
 import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.*;
-import com.tecnocampus.exceptions.PreguntaNoExisteixException;
 import com.tecnocampus.exceptions.RespostaDuplicadaException;
 import com.tecnocampus.exceptions.RespostaForaDeLimitsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,9 @@ public class PreguntaCasosUs {
 
     @Autowired
     BeansManager beansManager;
+
+    @Autowired
+    EnquestaCasosUs enquestaCasosUs;
 
     public PreguntaCasosUs() {}
 
@@ -72,42 +74,8 @@ public class PreguntaCasosUs {
         return beansManager.preguntaRepository.save(pregunta);
     }
 
-    /***
-     *
-     * @param pregunta
-     * @return
-     * @throws Exception
-     */
-    public void eliminarPregunta(Pregunta pregunta) throws RuntimeException {
-        if (beansManager.preguntaRepository.findOne(pregunta.getId()) == null)
-            throw new PreguntaNoExisteixException();
 
-        Enquesta enquesta = pregunta.getEnquesta();
 
-        beansManager.preguntaRepository.delete(pregunta);
-
-        EnquestaCasosUs enquestaCasosUs = new EnquestaCasosUs();
-
-        String s = "";
-        for (Pregunta p: enquesta.getPreguntes()) {
-            if(s != "") s += ",";
-            s += p.getId();
-        }
-
-        enquestaCasosUs.reordenarPreguntes(enquesta,s);
-
-    }
-
-    /***
-     *
-     * @param enquesta
-     * @throws Exception
-     */
-    public void eliminarTotesPreguntes(Enquesta enquesta) throws RuntimeException {
-        for (Pregunta pregunta: enquesta.getPreguntes()) {
-            eliminarPregunta(pregunta);
-        }
-    }
 
     public List<PreguntaNumerica> llistarPreguntes() {
         return beansManager.preguntaRepository.findAll();

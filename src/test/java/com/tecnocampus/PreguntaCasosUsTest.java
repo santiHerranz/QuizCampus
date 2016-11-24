@@ -96,7 +96,7 @@ public class PreguntaCasosUsTest {
     @Transactional
     public void eliminarPreguntaTest(){
         Pregunta p = enquestaCasosUs.afegirPregunta(enquesta, "Pregunta nova", 1, 10);
-        preguntaCasosUs.eliminarPregunta(p);
+        enquestaCasosUs.eliminarPregunta(p);
     }
 
     @Test
@@ -105,8 +105,8 @@ public class PreguntaCasosUsTest {
         expectedEx.expect(PreguntaNoExisteixException.class);
 
         Pregunta p = enquestaCasosUs.afegirPregunta(enquesta, "Pregunta nova", 1, 10);
-        preguntaCasosUs.eliminarPregunta(p);
-        preguntaCasosUs.eliminarPregunta(p);
+        enquestaCasosUs.eliminarPregunta(p);
+        enquestaCasosUs.eliminarPregunta(p);
     }
 
 

@@ -3,6 +3,7 @@ package com.tecnocampus.useCases;
 import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.*;
 import com.tecnocampus.exceptions.EnquestaDuplicadaException;
+import com.tecnocampus.exceptions.PreguntaNoExisteixException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,7 @@ public class EnquestaCasosUs {
 
     @Autowired
     BeansManager beansManager;
+
 
     public EnquestaCasosUs() {
     }
@@ -150,11 +152,30 @@ public class EnquestaCasosUs {
     public Pregunta obtenirPregunta(long preguntaId) {
         return beansManager.preguntaRepository.findOne(preguntaId);
     }
-    public void eliminarPregunta(Pregunta pregunta) {
+
+
+    /***
+     * Després d'eliminar la pregunta s'ha d'actualitzar l'ordre de les preguntes que queden
+     * @param pregunta
+     * @return
+     * @throws Exception
+     */
+    public void eliminarPregunta(Pregunta pregunta) throws RuntimeException {
+        if (beansManager.preguntaRepository.findOne(pregunta.getId()) == null)
+            throw new PreguntaNoExisteixException();
+
+        Enquesta enquesta = obtenirEnquesta(pregunta.getEnquesta().getId());
+        String s = "";
+        for (Pregunta p: enquesta.getPreguntes()) {
+            if(p.getId() != pregunta.getId()) {
+                if(s != "") s += ",";
+                s += p.getId();
+            }
+        }
         beansManager.preguntaRepository.delete(pregunta);
+
+        reordenarPreguntes(enquesta,s);
     }
-
-
 
     private String getPrincipal(){
         String userName = null;

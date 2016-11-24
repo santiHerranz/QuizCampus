@@ -105,7 +105,7 @@ public class EnquestaCasosUsTest {
     @Transactional
     public void esborrarPreguntaDeEnquestaTest(){
         Pregunta pregunta = preguntaCasosUs.llistarPreguntes().get(1);
-        preguntaCasosUs.eliminarPregunta(pregunta);
+        enquestaCasosUs.eliminarPregunta(pregunta);
     }
     @Test
     @Transactional
@@ -113,8 +113,8 @@ public class EnquestaCasosUsTest {
         expectedEx.expect(PreguntaNoExisteixException.class);
 
         Pregunta pregunta = preguntaCasosUs.llistarPreguntes().get(1);
-        preguntaCasosUs.eliminarPregunta(pregunta);
-        preguntaCasosUs.eliminarPregunta(pregunta);
+        enquestaCasosUs.eliminarPregunta(pregunta);
+        enquestaCasosUs.eliminarPregunta(pregunta);
     }
 
     @Test
