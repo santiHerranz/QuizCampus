@@ -60,8 +60,8 @@ public class EnquestaCasosUs {
         pregunta.setMinim(minim);
         pregunta.setMaxim(maxim);
 
-        //TODO obtenir el valor d'ordre més gran
-        int max = enquesta.getPreguntes().size();
+        //obtenir el valor d'ordre més gran
+        int max = beansManager.preguntaRepository.findMaxOrder(enquesta);
         pregunta.setOrdre(max+1);
 
         enquesta.afegirPregunta(pregunta);

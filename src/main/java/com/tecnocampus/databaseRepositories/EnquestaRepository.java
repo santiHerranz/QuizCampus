@@ -152,6 +152,8 @@ public class EnquestaRepository {
         }
     }
 
+
+
     /***
      * Aquest mètode elimina l'enquesta passada per parametres.
      * @param enquesta

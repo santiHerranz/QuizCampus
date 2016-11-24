@@ -123,12 +123,13 @@ public class EnquestaController {
             ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
             result.addError(error);
             return "/admin/enquestaForm";
-
         }
 
         redirectAttributes.addAttribute("id", enquesta.getId());
         redirectAttributes.addFlashAttribute("enquesta", enquesta);
-        return "redirect:/admin/enquestes/{id}";
+
+        return "redirect:/entradaPreguntesFlow?Id="+ enquesta.getId();
+        // return "redirect:/admin/enquestes/{id}";
 
     }
 

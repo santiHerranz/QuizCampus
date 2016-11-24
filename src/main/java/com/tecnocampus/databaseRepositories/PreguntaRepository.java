@@ -152,6 +152,17 @@ public class PreguntaRepository {
                 , new PreguntaMapper());
     }
 
+    public int findMaxOrder(Enquesta enquesta) {
+
+        String sql = "SELECT MAX(ordre) FROM PREGUNTA WHERE enquestaId = ? ";
+        int total = 0;
+        try {
+            total = jdbcOperations.queryForObject(sql, new Object[] { enquesta.getId() }, Integer.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return total;
+    }
 
 
     private final class PreguntaMapper implements RowMapper<PreguntaNumerica> {

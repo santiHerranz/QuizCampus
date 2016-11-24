@@ -81,7 +81,21 @@ public class PreguntaCasosUs {
     public void eliminarPregunta(Pregunta pregunta) throws RuntimeException {
         if (beansManager.preguntaRepository.findOne(pregunta.getId()) == null)
             throw new PreguntaNoExisteixException();
+
+        Enquesta enquesta = pregunta.getEnquesta();
+
         beansManager.preguntaRepository.delete(pregunta);
+
+        EnquestaCasosUs enquestaCasosUs = new EnquestaCasosUs();
+
+        String s = "";
+        for (Pregunta p: enquesta.getPreguntes()) {
+            if(s != "") s += ",";
+            s += p.getId();
+        }
+
+        enquestaCasosUs.reordenarPreguntes(enquesta,s);
+
     }
 
     /***
