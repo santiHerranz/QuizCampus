@@ -9,8 +9,6 @@
 
     <title>Llistat d'usuaris</title>
 
-    <div th:replace="links :: links">Header</div>
-
 
 </head>
 <body>
@@ -23,7 +21,6 @@
     <div class="block-title">
         <h2><strong>Usuaris</strong></h2>
         <div class="block-options pull-left">
-            <!-- <a class="btn btn-success"  th:href="@{'/registre'}" >Nou usuari</a> -->
         </div>
     </div>
 
@@ -54,7 +51,7 @@
                     <td><span th:text="${usuari.dataCreacio}" >data</span></td>
                     <td><span th:text="${usuari.roles}" >roles</span></td>
                     <td>
-                        <form th:id="'form_usuari_' + ${usuari.id}" action="#" th:action="@{'/usuaris/'+ ${usuari.id} +'/esborra'}" method="post">
+                        <form th:id="'form_usuari_' + ${usuari.id}" action="#" th:action="@{'/admin/usuaris/'+ ${usuari.id} +'/esborra'}" method="post">
                         </form>
                         <a th:if="${usuari.username != #httpServletRequest.remoteUser}"     th:onclick="${'confirmDelete('+ usuari.id +', ''Segur que vols eliminar &lt;b&gt;'+ usuari.username +'&lt;/b&gt;?'')'}" title="Eliminar"
                            class="btn btn-danger btn-sm">X</a>

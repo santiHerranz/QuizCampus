@@ -37,7 +37,8 @@
                     <tr>
                         <th style="width: 10%;"><a href="#">#</a></th>
                         <th style="width: 50%;"><a href="#">pregunta</a></th>
-                        <th style="width: 40%;"><a href="#">valoració</a></th>
+                        <th style="width: 20%;"><a href="#">valoració mitjana</a></th>
+                        <th style="width: 20%;"><a href="#">&nbsp;</a></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,19 +46,20 @@
                         th:id="'pregunta_' + ${pregunta.id}">
                         <td><span th:text="${pregunta.ordre}">ordre</span></td>
                         <td><span th:text="${pregunta.enunciat}">titol</span></td>
-                        <td th:title="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT') +' / '+ 5}">
+                        <td><span th:text="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">ordre</span></td>
+                        <td th:title="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">
                             <div class="acidjs-rating-stars">
                                 <label th:each="i : ${#numbers.sequence(5,1,-1)}" th:style="${pregunta.getValoracioMitjana() lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
                             </div>
                         </td>
-
                     </tr>
                     </tbody>
                     <tfoot>
-                        <tr>
+                        <tr class="lead" >
                             <td><span></span></td>
                             <td><strong>Total</strong></td>
-                            <td th:title="${#numbers.formatDecimal(enquesta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT') +' / '+ 5}">
+                            <td><strong th:text="${#numbers.formatDecimal(enquesta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">ordre</strong></td>
+                            <td th:title="${#numbers.formatDecimal(enquesta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">
                                 <div class="acidjs-rating-stars">
                                     <label th:each="i : ${#numbers.sequence(5,1,-1)}" th:style="${enquesta.getValoracioMitjana() lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
                                 </div>
@@ -74,24 +76,7 @@
 </div>
 </div>
 
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Eliminar pregunta</h4>
-            </div>
-            <div class="modal-body" id="confirmDeleteMessage"></div>
-            <div class="modal-footer">
-                <input type="hidden" id="itemToDelete" value="" />
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" onclick="$('#form_pregunta_'+ itemToDelete.value).submit();">Eliminar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- END Delete Modal -->
+
 
 <div th:replace="links :: links">links</div>
 

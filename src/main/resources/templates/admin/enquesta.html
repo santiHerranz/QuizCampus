@@ -4,8 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Enquesta</title>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
-    <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
-    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
 
 </head>
 <body>
@@ -23,6 +21,10 @@
         <div class="btn-group">
             <a class="btn btn-primary btn-sm" th:href="${'/admin/enquestes/'+ enquesta.Id +'/edita'}" href="/enquestes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
             <a class="btn btn-success btn-sm" th:href="@{'/admin/enquestes/nova'}" >Crear</a>
+        </div>
+
+        <div class=" pull-right">
+            <a class="btn btn-success btn-sm" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >Respondre</a>
         </div>
 
     </div>
@@ -45,13 +47,6 @@
         <legend>
             <div class="md-12">
                 Preguntes
-
-                <a class="btn btn-primary btn-xs pull-right"
-                   th:if="${ enquesta.preguntes.size() > 1 }"
-                   th:href="${'/admin/enquestes/'+ enquesta.Id +'/reordena'}"
-                   href="/admin/enquestes/0/reordena">Ordenar</a>
-
-                <a class="btn btn-primary  btn-xs pull-right" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Afegir preguntes</a>
 
             </div>
         </legend>
@@ -103,8 +98,18 @@
         </div>
 
 
+        <div class="pull-left">
+            <a class="btn btn-success btn-sm" th:href="${'/entradaPreguntesFlow?Id='+ enquesta.Id}" >Afegir preguntes</a>
 
-        <a class="btn btn-primary btn-sm" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >Respondre enquesta</a>
+            <a class="btn btn-primary btn-sm"
+               th:if="${ enquesta.preguntes.size() > 1 }"
+               th:href="${'/admin/enquestes/'+ enquesta.Id +'/reordena'}"
+               href="/admin/enquestes/0/reordena">Ordenar</a>
+
+
+        </div>
+
+
 
     </fieldset>
 </div>

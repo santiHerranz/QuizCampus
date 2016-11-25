@@ -1,17 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>TRUST ME</title>
-
-    <head>
-        <title>Welcome to the Spring MVC Quickstart application! Get started quickly by signing up!</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
-        <script src="http://code.jquery.com/jquery-latest.js"  th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
-        <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
-    </head>
-
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
 
@@ -20,17 +12,20 @@
 <div class="container">
 
     <div class="block-title">
-        <a class=""  th:href="@{'/usuaris'}" >Usuaris / </a> <span th:text="${usuari.username}">usuari</span>
+        <a class=""  th:href="@{'/admin/usuaris'}" >Usuaris / </a> <span th:text="${usuari.username}">usuari</span>
         <hr />
     </div>
-    <div class="form-group form-actions">
-        <a class="btn btn-primary btn-sm" th:href="${'/usuaris/'+ usuari.Id +'/edita'}" href="/usuaris/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+    <div class="form-group form-actions hide">
+        <a class="btn btn-primary btn-sm" th:href="${'/admin/usuaris/'+ usuari.Id +'/edita'}" href="/usuaris/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
     </div>
+
+
+    <strong th:text="${usuari.username}" >email</strong>
 
 
 </div>
 
-<div th:replace="footer :: footer">&copy; 2013 The Static Templates</div>
+<div th:replace="links :: links">links</div>
 
 </body>
 </html>
