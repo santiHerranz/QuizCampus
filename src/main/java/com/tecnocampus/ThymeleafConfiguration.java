@@ -1,5 +1,5 @@
 /*
-*/
+
 
 package com.tecnocampus;
 
@@ -33,4 +33,5 @@ public class ThymeleafConfiguration {
         return resolver;
     }
 }
+*/
 

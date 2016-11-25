@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Enquesta</title>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
@@ -51,12 +52,6 @@
             </div>
         </legend>
 
-        <div th:class="${'alert alert-'+ css +''}" role="alert" th:if="${msg != null}">
-            <strong th:text="${msg}">resultat</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
 
         <div id="dataView" class="block">
 
@@ -84,7 +79,7 @@
                         </td>
                         <td><a href="#" th:text="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}" >respostes</a></td>
                         <td class="text-center">
-                            <form th:id="'form_pregunta_' + ${pregunta.id}" action="#" th:action="@{'/preguntes/'+ ${pregunta.id} +'/esborra'}" method="post">
+                            <form th:id="'form_pregunta_' + ${pregunta.id}" action="#" th:action="@{'/admin/preguntes/'+ ${pregunta.id} +'/esborra'}" method="post">
                                 <div class="btn-group">
                                     <a class="btn btn-danger btn-xs" th:onclick="${'confirmDelete('+ pregunta.id +', ''Segur que vols eliminar &lt;b&gt;'+ pregunta.enunciat +'&lt;/b&gt;?'')'}" title="Eliminar">X</a>
                                 </div>
@@ -109,11 +104,24 @@
 
         </div>
 
+        <br />
+        <br />
 
+        <div th:class="${'alert alert-'+ css +''}" role="alert" th:if="${msg != null}">
+            <strong th:text="${msg}">resultat</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
 
     </fieldset>
+
+
 </div>
 </div>
+
+
+
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

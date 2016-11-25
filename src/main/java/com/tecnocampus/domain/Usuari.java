@@ -30,7 +30,6 @@ public class Usuari implements Serializable {
         setUsername(username);
         setPassword(contrasenya);
         roles = new ArrayList<>();
-        roles.add("ROLE_USER");
         respostes = new ArrayList<>();
     }
 

@@ -44,12 +44,12 @@ public class UsuariController {
         return "home";
     }
 
-    @GetMapping("/admin/usuaris")
+    @GetMapping("admin/usuaris")
     public List<Usuari> listNotes() {
         return usuariCasosUs.llistarUsuaris();
     }
 
-    @GetMapping("/admin/usuaris/{usuariId}")
+    @GetMapping("admin/usuaris/{usuariId}")
     public String showUser(@PathVariable("usuariId") Long usuariId, Model model) {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
@@ -62,11 +62,11 @@ public class UsuariController {
 
             model.addAttribute("usuari",usuari);
         }
-        return "/admin/usuari";
+        return "admin/usuari";
     }
 
 
-    @PostMapping("/admin/usuaris/{usuariId}/esborra")
+    @PostMapping("admin/usuaris/{usuariId}/esborra")
     public String processDeleteUser(@PathVariable("usuariId") Long usuariId,
                                     final RedirectAttributes redirectAttributes) {
 

@@ -2,10 +2,11 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Ordenacio Enquesta</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
-    <title>Ordenacio Enquesta</title>
     <style>
         #sortable tr {
             cursor: move;
@@ -65,6 +66,8 @@
 
 <div th:replace="links :: links">links</div>
 
+<script src="../static/js/vendor/jquery-ui.js" th:src="@{/js/vendor/jquery-ui.js}"></script>
+
 <script type="text/javascript">
     $('#sortable').sortable();
 
@@ -77,6 +80,8 @@
         $('#orderedKeyList').val(s);
     }
 </script>
+
+
 
 
 </body>

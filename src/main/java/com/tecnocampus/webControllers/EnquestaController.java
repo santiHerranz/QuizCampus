@@ -60,7 +60,7 @@ public class EnquestaController {
         return enquestaCasosUs.llistarEnquestes();
     }
 
-    @GetMapping("/admin/enquestes/{enquestaId}")
+    @GetMapping("admin/enquestes/{enquestaId}")
     public String showAdminEnquesta(@PathVariable("enquestaId") Long enquestaId, Model model) {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
@@ -72,28 +72,28 @@ public class EnquestaController {
                 return "redirect:/enquestes";
             model.addAttribute("enquesta",enquesta);
         }
-        return "/admin/enquesta";
+        return "admin/enquesta";
     }
 
-    @GetMapping("/admin/enquestes/nova")
+    @GetMapping("admin/enquestes/nova")
     public String createItem(Model model) {
         model.addAttribute(new Enquesta());
-        return "/admin/enquestaForm";
+        return "admin/enquestaForm";
     }
 
-    @GetMapping("/admin/enquestes/{enquestaId}/edita")
+    @GetMapping("admin/enquestes/{enquestaId}/edita")
     public String editItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
 
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         model.addAttribute(enquesta);
-        return "/admin/enquestaForm";
+        return "admin/enquestaForm";
     }
 
-    @PostMapping("/admin/enquestes/{enquestaId}/edita")
+    @PostMapping("admin/enquestes/{enquestaId}/edita")
     public String processEditItem(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors())
-            return "/admin/enquestaForm";
+            return "admin/enquestaForm";
 
         try {
             enquesta = enquestaCasosUs.save(enquesta);
@@ -101,7 +101,7 @@ public class EnquestaController {
         } catch (EnquestaDuplicadaException e) {
             ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
             result.addError(error);
-            return "/admin/enquestaForm";
+            return "admin/enquestaForm";
         }
 
         redirectAttributes.addAttribute("id", enquesta.getId());
@@ -110,11 +110,11 @@ public class EnquestaController {
     }
 
 
-    @PostMapping("/admin/enquestes/nova")
+    @PostMapping("admin/enquestes/nova")
     public String processCreateEnquesta(@Valid Enquesta enquesta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors())
-            return "/admin/enquestaForm";
+            return "admin/enquestaForm";
 
         try {
             enquesta = enquestaCasosUs.crearEnquesta(enquesta.getTitol());
@@ -122,7 +122,7 @@ public class EnquestaController {
         } catch (EnquestaDuplicadaException e) {
             ObjectError error = new ObjectError("titol","Error l'enquesta ja existeix");
             result.addError(error);
-            return "/admin/enquestaForm";
+            return "admin/enquestaForm";
         }
 
         redirectAttributes.addAttribute("id", enquesta.getId());
@@ -134,7 +134,7 @@ public class EnquestaController {
     }
 
 
-    @PostMapping("/admin/enquestes/{enquestaId}/esborra")
+    @PostMapping("admin/enquestes/{enquestaId}/esborra")
     public String processDeleteEnquesta(@PathVariable("enquestaId") Long enquestaId,
                                         final RedirectAttributes redirectAttributes) {
 
@@ -156,14 +156,14 @@ public class EnquestaController {
         }
     }
 
-    @GetMapping("/admin/enquestes/{enquestaId}/reordena")
+    @GetMapping("admin/enquestes/{enquestaId}/reordena")
     public String ordenaItem(@PathVariable("enquestaId") Long enquestaId, Model model) {
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
         model.addAttribute(enquesta);
-        return "/admin/reordenaPreguntes";
+        return "admin/reordenaPreguntes";
     }
 
-    @PostMapping("/admin/enquestes/{enquestaId}/reordena")
+    @PostMapping("admin/enquestes/{enquestaId}/reordena")
     public String processReordenaItem(@PathVariable("enquestaId") Long enquestaId, @RequestParam("orderedKeyList") String orderedKeyList, RedirectAttributes redirectAttributes) {
 
         Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
@@ -177,31 +177,31 @@ public class EnquestaController {
 
 
 
-    @GetMapping("/admin/preguntes")
+    @GetMapping("admin/preguntes")
     public List<PreguntaNumerica> listpreguntes() {
         return preguntaCasosUs.llistarPreguntes();
     }
 
-    @GetMapping("/admin/preguntes/{preguntaId}")
+    @GetMapping("admin/preguntes/{preguntaId}")
     public String preguntaDetall(@PathVariable("preguntaId") Long preguntaId, Model model) {
         Pregunta pregunta = preguntaCasosUs.obtenirPregunta(preguntaId);
         model.addAttribute("pregunta", pregunta);
-        return "/admin/pregunta";
+        return "admin/pregunta";
     }
 
 
-    @GetMapping("/admin/preguntes/{preguntaId}/edita")
+    @GetMapping("admin/preguntes/{preguntaId}/edita")
     public String preguntaEdita(@PathVariable("preguntaId") Long preguntaId, Model model) {
         Pregunta pregunta = preguntaCasosUs.obtenirPregunta(preguntaId);
         model.addAttribute("pregunta", pregunta);
-        return "/admin/preguntaForm";
+        return "admin/preguntaForm";
     }
 
-    @PostMapping("/admin/preguntes/{preguntaId}/edita")
+    @PostMapping("admin/preguntes/{preguntaId}/edita")
     public String processPreguntaEditItem(@Valid PreguntaNumerica pregunta, Errors errors, Model model, BindingResult result , RedirectAttributes redirectAttributes) {
 
         if (errors.hasErrors())
-            return "/admin/preguntaForm";
+            return "admin/preguntaForm";
 
         pregunta = preguntaCasosUs.save(pregunta);
 
@@ -213,7 +213,7 @@ public class EnquestaController {
 
 
 
-    @PostMapping("preguntes/{preguntaId}/esborra")
+    @PostMapping("admin/preguntes/{preguntaId}/esborra")
     public String processPreguntaDelete(@PathVariable("preguntaId") Long preguntaId,
                                     final RedirectAttributes redirectAttributes) {
 

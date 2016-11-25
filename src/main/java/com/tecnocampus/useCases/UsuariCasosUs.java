@@ -50,6 +50,11 @@ public final class UsuariCasosUs {
         }
 
         Usuari usuari = new Usuari(username, contrasenya);
+
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add("ROLE_USER");
+        usuari.addRoles(roles);
+
         usuari = save(usuari);
 
         // Establir admin al primer usuari
