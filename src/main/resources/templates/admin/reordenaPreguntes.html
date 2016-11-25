@@ -64,7 +64,7 @@
         <form method="POST" th:object="${enquesta}" class="form-horizontal form-bordered" onsubmit="formSubmit();">
             <input type="hidden" id="orderedKeyList" name="orderedKeyList" value="" />
             <input type="submit" value="Guardar" class="btn btn-sm btn-success"/>
-            <a th:href="@{'/enquestes/' + ${enquesta.id}}" class="btn btn-sm btn-default">Cancelar</a>
+            <a th:href="@{'/admin/enquestes/' + ${enquesta.id}}" class="btn btn-sm btn-default">Cancelar</a>
         </form>
     </div>
 
