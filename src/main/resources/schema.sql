@@ -52,6 +52,7 @@ CREATE TABLE resposta
   valor int NOT NULL
   , data_creacio DATE DEFAULT (sysdate)
   , FOREIGN KEY (usuariId) REFERENCES usuari(usuariId) ON DELETE CASCADE
+  , FOREIGN KEY (preguntaId) REFERENCES pregunta(preguntaId) ON DELETE CASCADE
 );
 /*
 */

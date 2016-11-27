@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div th:replace="header :: header">Header</div>
+<div th:replace="header :: header('enquestes')">Header</div>
 
 <div class="container">
     <div class="block-title">
@@ -38,7 +38,7 @@
                         <th style="width: 10%;"><a href="#">#</a></th>
                         <th style="width: 40%;"><a href="#">pregunta</a></th>
                         <th style="width: 10%;"><a href="#">valoració mitjana</a></th>
-                        <th style="width: 40%;"><a href="#">&nbsp;</a></th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -47,11 +47,7 @@
                         <td><span th:text="${pregunta.ordre}">ordre</span></td>
                         <td><span th:text="${pregunta.enunciat}">titol</span></td>
                         <td><span th:text="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">ordre</span></td>
-                        <td th:title="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">
-                            <div class="acidjs-rating-stars">
-                                <label th:each="i : ${#numbers.sequence(5,1,-1)}" th:style="${pregunta.getValoracioMitjana() lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
-                            </div>
-                        </td>
+
                     </tr>
                     </tbody>
                     <tfoot>
@@ -59,11 +55,7 @@
                             <td><span></span></td>
                             <td><strong>Total</strong></td>
                             <td><strong th:text="${#numbers.formatDecimal(enquesta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">ordre</strong></td>
-                            <td th:title="${#numbers.formatDecimal(enquesta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">
-                                <div class="acidjs-rating-stars">
-                                    <label th:each="i : ${#numbers.sequence(5,1,-1)}" th:style="${enquesta.getValoracioMitjana() lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
-                                </div>
-                            </td>
+
                         </tr>
                     </tfoot>
 

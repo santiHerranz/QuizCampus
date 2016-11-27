@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse" role="navigation" th:fragment="header">
+<nav class="navbar navbar-inverse" role="navigation" th:fragment="header(activeTab)">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -19,16 +19,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">TRUSTME</a>
+            <a class="navbar-brand" href="/">TRUST ME</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Inici</a></li>
-            <li class="active" sec:authorize="isAuthenticated()"><a href="/enquestes">Enquestes</a></li>
-            <li class="active" sec:authorize="hasRole('ADMIN')"><a href="/admin/enquestes">Administrador </a>
+            <li th:class="${activeTab == 'home'}? 'active' : null"><a href="/">Inici</a></li>
+            <li th:class="${activeTab == 'enquestes'}? 'active' : null" sec:authorize="isAuthenticated()"><a href="/enquestes">Enquestes</a></li>
+            <li th:class="${activeTab == 'admin'}? 'active' : null" sec:authorize="hasRole('ADMIN')"><a href="/admin/enquestes">Admin </a>
             </li>
-            <li class="active" sec:authorize="hasRole('ADMIN')"><a href="/admin/usuaris">Usuaris</a></li>
-            <li class="active"><a href="/forecast">El Temps</a></li>
+            <li th:class="${activeTab == 'usuaris'}? 'active' : null" sec:authorize="hasRole('ADMIN')"><a href="/admin/usuaris">Usuaris</a></li>
+            <li th:class="${activeTab == 'temps'}? 'active' : null"><a href="/forecast">El Temps</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
@@ -74,6 +74,8 @@
                         <label><input type="checkbox" value=""  name="remember-me" checked="checked" />Recorda'm</label>
                     </div>
                     <button type="submit" class="btn btn-success btn-block"> Login</button>
+
+                    <button type="submit" class="btn btn-default btn-block" onclick="$('#username').val('demo'); $('#password').val('demo');"> Demo</button>
                 </form>
             </div>
             <div class="modal-footer">

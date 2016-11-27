@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div th:replace="header :: header">Header</div>
+<div th:replace="header :: header('')">Header</div>
 
 <div class="container">
 
@@ -19,7 +19,7 @@
 
     <li>Id:<span th:text="${{usuari.Id}}"></span></li>
     <li>dataCreacio:<span th:text="${{usuari.dataCreacio}}"></span></li>
-    <li>password:<span th:text="${{usuari.password}}"></span></li>
+    <li class="hide">password:<span th:text="${{usuari.password}}"></span></li>
     <li>username:<span th:text="${{usuari.username}}"></span></li>
     <li>respostes:<span th:text="${{usuari.respostes.size()}}"></span></li>
     <li>Roles:<span th:text="${{usuari.roles.size()}}"></span> {<span th:text="${{usuari.roles}}"></span>}</li>

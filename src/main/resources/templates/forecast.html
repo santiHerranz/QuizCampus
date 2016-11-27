@@ -16,7 +16,7 @@
 
 <body>
 
-<div th:replace="header :: header">Header</div>
+<div th:replace="header :: header('temps')">Header</div>
 
 <div class="container">
     <form class="form-inline pull-right" id="searchForm" method="get" action="" onsubmit="this.action = '/forecast/'+ searchForm.city.value ;">

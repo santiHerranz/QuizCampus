@@ -2,16 +2,17 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Valorar</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
           th:href="@{/css/bootstrap.min.css}"/>
-    <title>Valorar</title>
 
 </head>
 <body>
 
-<div th:replace="header :: header">Header</div>
+<div th:replace="header :: header('enquestes')">Header</div>
 
 <div class="container">
 
@@ -22,7 +23,7 @@
 
 
 
-    <form id="formResposta" method="POST" th:object="${resposta}" th:action="${flowExecutionUrl}">
+    <form id="formResposta" class="form" method="POST" th:object="${resposta}" th:action="${flowExecutionUrl}">
 
 
 
@@ -33,7 +34,7 @@
                 <span th:text="'Pregunta: '+ ${resposta.pregunta.ordre }+' de '+ ${bossaRespostes.getRespostes().size()}"></span>
             </h5>
 
-            <div class="table">
+            <div class="table lead">
 
 
                 <h2><span th:text="${resposta.pregunta.enunciat}" >titol</span></h2>
@@ -48,15 +49,17 @@
                                th:field="*{valor}"
                                th:value="${(resposta.pregunta.maxim-(i-1))}"
                         /><label
-                            th:for="${'valor-'+ (i-1)}" ondblclick="$('#btnSeguent').click();"></label>
+                            th:for="${'valor-'+ (i-1)}" onclick="$('#btnSeguent').prop('disabled', false);" ondblclick="$('#btnSeguent').click();"></label>
                     </th:block>
 
                 </div>
 
                 <hr />
 
-                <input id="btnSeguent" type="submit" value="Següent" class="btn btn-sm btn-success" name="_eventId_respostaEntrada" />
-                <input type="submit" value="Cancelar" class="btn btn-sm btn-default" name="_eventId_cancel" />
+                <div class="btn-group">
+                    <input id="btnSeguent" type="submit" value="Següent" class="btn btn-success btn-block" disabled="disabled" name="_eventId_respostaEntrada" />
+                    <input type="submit" value="Cancelar" class="btn btn-default btn-block" name="_eventId_cancel" />
+                </div>
 
 
             </div>
@@ -71,11 +74,17 @@
                         <tbody>
                         <tr th:each="resposta : ${bossaRespostes.getRespostes()}"
                             th:id="'pregunta_' + ${resposta.pregunta.id}">
-                            <td><span th:text="${resposta.pregunta.ordre}" >ordre</span></td>
-                            <td><span th:text="${resposta.pregunta.enunciat}" >titol</span></td>
-                            <td th:title="${resposta.valor +' / '+ resposta.pregunta.maxim}">
-                                <div class="acidjs-rating-stars">
-                                    <label th:each="i : ${#numbers.sequence(resposta.pregunta.maxim,1,-1)}" th:style="${resposta.valor lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
+                            <td>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span th:text="${resposta.pregunta.ordre}" >ordre</span>
+                                        <span th:text="${resposta.pregunta.enunciat}" >titol</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="acidjs-rating-stars" th:title="${resposta.valor +' / '+ resposta.pregunta.maxim}">
+                                            <label th:each="i : ${#numbers.sequence(resposta.pregunta.maxim,1,-1)}" th:style="${resposta.valor lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -85,8 +94,8 @@
             </div>
 
 
-            <input type="submit" value="Enviar" class="btn btn-sm btn-success" name="_eventId_respostesAcabades"/>
-            <input type="submit" value="Cancelar" class="btn btn-sm btn-default" name="_eventId_cancel" />
+            <input type="submit" value="Enviar" class="btn btn-lg btn-success btn-block" name="_eventId_respostesAcabades"/>
+            <input type="submit" value="Cancelar" class="btn btn-sm btn-default btn-block" name="_eventId_cancel" />
         </div>
 
     </form>
@@ -96,6 +105,7 @@
 <script>
     function valorat(pregunta, value) {
         $(pregunta).val(value);
+
     }
 </script>
 

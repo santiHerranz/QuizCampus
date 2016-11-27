@@ -134,7 +134,7 @@ public class UsuariController {
 
         }
         catch (UsuariDuplicatException e) {
-            ObjectError error = new ObjectError("email","Error email ja existeix");
+            ObjectError error = new ObjectError("email","Error "+ user.getUsername() +" ja existeix");
             result.addError(error);
             return "registre";
         }

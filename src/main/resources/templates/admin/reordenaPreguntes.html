@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<div th:replace="header :: header">Header</div>
+<div th:replace="header :: header('admin')">Header</div>
 
 <div class="container">
 
@@ -35,8 +35,7 @@
                 <thead>
                 <tr>
                     <th style="width: 5%;">&nbsp;</th>
-                    <th style="width: 80%;"><a href="#">enunciat</a></th>
-                    <th style="width: 15%;"><a href="#">estrelles</a></th>
+                    <th style="width: 95%;"><a href="#">enunciat</a></th>
                 </tr>
                 </thead>
                 <tbody  id="sortable">
@@ -44,9 +43,6 @@
                      th:id="'p-' + ${pregunta.id}">
                     <td>+</td>
                     <td class="ui-state-default"><span th:text="${pregunta.enunciat}" >titol</span></td>
-                    <td class="ui-state-default">
-                        <span th:text="${pregunta.maxim}">Valor màxim</span>
-                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -66,7 +62,7 @@
 
 <div th:replace="links :: links">links</div>
 
-<script src="../static/js/vendor/jquery-ui.js" th:src="@{/js/vendor/jquery-ui.js}"></script>
+<script src="../static/js/vendor/jquery-ui.min.js" th:src="@{/js/vendor/jquery-ui.min.js}"></script>
 
 <script type="text/javascript">
     $('#sortable').sortable();

@@ -55,6 +55,7 @@
     cursor: pointer;
 }
 
+
 .acidjs-rating-stars input:checked ~ label
 {
     color: #f5b301;

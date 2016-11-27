@@ -41,7 +41,6 @@ public class ContrasenyaUtils {
         if (!matcher.matches())
             errorList.add("La contrasenya no és prou llarga. Ha de tenir un mínim de 6 caràcters.");
 
-
         if (!patroNumero.matcher(contrasenya).find()) {
             errorList.add("No hi ha cap xifra. ");
         }
