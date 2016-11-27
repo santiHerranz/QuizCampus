@@ -29,7 +29,7 @@
     </action-state>
 
 
-    <end-state id="endState" view="externalRedirect:contextRelative:/enquestes/#{enquesta.Id}"/>
+    <end-state id="endState" view="externalRedirect:contextRelative:/enquestes/"/> <!-- #{enquesta.Id} -->
     <end-state id="cancel" view="externalRedirect:/enquestes.html"/>
 
     <global-transitions>

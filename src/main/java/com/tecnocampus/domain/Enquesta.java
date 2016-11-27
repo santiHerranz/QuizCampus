@@ -23,6 +23,13 @@ public class Enquesta implements Serializable {
         this.preguntes = new ArrayList<>();
     }
 
+    public int respostesRealitzades() {
+        if (this.preguntes.size()>0) {
+            return this.preguntes.get(0).getRespostes().size();
+        }
+        return 0;
+    }
+
     public Long getId() {
         return Id;
     }

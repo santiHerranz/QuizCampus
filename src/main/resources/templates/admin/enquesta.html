@@ -30,19 +30,12 @@
 
     </div>
 
+    <div>
+        <span th:text="${enquesta.respostesRealitzades()}">respostes</span> valoracions realitzades.
+    </div>
 
 <div id="dataView" class="block">
 
-    <!--
-    <div class="col-md-6">
-        <label th:text="${enquesta.titol}" >titol</label>
-
-    </div>
-    <div class="col-md-6">
-        <label th:text="${enquesta.dataCreacio}" >Data</label>
-    </div>
-
-    -->
 
     <fieldset>
         <legend>
@@ -61,7 +54,6 @@
                     <tr>
                         <th style="width: 100px;"><a href="#">#</a></th>
                         <th style="width: 70%;"><a href="#">enunciat</a></th>
-                        <th style="width: 10%;"><a href="#">estrelles</a></th>
                         <th style="width: 10%;"><a href="#">valoració</a></th>
                         <th style="width: 150px;" class="text-center">&nbsp;</th>
                     </tr>
@@ -74,9 +66,6 @@
                         </td>
 
                         <td><a th:href="@{'/admin/preguntes/' + ${pregunta.id}}" th:text="${pregunta.enunciat}" >titol</a></td>
-                        <td>
-                            <span th:text="${pregunta.maxim}">Valor màxim</span>
-                        </td>
                         <td><a href="#" th:text="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}" >respostes</a></td>
                         <td class="text-center">
                             <form th:id="'form_pregunta_' + ${pregunta.id}" action="#" th:action="@{'/admin/preguntes/'+ ${pregunta.id} +'/esborra'}" method="post">
@@ -118,8 +107,9 @@
 
 
 </div>
-</div>
 
+
+</div>
 
 
 
@@ -142,6 +132,7 @@
 </div>
 <!-- END Delete Modal -->
 
+<div th:replace="footer :: footer">footer</div>
 <div th:replace="links :: links">links</div>
 
 </body>

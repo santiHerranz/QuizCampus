@@ -60,6 +60,7 @@
 
 </div>
 
+<div th:replace="footer :: footer">footer</div>
 <div th:replace="links :: links">links</div>
 
 <script src="../static/js/vendor/jquery-ui.min.js" th:src="@{/js/vendor/jquery-ui.min.js}"></script>
@@ -76,8 +77,6 @@
         $('#orderedKeyList').val(s);
     }
 </script>
-
-
 
 
 </body>

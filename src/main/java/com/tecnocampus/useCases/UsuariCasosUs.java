@@ -86,18 +86,18 @@ public final class UsuariCasosUs {
         return contrasenya == usuari.getPassword();
     }
 
-    public void promocionarAdmin(Usuari usuari) {
+    public Usuari promocionarAdmin(Usuari usuari) {
         usuari.setAdmin(true);
-        beansManager.usuariRepository.save(usuari);
+        return beansManager.usuariRepository.save(usuari);
     }
 
-    public void degradarAdmin(Usuari usuari){
+    public Usuari degradarAdmin(Usuari usuari){
         if(!usuari.isAdmin())
             throw new RuntimeException("L'usuari no és administrador, no es pot degradar!!!");
         if(esUltimAdmin(usuari))
             throw new RuntimeException("L'usuari és l'ultim administrador, no es pot degradar!!!");
         usuari.setAdmin(false);
-        beansManager.usuariRepository.save(usuari);
+        return beansManager.usuariRepository.save(usuari);
     }
 
     private boolean esUltimAdmin(Usuari usuari){

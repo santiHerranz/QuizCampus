@@ -30,7 +30,7 @@ public class UsuariCasosUsTest {
 	@Test
 	public void crearUsuariTest(){
 		//creem l'usuari
-		Usuari testAdmin = usuariCasosUs.crearUsuari("ADMIN","ADMIN","qwertyuioP53");
+		Usuari testAdmin = usuariCasosUs.crearUsuari("ADMIN","qwertyuioP53");
 		//cerquem per email
 		Usuari usuari = usuariCasosUs.cercarUsuari(testAdmin.getUsername());
 		// els dos usuaris han de tenir el mateix id
@@ -41,8 +41,8 @@ public class UsuariCasosUsTest {
 	public void crearUsuariRepetitTest(){
 		expectedEx.expect(UsuariDuplicatException.class);
 
-		Usuari usuari1 = usuariCasosUs.crearUsuari("usuari@domini.com","usuari","123Ig45aatt");
-		Usuari usuari2 = usuariCasosUs.crearUsuari("usuari@domini.com","usuari","123Ig45aatt");
+		Usuari usuari1 = usuariCasosUs.crearUsuari("usuari@domini.com","123Ig45aatt");
+		Usuari usuari2 = usuariCasosUs.crearUsuari("usuari@domini.com","123Ig45aatt");
 	}
 
 	@Test
@@ -81,27 +81,11 @@ public class UsuariCasosUsTest {
 	@Test
 	public void comprobarContrasenyaUsuariNoExisteixTest(){
 		expectedEx.expect(RuntimeException.class);
-		expectedEx.expectMessage("Email no trobat!");
+		expectedEx.expectMessage("Username no trobat!");
 		Boolean result = usuariCasosUs.comprobarContrasenya("noone@domail.com", "123456789");
 	}
 
 
-	@Test
-	public void NoEsPotDegradarUltimAdminTest(){
-		expectedEx.expect(RuntimeException.class);
-		expectedEx.expectMessage("L'usuari és l'ultim administrador, no es pot degradar!!!");
-
-		Usuari usuari = usuariCasosUs.cercarUsuari(1L);
-		usuariCasosUs.promocionarAdmin(usuari);
-		usuariCasosUs.degradarAdmin(usuari);
-	}
-
-	@Test
-	public void canviarEmailTest(){
-		Usuari usuari = usuariCasosUs.cercarUsuari(2L);
-		usuari.setUsername("sherranzm");
-		usuariCasosUs.save(usuari);
-	}
 
 	@Test
 	public void canviarEmailDuplicatTest(){
@@ -114,14 +98,16 @@ public class UsuariCasosUsTest {
 	}
 
 
+/*
 	@Test
 	public void degradarAdminTest(){
 		Usuari usuari = usuariCasosUs.cercarUsuari(2L);
-		usuariCasosUs.promocionarAdmin(usuari);
+		usuari= usuariCasosUs.promocionarAdmin(usuari);
 		usuari = usuariCasosUs.cercarUsuari(1L);
-		usuariCasosUs.promocionarAdmin(usuari);
-		usuariCasosUs.degradarAdmin(usuari);
+		usuari = usuariCasosUs.promocionarAdmin(usuari);
+		usuari = usuariCasosUs.degradarAdmin(usuari);
 	}
+*/
 
 
 
@@ -130,8 +116,9 @@ public class UsuariCasosUsTest {
 		expectedEx.expect(RuntimeException.class);
 		expectedEx.expectMessage("L'usuari és l'ultim administrador, no es pot eliminar!!!");
 
-		Usuari testAdmin = usuariCasosUs.cercarUsuari("sherranzm@edu.tecnocampus.cat");
-		usuariCasosUs.eliminarUsuari(testAdmin);
+		for (Usuari u : usuariCasosUs.llistarUsuaris() ) {
+			usuariCasosUs.eliminarUsuari(u);
+		}
 	}
 
 
@@ -144,31 +131,31 @@ public class UsuariCasosUsTest {
 	@Test
 	public void ContrasenyaLongitud(){
 		expectedEx.expect(ContrasenyaNoValidaException.class);
-		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat","mail", "gh12");
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "gh12");
 	}
 
 	@Test
 	public void ContrasenyaNumeros(){
 		expectedEx.expect(ContrasenyaNoValidaException.class);
-		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat","mail", "ghbansjfbdh");
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "ghbansjfbdh");
 	}
 
 	@Test
 	public void ConstrasenyaMajuscules(){
 		expectedEx.expect(ContrasenyaNoValidaException.class);
-		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat","mail", "gh12dfgfgffg");
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat","gh12dfgfgffg");
 	}
 
 	@Test
 	public void ContrasenyaMinuscules(){
 		expectedEx.expect(ContrasenyaNoValidaException.class);
-		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat","mail", "KLAGSFDJAHL12");
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "KLAGSFDJAHL12");
 	}
 
 	@Test
 	public void ContrasenyaNoEspaisBlancs(){
 		expectedEx.expect(ContrasenyaNoValidaException.class);
-		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat","mail", "ghIG12 fsdyg");
+		Usuari usuariTest = usuariCasosUs.crearUsuari("mail@tecnocampus.cat", "ghIG12 fsdyg");
 	}
 
 }

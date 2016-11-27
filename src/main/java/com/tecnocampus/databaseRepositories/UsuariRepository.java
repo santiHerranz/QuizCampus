@@ -33,7 +33,7 @@ public class UsuariRepository {
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM USUARI ";
     private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (USERNAME, password) VALUES(?,?)";
-    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET password = ? WHERE USUARIID = ?";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET username = ?, password = ? WHERE USUARIID = ?";
     private static final String SQL_DELETE_STATEMENT = "DELETE FROM USUARI WHERE USUARIID = ?";
 
     private static final String SQL_INSERT_ROLE_STATEMENT = "INSERT INTO usuari_roles (usuariId, role) VALUES(?,?)";
@@ -146,7 +146,6 @@ public class UsuariRepository {
                     , new UsuariMapper()
             );
 
-            u.addRoles(findRoles(usuariId));
             return u;
 
         } catch (EmptyResultDataAccessException e) {
@@ -154,9 +153,7 @@ public class UsuariRepository {
         }
     }
 
-    private List<String> findRoles(Long usuariId) {
-        return jdbcOperations.query("Select * from usuari_roles where usuariId = ?", new Object[]{usuariId}, new RoleMapper());
-    }
+
 
     public Usuari findOneLazy(Long usuariId) {
         try {
@@ -165,7 +162,6 @@ public class UsuariRepository {
                     , new Object[]{usuariId}
                     , new UsuariMapperLazy()
             );
-            u.addRoles(findRoles(usuariId));
             return  u;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -202,11 +198,16 @@ public class UsuariRepository {
                 );
     }
 
-    private List<String> findRoles(String usuariId) {
+
+    private List<String> findRoles(Long usuariId) {
+        return jdbcOperations.query("Select * from usuari_roles where usuariId = ?", new Object[]{usuariId}, new RoleMapper());
+    }
+
+/*    private List<String> findRoles(String usuariId) {
         return jdbcOperations.query("Select * from usuari_roles where usuariId = ?",
                 (rs,i) -> rs.getString("role"),
                 usuariId);
-    }
+    }*/
 
 
     private final class UsuariMapper implements RowMapper<Usuari> {
@@ -234,6 +235,8 @@ public class UsuariRepository {
             Usuari usuari = new Usuari(resultSet.getString("username"), resultSet.getString("password"));
             usuari.setId(resultSet.getLong("usuariid"));
             usuari.setDataCreacio(resultSet.getDate("data_creacio"));
+
+            usuari.addRoles(findRoles(resultSet.getLong("usuariid")));
 
             return usuari;
         }

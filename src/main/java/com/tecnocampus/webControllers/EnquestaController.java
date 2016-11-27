@@ -69,7 +69,7 @@ public class EnquestaController {
             // comprobem que l'enquesta existeix, en cas contrari mostrem llistat
             Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(enquestaId);
             if (enquesta == null)
-                return "redirect:/enquestes";
+                return "redirect:/admin/enquestes";
             model.addAttribute("enquesta",enquesta);
         }
         return "admin/enquesta";
