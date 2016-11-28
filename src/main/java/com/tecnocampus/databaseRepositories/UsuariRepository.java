@@ -124,7 +124,7 @@ public class UsuariRepository {
      * Obtenir llistat d'usuaris
      * @return
      */
-    public List findAll() {
+    public List<Usuari> findAll() {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
     }
 

@@ -63,7 +63,7 @@ public class QuizCampusApplication {
 		enquestaCasosUs.afegirPregunta( enquesta, "2. Pregunta 2", 1, 5);
 		enquestaCasosUs.afegirPregunta( enquesta, "3. Pregunta 3", 1, 5);
 
-		for ( int i=1; i<10; i++) {
+		for ( int i=0; i<1000; i++) {
 			for (Pregunta p: enquesta.getPreguntes()) {
 				enquestaCasosUs.afegirResposta(p, demo, ThreadLocalRandom.current().nextInt(1,5+1));
 			}
