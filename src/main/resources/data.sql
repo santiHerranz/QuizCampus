@@ -31,8 +31,6 @@ INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (2,3,5);
 INSERT INTO resposta(usuariId, preguntaId,valor) VALUES (2,4,4);
 
 
-
-
 INSERT INTO enquesta (titol, data_creacio) VALUES ('Valora el professorat', {ts '2012-11-26 00:00:00.00'});
 INSERT INTO pregunta (enquestaId, ordre, enunciat, minim, maxim) VALUES (2,1,'Durant el curs han estat clars els objectius, el programa de l''assignatura i els criteris d''avaluacio.', 1, 5);
 INSERT INTO pregunta (enquestaId, ordre, enunciat, minim, maxim) VALUES (2,2,'L''assignatura globalment ha estat util per la meva formacio.', 1, 5);
