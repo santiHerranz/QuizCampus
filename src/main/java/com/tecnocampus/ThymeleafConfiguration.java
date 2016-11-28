@@ -2,7 +2,7 @@
  * Descomentar per actualizació sense recompilar
  *
  * Comentar el codi per producció
-*/
+
 
 
 
@@ -38,3 +38,4 @@ public class ThymeleafConfiguration {
         return resolver;
     }
 }
+*/
