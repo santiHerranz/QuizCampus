@@ -104,7 +104,9 @@ body {
     margin: 20px 0;
 }
 
-
+.navbar {
+    vertical-align:middle;
+}
 
 
 

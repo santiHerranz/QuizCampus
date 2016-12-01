@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -45,13 +46,25 @@ public class UsuariRepository {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public boolean comprovarContrasenyaEncriptada(Usuari user, String contrasenya) {
+
+        String a = user.getPassword();
+        return passwordEncoder.matches(contrasenya,a);
+    }
+
+
     public Usuari save(Usuari usuari) {
+        save(usuari, false);
+        return findOne(usuari.getId());
+    }
+
+    public Usuari save(Usuari usuari, boolean update_roles) {
         if(usuari.getId() == null) {
             insert(usuari);
         } else {
             update(usuari);
         }
-        role_update(usuari);
+        if (update_roles) role_update(usuari);
 
         return findOne(usuari.getId());
     }
@@ -63,7 +76,7 @@ public class UsuariRepository {
         
         // inserta el que falten
         for (String role : wantedRoles) {
-            if(! dbRoles.contains(role)) {
+            if(!dbRoles.contains(role)) {
                 this.jdbcOperations.update(
                         SQL_INSERT_ROLE_STATEMENT
                         , usuari.getId()

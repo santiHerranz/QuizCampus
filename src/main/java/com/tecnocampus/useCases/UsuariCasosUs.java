@@ -11,6 +11,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,6 +76,31 @@ public final class UsuariCasosUs {
         }
     }
 
+    public Usuari actualitzaContrasenya(Usuari user, String contrasenyaActual, String contrasenya, String repeticio) {
+
+        if (!comprobarContrasenya(user.getUsername(), contrasenyaActual))
+            throw new ContrasenyaNoValidaException("La contrasenya actual no és la correcta.");
+
+        if (!contrasenya.equals(repeticio))
+            throw new ContrasenyaNoValidaException("Les noves contrasenyes introduides no són identiques.");
+
+        ContrasenyaUtils contrasenyaUtils = new ContrasenyaUtils();
+
+        if (!contrasenyaUtils.esValida(contrasenya)) {
+            ArrayList<String> errorDescription = contrasenyaUtils.getErrors();
+
+            if (errorDescription.size()>0) {
+                String errorJoined = String.join("&&", errorDescription);
+                throw new ContrasenyaNoValidaException(errorJoined);
+            }
+        }
+
+        Usuari usuari = beansManager.usuariRepository.findOne(user.getId());
+        usuari.setPassword(contrasenya);
+        return beansManager.usuariRepository.save(usuari, false); // guarda sense modificar els roles
+
+    }
+
     public boolean comprobarContrasenya(String username, String contrasenya) {
         if(username == null ) throw new IllegalArgumentException();
         if(contrasenya == null ) throw new IllegalArgumentException();
@@ -83,8 +109,9 @@ public final class UsuariCasosUs {
         if( usuari == null)
             throw new RuntimeException("Username no trobat!");
 
-        return contrasenya == usuari.getPassword();
+        return beansManager.usuariRepository.comprovarContrasenyaEncriptada(usuari,contrasenya);
     }
+
 
     public Usuari promocionarAdmin(Usuari usuari) {
         usuari.setAdmin(true);

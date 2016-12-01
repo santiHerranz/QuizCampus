@@ -12,10 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,6 +85,39 @@ public class UsuariController {
         }
     }
 
+    @GetMapping("profile/edita")
+    public String getPaginaEdita( Model model) {
+        Usuari usuari = usuariCasosUs.cercarUsuari(getPrincipal());
+        model.addAttribute("usuari",usuari);
+        return "profileForm";
+    }
+
+    @PostMapping("profile/edita")
+    public String canviDeContrasenya(@Valid Usuari user, Errors errors, @RequestParam("currentPassword") String contrasenyaActual, @RequestParam("password") String contrasenyaNova, @RequestParam("passwordConfirm") String confirmarContrasenya, BindingResult result) {
+        if (errors.hasErrors())
+            return "profileForm";
+
+        try {
+
+            String username = user.getUsername();
+            String plainPassword = user.getPassword();
+            Usuari usuari = usuariCasosUs.cercarUsuari(getPrincipal());
+
+            user = this.usuariCasosUs.actualitzaContrasenya(usuari, contrasenyaActual,contrasenyaNova, confirmarContrasenya);
+
+            return "redirect:/profile";
+
+        } catch (ContrasenyaNoValidaException e) {
+
+            for (String missatgeError : e.getMessage().split("&&")) {
+                ObjectError error = new ObjectError("contrasenya", missatgeError);
+                result.addError(error);
+            }
+
+            return "profileForm";
+
+        }
+    }
 
 
     @GetMapping("login")
@@ -144,11 +174,6 @@ public class UsuariController {
         //return "redirect:/";
 
     }
-
-
-
-
-
 
     @GetMapping("profile")
     public String profilePage(Model model) {

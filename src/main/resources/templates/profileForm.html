@@ -16,7 +16,7 @@
 <div class="container">
 
     <div class="block-title">
-        <h2><strong>Registra't</strong></h2>
+        <h2><strong>Canvia la contrasenya</strong></h2>
     </div>
 
 
@@ -29,28 +29,26 @@
             <h4 class="alert-heading">Error al registrar!</h4>
             <p>El registre no compleix les següents normes:</p>
             <ul>
-            <li th:each="err : ${#fields.errors('*')}"
-                th:text="${err}">Input is incorrect</li>
+                <li th:each="err : ${#fields.errors('*')}"
+                    th:text="${err}">Input is incorrect</li>
             </ul>
         </div>
 
 
-        <label th:class="${#fields.hasErrors('username')}? 'error'">Username</label>:<br/>
-        <input name="username" type="text" class="form-control" autofocus="autofocus" autocapitalize="off" required="required" autocomplete="off"
-               th:field="*{username}"
-               th:class="${#fields.hasErrors('username')}? 'form-control error': 'form-control'" /><br/>
+        <label th:class="${#fields.hasErrors('username')}? 'error'">Contrasenya actual</label>:<br/>
+        <input name="currentPassword"  type="password" class="form-control" autocomplete="off" required="required"/><br/>
 
 
-        <label th:class="${#fields.hasErrors('password')}? 'error'">password</label>:<br/>
-        <input name="password"  type="password" class="form-control" autocomplete="off" required="required"
-                th:field="*{password}"
-               th:class="${#fields.hasErrors('password')}? 'form-control error': 'form-control'" /><br/>
+        <label th:class="${#fields.hasErrors('password')}? 'error'">Contrasenya nova</label>:<br/>
+        <input name="password"  type="password" class="form-control" autocomplete="off" required="required"/><br/>
 
-        <label th:class="${#fields.hasErrors('password')}? 'error'">confirmar password</label>:
-        <input name="confirmaContrasenya"  type="password" class="form-control" autocomplete="off" required="required"/><br/>
+        <label th:class="${#fields.hasErrors('password')}? 'error'">Respeteix la contrasenya nova</label>:
+        <input name="passwordConfirm"  type="password" class="form-control" autocomplete="off" required="required"/><br/>
 
 
-        <button type="submit" class="btn btn-primary pull-left" >Registre</button>
+        <button type="submit" class="btn btn-primary pull-left" >Actualitza la contrasenya</button>
+        <a href="/profile" th:href="@{'/profile'}" class="btn btn-default">Cancelar</a>
+
 
 
     </form>
