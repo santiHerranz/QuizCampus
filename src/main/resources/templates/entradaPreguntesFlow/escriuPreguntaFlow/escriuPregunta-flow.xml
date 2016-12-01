@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <input name="enquesta" required="true"/>
+
+    <on-start>
+       <evaluate result="flowScope.bossaPreguntes" expression="new com.tecnocampus.domain.BossaPreguntes()"/>
+    </on-start>
+
+    <view-state id="veurePreguntes" view="entradaPreguntesFlow/escriuPreguntaFlow/preguntaForm" model="pregunta">
+        <on-entry>
+            <set name="flowScope.pregunta" value="new com.tecnocampus.domain.PreguntaNumerica()"/>
+        </on-entry>
+        <transition on="preguntaEntrada" to="veurePreguntes">
+            <evaluate expression="bossaPreguntes.addPregunta(flowScope.pregunta)"/>
+        </transition>
+        <transition on="preguntesAcabades" to="acabar"/>
+        <transition on="cancel" to="cancel"/>
+    </view-state>
+
+    <end-state id="acabar">
+        <output name="bossaPreguntes"/>
+    </end-state>
+
+    <end-state id="cancel"/>
+
+    <global-transitions>
+        <transition on="cancel" to="cancel"></transition>
+    </global-transitions>
+
+</flow>

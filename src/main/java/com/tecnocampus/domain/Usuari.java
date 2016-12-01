@@ -1,51 +1,75 @@
 package com.tecnocampus.domain;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by santi on 03/10/2016.
  */
 
-public class Usuari extends Clau {
+public class Usuari implements Serializable {
 
-    private String email;
-    private String contrasenya;
-    private boolean admin;
+    private Long Id;
+    private Date dataCreacio;
+    private String password;
+    private String username;
+    private List<String> roles;
+
 
     private List<Resposta> respostes;
 
-    public Usuari(String email, String contrasenya) {
-        if (email==null) throw new NullPointerException("email");
-        if (contrasenya==null) throw new NullPointerException("contrasenya");
+    public Usuari() {
+    }
 
-        setEmail(email);
-        setContrasenya(contrasenya);
+    public Usuari(String username, String contrasenya) {
+        if (contrasenya==null) throw new NullPointerException("password");
+
+        setUsername(username);
+        setPassword(contrasenya);
+        roles = new ArrayList<>();
         respostes = new ArrayList<>();
     }
 
-    public String getEmail() {
-        return email;
+    public Long getId() {
+        return Id;
+    }
+    public void setId(Long Id) {
+        this.Id = Id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public Date getDataCreacio() {
+        return dataCreacio;
+    }
+    public void setDataCreacio(Date dataCreacio) {
+        this.dataCreacio = dataCreacio;
     }
 
-    public String getContrasenya() {
-        return contrasenya;
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setContrasenya(String contrasenya) {
-        this.contrasenya = contrasenya;
+
+    public String getUsername() {
+        return username;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setAdmin(boolean admin) { this.admin = admin;  }
+    public void addRoles(List<String> roles) {
+        this.roles.addAll(roles);
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
 
 
     public List<Resposta> getRespostes() {
@@ -57,18 +81,29 @@ public class Usuari extends Clau {
     }
 
 
+    @Override
     public java.lang.String toString() {
-
-        return "{"
-                + super.toString()
-                +" email: \""+ this.email +"\""
-                +", admin: \""+ this.admin +"\""
-                //+", respostes("+ this.respostes.size() +") "
-                +"}";
+        return String.format("Enquesta[Id: %s, Creat:%s, roles:%s]",
+                this.Id, this.dataCreacio, roles);
     }
 
 
     public boolean afegirResposta(Resposta resposta) {
         return this.respostes.add(resposta);
+    }
+
+    public void setAdmin(boolean admin) {
+        if(admin)
+            if (this.roles.indexOf("ROLE_ADMIN") == -1)
+                this.roles.add("ROLE_ADMIN");
+        else {
+            int index = this.roles.indexOf("ROLE_ADMIN");
+            if ( index > -1)
+                this.roles.remove(index);
+        }
+    }
+
+    public boolean isAdmin() {
+        return this.roles.indexOf("ROLE_ADMIN") > -1;
     }
 }

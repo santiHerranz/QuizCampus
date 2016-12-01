@@ -32,8 +32,8 @@ public class PreguntaRepository {
     RespostaRepository respostaRepository;
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM PREGUNTA ";
-    private static final String SQL_INSERT_STATEMENT = "INSERT INTO PREGUNTA (ENQUESTAID, ENUNCIAT, MAXIM, MINIM) VALUES(?,?,?,?)";
-    private static final String SQL_UPDATE_STATEMENT = "UPDATE PREGUNTA SET ENUNCIAT = ?, MAXIM = ?, MINIM = ? WHERE PREGUNTAID = ?";
+    private static final String SQL_INSERT_STATEMENT = "INSERT INTO PREGUNTA (ENQUESTAID, ORDRE, ENUNCIAT, MAXIM, MINIM) VALUES(?,?,?,?,?)";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE PREGUNTA SET ORDRE = ?, ENUNCIAT = ?, MAXIM = ?, MINIM = ? WHERE PREGUNTAID = ?";
     private static final String SQL_DELETE_STATEMENT = "DELETE PREGUNTA WHERE PREGUNTAID = ?";
 
     public PreguntaRepository(JdbcOperations jdbcOperations) {
@@ -41,16 +41,25 @@ public class PreguntaRepository {
     }
 
 
-    public int save(Enquesta enquesta, Pregunta pregunta) {
-        int result;
+    public Pregunta save(Enquesta enquesta, Pregunta pregunta) {
         if(pregunta.getId() == null) {
-            result = insert(enquesta, pregunta);
+            insert(enquesta, pregunta);
         } else {
-            result = update(pregunta);
+            update(pregunta);
         }
-        return result;
+
+        return findOne(pregunta.getId());
     }
-    public int insert(Enquesta enquesta, Pregunta pregunta) {
+
+    public PreguntaNumerica save(PreguntaNumerica pregunta) {
+        if(pregunta.getId() != null) {
+            update(pregunta);
+        }
+        return findOne(pregunta.getId());
+    }
+
+
+    public void insert(Enquesta enquesta, Pregunta pregunta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int preguntaUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -60,9 +69,10 @@ public class PreguntaRepository {
                         SQL_INSERT_STATEMENT,
                         new String[] { "preguntaId" });
                 ps.setLong(1, enquesta.getId());
-                ps.setString(2, pregunta.getEnunciat());
-                ps.setInt(3, ((PreguntaNumerica)pregunta).getMaxim());
-                ps.setInt(4, ((PreguntaNumerica)pregunta).getMinim());
+                ps.setInt(2, pregunta.getOrdre());
+                ps.setString(3, pregunta.getEnunciat());
+                ps.setInt(4, ((PreguntaNumerica)pregunta).getMaxim());
+                ps.setInt(5, ((PreguntaNumerica)pregunta).getMinim());
                 return ps;
             }
         }, keyHolder);
@@ -71,22 +81,21 @@ public class PreguntaRepository {
         // Enllaçar objectes
         pregunta.setEnquesta(enquesta);
         enquesta.getPreguntes().add(pregunta);
-
-        return preguntaUpdate;
     }
 
-    private int update(Pregunta pregunta) {
+    private void update(Pregunta pregunta) {
         PreguntaNumerica preguntaNumerica = ((PreguntaNumerica)pregunta);
 
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT,
-                new Object[] { pregunta.getEnunciat()
+                new Object[] {
+                          pregunta.getOrdre()
+                        , pregunta.getEnunciat()
                         , preguntaNumerica.getMaxim()
                         , preguntaNumerica.getMinim()
                         , pregunta.getId().toString()
                 }
         );
-        return updateResult;
     }
 
 
@@ -98,9 +107,9 @@ public class PreguntaRepository {
             return resultCount;
         }
 
-    public Pregunta findOne(Long preguntaId) {
+    public PreguntaNumerica findOne(Long preguntaId) {
         try {
-            Pregunta pregunta = jdbcOperations.queryForObject(
+            PreguntaNumerica pregunta = jdbcOperations.queryForObject(
                     SQL_SELECT_STATEMENT + "where preguntaId = ?"
                     , new Object[]{preguntaId}
                     , new PreguntaMapper()
@@ -124,9 +133,9 @@ public class PreguntaRepository {
         }
     }
 
-    public List<Pregunta> findAll() {
-        List<Pregunta> list = jdbcOperations.query(
-                SQL_SELECT_STATEMENT
+    public List<PreguntaNumerica> findAll() {
+        List<PreguntaNumerica> list = jdbcOperations.query(
+                SQL_SELECT_STATEMENT +" ORDER BY Ordre ASC"
                 , new PreguntaMapper()
         );
         return  list;
@@ -136,23 +145,35 @@ public class PreguntaRepository {
      * Aquesta funció llista totes les preguntes que pertanyin a l'esquesta que passem per parametre
      * @param enquestaId
      */
-    public Iterable<Pregunta> findAllFromQuiz(Long enquestaId) {
+    public List<PreguntaNumerica> findAllFromQuiz(Long enquestaId) {
         return jdbcOperations.query(
-                SQL_SELECT_STATEMENT +" WHERE enquestaId = ?"
+                SQL_SELECT_STATEMENT +" WHERE enquestaId = ? ORDER BY Ordre ASC"
                 , new Object[]{ enquestaId}
                 , new PreguntaMapper());
     }
 
+    public int findMaxOrder(Enquesta enquesta) {
+
+        String sql = "SELECT MAX(ordre) FROM PREGUNTA WHERE enquestaId = ? ";
+        int total = 0;
+        try {
+            total = jdbcOperations.queryForObject(sql, new Object[] { enquesta.getId() }, Integer.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return total;
+    }
 
 
-    private final class PreguntaMapper implements RowMapper<Pregunta> {
+    private final class PreguntaMapper implements RowMapper<PreguntaNumerica> {
         @Override
-        public Pregunta mapRow(ResultSet resultSet, int i) throws SQLException {
+        public PreguntaNumerica mapRow(ResultSet resultSet, int i) throws SQLException {
 
             PreguntaNumerica pregunta = new PreguntaNumerica();
 
             pregunta.setId(resultSet.getLong("preguntaid"));
             //pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
+            pregunta.setOrdre(resultSet.getInt("ordre"));
             pregunta.setEnunciat(resultSet.getString("enunciat"));
             pregunta.setMaxim(resultSet.getInt("maxim"));
             pregunta.setMinim(resultSet.getInt("minim"));
@@ -172,12 +193,13 @@ public class PreguntaRepository {
 
     private final class PreguntaMapperLazy implements RowMapper<Pregunta> {
         @Override
-        public Pregunta mapRow(ResultSet resultSet, int i) throws SQLException {
+        public PreguntaNumerica mapRow(ResultSet resultSet, int i) throws SQLException {
 
             PreguntaNumerica pregunta = new PreguntaNumerica();
 
             pregunta.setId(resultSet.getLong("preguntaid"));
             //pregunta.setEnquestaId(resultSet.getLong("enquestaid"));
+            pregunta.setOrdre(resultSet.getInt("ordre"));
             pregunta.setEnunciat(resultSet.getString("enunciat"));
             pregunta.setMaxim(resultSet.getInt("maxim"));
             pregunta.setMinim(resultSet.getInt("minim"));

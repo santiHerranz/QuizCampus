@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="links">
+    <script src="../static/js/vendor/jquery-1.11.2.min.js" th:src="@{/js/vendor/jquery-1.11.2.min.js}"></script>
+    <script src="../static/js/vendor/bootstrap.min.js" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+    <script src="../static/js/main.js" th:src="@{/js/main.js}"></script>
+</div>
+
+</body>
+</html>

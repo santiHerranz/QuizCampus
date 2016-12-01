@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Identificar usuari</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div th:replace="header :: header('')">Header</div>
+
+
+<div class="container">
+
+<h4>Accedir</h4>
+
+    <div th:class="${'alert alert-danger'}" role="alert" th:if="${param.error}">
+        <strong>Username o contrasenya incorrectes!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+<form id="f" name="f" th:action="@{/login}" method="post">
+    <div class="form-group">
+        <label for="f_username"> Username</label>
+        <input type="text" class="form-control" id="f_username" name="username" placeholder="Entra username" autofocus="autofocus" />
+    </div>
+    <div class="form-group">
+        <label for="f_password"> Password</label>
+        <input type="password" class="form-control" id="f_password" name="password" placeholder="Entra password" />
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" value=""  name="remember-me" checked="checked" />Recorda'm</label>
+    </div>
+    <button type="submit" class="btn btn-success btn-block"> Login</button>
+
+    <button type="submit" class="btn btn-primary btn-block" onclick="$('#f_username').val('demo'); $('#f_password').val('demo');"> Demo</button>
+
+</form>
+
+</div>
+
+
+<div th:replace="footer :: footer">footer</div>
+<div th:replace="links :: links">links</div>
+
+</body>
+</html>
+

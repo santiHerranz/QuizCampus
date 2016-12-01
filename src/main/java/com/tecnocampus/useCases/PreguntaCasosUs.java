@@ -2,11 +2,11 @@ package com.tecnocampus.useCases;
 
 import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.*;
-import com.tecnocampus.exceptions.PreguntaNoExisteixException;
 import com.tecnocampus.exceptions.RespostaDuplicadaException;
 import com.tecnocampus.exceptions.RespostaForaDeLimitsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +27,9 @@ public class PreguntaCasosUs {
 
     @Autowired
     BeansManager beansManager;
+
+    @Autowired
+    EnquestaCasosUs enquestaCasosUs;
 
     public PreguntaCasosUs() {}
 
@@ -56,7 +59,8 @@ public class PreguntaCasosUs {
         pregunta.afegirResposta(resposta);
         resposta.setPregunta(pregunta);
 
-        beansManager.respostaRepository.save(pregunta, resposta);
+
+        resposta = (RespostaNumerica) beansManager.respostaRepository.save(pregunta, resposta);
         return resposta;
 
     }
@@ -65,31 +69,15 @@ public class PreguntaCasosUs {
         return beansManager.preguntaRepository.findOne(preguntaId);
     }
 
-
-    /***
-     *
-     * @param pregunta
-     * @return
-     * @throws Exception
-     */
-    public void eliminarPregunta(Pregunta pregunta) throws RuntimeException {
-        if (beansManager.preguntaRepository.findOne(pregunta.getId()) == null)
-            throw new PreguntaNoExisteixException();
-        beansManager.preguntaRepository.delete(pregunta);
+    @Transactional
+    public PreguntaNumerica save(PreguntaNumerica pregunta) {
+        return beansManager.preguntaRepository.save(pregunta);
     }
 
-    /***
-     *
-     * @param enquesta
-     * @throws Exception
-     */
-    public void eliminarTotesPreguntes(Enquesta enquesta) throws RuntimeException {
-        for (Pregunta pregunta: enquesta.getPreguntes()) {
-            eliminarPregunta(pregunta);
-        }
-    }
 
-    public List<Pregunta> llistarPreguntes() {
+
+
+    public List<PreguntaNumerica> llistarPreguntes() {
         return beansManager.preguntaRepository.findAll();
     }
 

@@ -55,7 +55,7 @@ public class EnquestaCasosUsTest {
     public void crearEnquestaTest(){
         //Creem l'enquesta
         Enquesta enquesta = enquestaCasosUs.crearEnquesta("Els serveis");
-        Enquesta enquestaDB = enquestaCasosUs.obetenirEnquesta(enquesta.getId());
+        Enquesta enquestaDB = enquestaCasosUs.obtenirEnquesta(enquesta.getId());
         Assert.assertTrue(enquestaDB.getTitol().equalsIgnoreCase(enquesta.getTitol()));
     }
 
@@ -72,12 +72,12 @@ public class EnquestaCasosUsTest {
     public void guardarEnquestaTest(){
         String enquestaTitol;
 
-        Enquesta enquesta1 = enquestaCasosUs.obetenirEnquesta(1L);
+        Enquesta enquesta1 = enquestaCasosUs.obtenirEnquesta(1L);
         enquestaTitol = enquesta1.getTitol() + " 2";
         enquesta1.setTitol(enquestaTitol);
         enquestaCasosUs.save(enquesta1);
 
-        Enquesta enquestaDB = enquestaCasosUs.obetenirEnquesta(1L);
+        Enquesta enquestaDB = enquestaCasosUs.obtenirEnquesta(1L);
         Assert.assertTrue(enquestaDB.getTitol().equalsIgnoreCase( enquestaTitol));
     }
     @Test
@@ -85,8 +85,8 @@ public class EnquestaCasosUsTest {
     public void guardarEnquestaDuplicadaTest(){
         expectedEx.expect(EnquestaDuplicadaException.class);
 
-        Enquesta enquesta1 = enquestaCasosUs.obetenirEnquesta(1L);
-        Enquesta enquesta2 = enquestaCasosUs.obetenirEnquesta(2L);
+        Enquesta enquesta1 = enquestaCasosUs.obtenirEnquesta(1L);
+        Enquesta enquesta2 = enquestaCasosUs.obtenirEnquesta(2L);
         enquesta1.setTitol(enquesta2.getTitol());
         enquestaCasosUs.save(enquesta1);
     }
@@ -95,7 +95,7 @@ public class EnquestaCasosUsTest {
     @Test
     @Transactional
     public void afegirPreguntaEnquestaTest(){
-        Enquesta enquesta = enquestaCasosUs.obetenirEnquesta(1L);
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(1L);
         Pregunta pregunta = enquestaCasosUs.afegirPregunta(enquesta, "Nova pregunta", 1, 10);
         Pregunta preguntaDB = preguntaCasosUs.obtenirPregunta(pregunta.getId());
         Assert.assertEquals(preguntaDB.toString(), pregunta.toString());
@@ -105,7 +105,7 @@ public class EnquestaCasosUsTest {
     @Transactional
     public void esborrarPreguntaDeEnquestaTest(){
         Pregunta pregunta = preguntaCasosUs.llistarPreguntes().get(1);
-        preguntaCasosUs.eliminarPregunta(pregunta);
+        enquestaCasosUs.eliminarPregunta(pregunta);
     }
     @Test
     @Transactional
@@ -113,16 +113,16 @@ public class EnquestaCasosUsTest {
         expectedEx.expect(PreguntaNoExisteixException.class);
 
         Pregunta pregunta = preguntaCasosUs.llistarPreguntes().get(1);
-        preguntaCasosUs.eliminarPregunta(pregunta);
-        preguntaCasosUs.eliminarPregunta(pregunta);
+        enquestaCasosUs.eliminarPregunta(pregunta);
+        enquestaCasosUs.eliminarPregunta(pregunta);
     }
 
     @Test
     public void esborrarEnquestaTest(){
-        Enquesta enquesta = enquestaCasosUs.obetenirEnquesta(1L);
+        Enquesta enquesta = enquestaCasosUs.obtenirEnquesta(1L);
         long enquestaId = enquesta.getId();
         enquestaCasosUs.eliminarEnquesta(enquesta);
-        Enquesta enquestaDB = enquestaCasosUs.obetenirEnquesta(enquestaId);
+        Enquesta enquestaDB = enquestaCasosUs.obtenirEnquesta(enquestaId);
         Assert.assertTrue(enquestaDB == null);
     }
 

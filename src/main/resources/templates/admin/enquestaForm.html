@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Enquesta</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div th:replace="header :: header('admin')">Header</div>
+
+
+<div class="container">
+
+    <div class="form-group form-actions pull-right">
+        <form th:id="'form_enquesta_' + ${enquesta.id}" action="#" th:action="@{'/admin/enquestes/'+ ${enquesta.id} +'/esborra'}" method="post">
+            <div class="btn-group">
+                <a class="btn btn-danger btn-xs"
+                   th:disabled="${enquesta.Id == null}"
+                   th:onclick="${'confirmDelete('+ enquesta.id +', ''Segur que vols eliminar &lt;b&gt;'+ enquesta.titol +'&lt;/b&gt;?'')'}" title="Eliminar">Eliminar</a>
+            </div>
+        </form>
+    </div>
+
+
+    <form method="POST" th:object="${enquesta}" class="form-vertical form-bordered">
+
+    <div class="block-title">
+        <a class=""  th:href="@{'/admin/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
+        <hr />
+    </div>
+
+
+        <div class="errors" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}"
+                    th:text="${err}">Input is incorrect</li>
+            </ul>
+        </div>
+
+
+        <div class="col-md-12">
+        <div class="form-group">
+                <input th:field="*{Id}" class="hidden"  />
+                <br />
+                <label class="col-md-9 control-label" for="val_name" th:class="${#fields.hasErrors('titol')}? 'titol'">Titol<span class="text-danger">*</span></label>
+                <input id="val_name" name="val_name" class="form-control" type="text" th:required="true" autocomplete="off"
+                       th:field="*{titol}"
+                       th:class="${#fields.hasErrors('titol')}? 'form-control titol' : 'form-control'" />
+        </div>
+        <div class="form-group">
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-sm btn-primary"> Guardar</button>
+
+                <a type="submit" class="btn btn-sm btn-default" th:href="@{'/admin/enquestes/' + ${enquesta.id}}" th:if="${enquesta.Id != null}"> Descartar</a>
+                <a type="submit" class="btn btn-sm btn-default" href="/admin/enquestes" th:if="${enquesta.Id == null}"> Descartar</a>
+            </div>
+
+        </div>
+        </div>
+
+
+    </form>
+
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Eliminar enquesta</h4>
+            </div>
+            <div class="modal-body" id="confirmDeleteMessage"></div>
+            <div class="modal-footer">
+                <input type="hidden" id="itemToDelete" value="" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="$('#form_enquesta_'+ itemToDelete.value).submit();">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Delete Modal -->
+
+<div th:replace="footer :: footer">footer</div>
+<div th:replace="links :: links">links</div>
+
+</body>
+</html>

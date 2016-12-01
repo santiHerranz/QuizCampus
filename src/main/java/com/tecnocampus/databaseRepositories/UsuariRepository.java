@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.keygen.StringKeyGenerator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -25,39 +27,84 @@ import java.util.List;
 public class UsuariRepository {
 
     private JdbcOperations jdbcOperations;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     BeansManager beansManager;
 
     private static final String SQL_SELECT_STATEMENT = "SELECT * FROM USUARI ";
-    private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (EMAIL, CONTRASENYA) VALUES(?,?)";
-    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET EMAIL = ?, CONTRASENYA = ?, ADMIN = ? WHERE USUARIID = ?";
+    private static final String SQL_INSERT_STATEMENT = "INSERT INTO USUARI (USERNAME, password) VALUES(?,?)";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE USUARI SET username = ?, password = ? WHERE USUARIID = ?";
     private static final String SQL_DELETE_STATEMENT = "DELETE FROM USUARI WHERE USUARIID = ?";
 
-    public UsuariRepository(JdbcOperations jdbcOperations) {
+    private static final String SQL_INSERT_ROLE_STATEMENT = "INSERT INTO usuari_roles (usuariId, role) VALUES(?,?)";
+    private static final String SQL_DELETE_ROLE_STATEMENT = "DELETE FROM usuari_roles WHERE usuariId = ? AND role = ?";
+
+    public UsuariRepository(JdbcOperations jdbcOperations, PasswordEncoder passwordEncoder) {
+
         this.jdbcOperations = jdbcOperations;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public int save(Usuari usuari) {
-        int result;
+    public boolean comprovarContrasenyaEncriptada(Usuari user, String contrasenya) {
+
+        String a = user.getPassword();
+        return passwordEncoder.matches(contrasenya,a);
+    }
+
+
+    public Usuari save(Usuari usuari) {
+        save(usuari, false);
+        return findOne(usuari.getId());
+    }
+
+    public Usuari save(Usuari usuari, boolean update_roles) {
         if(usuari.getId() == null) {
-            result = insert(usuari);
+            insert(usuari);
         } else {
-            result = update(usuari);
+            update(usuari);
         }
-        return result;
+        if (update_roles) role_update(usuari);
+
+        return findOne(usuari.getId());
+    }
+
+    private void role_update(Usuari usuari) {
+
+        List<String> dbRoles = findRoles(usuari.getId());
+        List<String> wantedRoles = usuari.getRoles();
+        
+        // inserta el que falten
+        for (String role : wantedRoles) {
+            if(!dbRoles.contains(role)) {
+                this.jdbcOperations.update(
+                        SQL_INSERT_ROLE_STATEMENT
+                        , usuari.getId()
+                        , role
+                );
+            }
+        }
+
+        // elimina els que ja no hi son
+        for (String role : dbRoles) {
+            if(wantedRoles.contains(role)){
+                this.jdbcOperations.update(
+                        SQL_DELETE_ROLE_STATEMENT
+                        , usuari.getId()
+                        , role
+                );
+            }
+        }
     }
 
 
-    private int update(Usuari usuari) {
+    private void update(Usuari usuari) {
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT
-                , usuari.getEmail()
-                , usuari.getContrasenya()
-                , usuari.isAdmin()
+                , usuari.getUsername()
+                , passwordEncoder.encode(usuari.getPassword())
                 , usuari.getId()
         );
-        return updateResult;
     }
 
     /***
@@ -65,7 +112,7 @@ public class UsuariRepository {
      * @param usuari
      * @return 0 o 1 segons el numero de files insertades
      */
-    public int insert(Usuari usuari) {
+    public void insert(Usuari usuari) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -75,22 +122,22 @@ public class UsuariRepository {
                 PreparedStatement ps = connection.prepareStatement(
                          SQL_INSERT_STATEMENT ,
                         new String[] { "usuariId" });
-                ps.setString(1, usuari.getEmail());
-                ps.setString(2, usuari.getContrasenya());
+                ps.setString(1, usuari.getUsername());
+                ps.setString(2, passwordEncoder.encode(usuari.getPassword()));
                 return ps;
             }
         }, keyHolder);
 
         usuari.setId(keyHolder.getKey().longValue());
 
-        return userUpdate;
+
     }
 
     /***
      * Obtenir llistat d'usuaris
      * @return
      */
-    public List findAll() {
+    public List<Usuari> findAll() {
         return jdbcOperations.query(SQL_SELECT_STATEMENT, new UsuariMapper());
     }
 
@@ -106,37 +153,44 @@ public class UsuariRepository {
      */
     public Usuari findOne(Long usuariId) {
         try {
-            return jdbcOperations.queryForObject(
-                    SQL_SELECT_STATEMENT + "where usuariId = ?"
+            Usuari u = jdbcOperations.queryForObject(
+                    SQL_SELECT_STATEMENT + " where usuariId = ?"
                     , new Object[]{usuariId}
                     , new UsuariMapper()
             );
+
+            return u;
+
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
+
+
+
     public Usuari findOneLazy(Long usuariId) {
         try {
-            return jdbcOperations.queryForObject(
+            Usuari u = jdbcOperations.queryForObject(
                     SQL_SELECT_STATEMENT + "where usuariId = ?"
                     , new Object[]{usuariId}
                     , new UsuariMapperLazy()
             );
+            return  u;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     /***
-     * Obtenir l'usuari a partir de l'email
-     * @param email
+     * Obtenir l'usuari a partir de  username
+     * @param username
      * @return l'usuari trobat o null
      */
-    public Usuari findOne(String email) {
+    public Usuari findOne(String username) {
         try {
             return jdbcOperations.queryForObject(
-                    SQL_SELECT_STATEMENT + "where email = ?"
-                    , new Object[]{email}
+                    SQL_SELECT_STATEMENT + "where username = ?"
+                    , new Object[]{username}
                     , new UsuariMapper()
             );
         } catch (EmptyResultDataAccessException e) {
@@ -158,14 +212,25 @@ public class UsuariRepository {
     }
 
 
+    private List<String> findRoles(Long usuariId) {
+        return jdbcOperations.query("Select * from usuari_roles where usuariId = ?", new Object[]{usuariId}, new RoleMapper());
+    }
+
+/*    private List<String> findRoles(String usuariId) {
+        return jdbcOperations.query("Select * from usuari_roles where usuariId = ?",
+                (rs,i) -> rs.getString("role"),
+                usuariId);
+    }*/
 
 
     private final class UsuariMapper implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
-            Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
+            Usuari usuari = new Usuari( resultSet.getString("username"), resultSet.getString("password"));
             usuari.setId(resultSet.getLong("usuariid"));
-            usuari.setAdmin(resultSet.getBoolean("admin"));
+            usuari.setDataCreacio(resultSet.getDate("data_creacio"));
+
+            usuari.addRoles(findRoles(resultSet.getLong("usuariid")));
 
             Iterable<Resposta> list = beansManager.respostaRepository.findAllFromUser(usuari.getId());
             for (Resposta r: list) {
@@ -180,11 +245,20 @@ public class UsuariRepository {
     private final class UsuariMapperLazy implements RowMapper<Usuari> {
         @Override
         public Usuari mapRow(ResultSet resultSet, int i) throws SQLException {
-            Usuari usuari = new Usuari(resultSet.getString("email"), resultSet.getString("contrasenya"));
+            Usuari usuari = new Usuari(resultSet.getString("username"), resultSet.getString("password"));
             usuari.setId(resultSet.getLong("usuariid"));
-            usuari.setAdmin(resultSet.getBoolean("admin"));
+            usuari.setDataCreacio(resultSet.getDate("data_creacio"));
+
+            usuari.addRoles(findRoles(resultSet.getLong("usuariid")));
 
             return usuari;
+        }
+    }
+
+    private final class RoleMapper implements RowMapper<String> {
+        @Override
+        public String mapRow(ResultSet resultSet, int i) throws SQLException {
+            return resultSet.getString("role");
         }
     }
 }

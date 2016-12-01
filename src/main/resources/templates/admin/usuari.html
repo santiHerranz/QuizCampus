@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>TRUST ME</title>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div th:replace="header :: header('usuaris')">Header</div>
+
+<div class="container">
+
+    <div class="block-title">
+        <a class=""  th:href="@{'/admin/usuaris'}" >Usuaris / </a> <span th:text="${usuari.username}">usuari</span>
+        <hr />
+    </div>
+    <div class="form-group form-actions hide">
+        <a class="btn btn-primary btn-sm" th:href="${'/admin/usuaris/'+ usuari.Id +'/edita'}" href="/usuaris/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+    </div>
+
+
+    <strong th:text="${usuari.username}" >email</strong>
+
+
+</div>
+
+<div th:replace="footer :: footer">footer</div>
+<div th:replace="links :: links">links</div>
+
+</body>
+</html>

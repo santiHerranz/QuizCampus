@@ -3,11 +3,15 @@ package com.tecnocampus.useCases;
 import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Resposta;
 import com.tecnocampus.domain.Usuari;
+import com.tecnocampus.exceptions.ContrasenyaNoValidaException;
 import com.tecnocampus.exceptions.UsuariDuplicatException;
+import com.tecnocampus.utils.ContrasenyaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,21 +25,38 @@ public final class UsuariCasosUs {
     BeansManager beansManager;
 
 
+
+
     public UsuariCasosUs() {
     }
-    public Usuari crearUsuari(String email, String contrasenya) {
-        return crearUsuari(email, contrasenya, contrasenya);
+    public Usuari crearUsuari(String username, String contrasenya) {
+        return crearUsuari(username, contrasenya, contrasenya);
     }
 
-    public Usuari crearUsuari(String email, String contrasenya, String confirmaContrasenya) {
-        if(email == null ) throw new IllegalArgumentException();
-        if(contrasenya == null ) throw new IllegalArgumentException();
+    public Usuari crearUsuari(String username, String contrasenya, String confirmaContrasenya) {
+         if(contrasenya == null ) throw new IllegalArgumentException();
 
         if(!confirmaContrasenya.equals(contrasenya))
             throw  new RuntimeException("La contrasenya no coincideix");
 
-        Usuari usuari = new Usuari(email, contrasenya);
-        save(usuari);
+        // La contrasenya ha de cumplir les normes especificades
+        ContrasenyaUtils contrasenyaUtils = new ContrasenyaUtils();
+        if (!contrasenyaUtils.esValida(contrasenya)) {
+            ArrayList<String> errorDescription = contrasenyaUtils.getErrors();
+
+            if (errorDescription.size()>0) {
+                String errorJoined = String.join("&&", errorDescription);
+                throw new ContrasenyaNoValidaException(errorJoined);
+            }
+        }
+
+        Usuari usuari = new Usuari(username, contrasenya);
+
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add("ROLE_USER");
+        usuari.addRoles(roles);
+
+        usuari = save(usuari);
 
         // Establir admin al primer usuari
         if( llistarUsuaris().size()==1)
@@ -46,37 +67,64 @@ public final class UsuariCasosUs {
         return usuari;
     }
 
-    public void save(Usuari usuari) {
+
+    public Usuari save(Usuari usuari) {
         try {
-            beansManager.usuariRepository.save(usuari);
+            return beansManager.usuariRepository.save(usuari);
         } catch (DuplicateKeyException e) {
             throw new UsuariDuplicatException();
         }
     }
 
-    public boolean comprobarContrasenya(String email, String contrasenya) {
-        if(email == null ) throw new IllegalArgumentException();
+    public Usuari actualitzaContrasenya(Usuari user, String contrasenyaActual, String contrasenya, String repeticio) {
+
+        if (!comprobarContrasenya(user.getUsername(), contrasenyaActual))
+            throw new ContrasenyaNoValidaException("La contrasenya actual no és la correcta.");
+
+        if (!contrasenya.equals(repeticio))
+            throw new ContrasenyaNoValidaException("Les noves contrasenyes introduides no són identiques.");
+
+        ContrasenyaUtils contrasenyaUtils = new ContrasenyaUtils();
+
+        if (!contrasenyaUtils.esValida(contrasenya)) {
+            ArrayList<String> errorDescription = contrasenyaUtils.getErrors();
+
+            if (errorDescription.size()>0) {
+                String errorJoined = String.join("&&", errorDescription);
+                throw new ContrasenyaNoValidaException(errorJoined);
+            }
+        }
+
+        Usuari usuari = beansManager.usuariRepository.findOne(user.getId());
+        usuari.setPassword(contrasenya);
+        return beansManager.usuariRepository.save(usuari, false); // guarda sense modificar els roles
+
+    }
+
+    public boolean comprobarContrasenya(String username, String contrasenya) {
+        if(username == null ) throw new IllegalArgumentException();
         if(contrasenya == null ) throw new IllegalArgumentException();
 
-        Usuari usuari = beansManager.usuariRepository.findOne(email);
+        Usuari usuari = beansManager.usuariRepository.findOne(username);
         if( usuari == null)
-            throw new RuntimeException("Email no trobat!");
+            throw new RuntimeException("Username no trobat!");
 
-        return contrasenya == usuari.getContrasenya();
+        return beansManager.usuariRepository.comprovarContrasenyaEncriptada(usuari,contrasenya);
     }
 
-    public void promocionarAdmin(Usuari usuari) {
+
+    public Usuari promocionarAdmin(Usuari usuari) {
         usuari.setAdmin(true);
-        beansManager.usuariRepository.save(usuari);
+        return beansManager.usuariRepository.save(usuari);
     }
 
-    public void degradarAdmin(Usuari usuari){
+    public Usuari degradarAdmin(Usuari usuari){
         if(!usuari.isAdmin())
             throw new RuntimeException("L'usuari no és administrador, no es pot degradar!!!");
         if(esUltimAdmin(usuari))
             throw new RuntimeException("L'usuari és l'ultim administrador, no es pot degradar!!!");
         usuari.setAdmin(false);
-        beansManager.usuariRepository.save(usuari);
+        return beansManager.usuariRepository.save(usuari);
     }
 
     private boolean esUltimAdmin(Usuari usuari){
@@ -95,17 +143,17 @@ public final class UsuariCasosUs {
         if(esUltimAdmin(usuari))
             throw new RuntimeException("L'usuari és l'ultim administrador, no es pot eliminar!!!");
 
-        String msg = String.format("Usuari eliminat {id:%s, email:\"%s\"} %n", usuari.getId(), usuari.getEmail());
+        String msg = String.format("Usuari eliminat {id:%s, username:\"%s\"} %n", usuari.getId(), usuari.getUsername());
         beansManager.usuariRepository.delete(usuari);
         System.out.print(msg);
     }
 
     public List<Usuari> llistarUsuaris() {
-        return beansManager.usuariRepository.findAllLazy();
+        return beansManager.usuariRepository.findAll();
     }
 
-    public Usuari cercarUsuari(String email) {
-        return beansManager.usuariRepository.findOne(email);
+    public Usuari cercarUsuari(String username) {
+        return beansManager.usuariRepository.findOne(username);
     }
 
     public Usuari cercarUsuari(long usuariId) {
@@ -115,4 +163,5 @@ public final class UsuariCasosUs {
     public void esborraResposta(Resposta resposta) {
         beansManager.respostaRepository.delete(resposta);
     }
+
 }

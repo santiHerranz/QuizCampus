@@ -1,5 +1,8 @@
 package com.tecnocampus.domain;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * Created by santi on 03/10/2016.
  *
@@ -7,8 +10,10 @@ package com.tecnocampus.domain;
  *  - Qui ha respost
  *  - Quina pregunta s'ha respost
  */
-public abstract class Resposta extends Clau implements IResposta {
+public abstract class Resposta implements IResposta, Serializable {
 
+    private Long Id;
+    private Date dataCreacio;
     private Usuari usuari;
     private Pregunta pregunta;
 
@@ -22,6 +27,21 @@ public abstract class Resposta extends Clau implements IResposta {
         this.setUsuari(usuari);
         this.setPregunta(pregunta);
     }
+
+    public Long getId() {
+        return Id;
+    }
+    public void setId(Long Id) {
+        this.Id = Id;
+    }
+
+    public Date getDataCreacio() {
+        return dataCreacio;
+    }
+    public void setDataCreacio(Date dataCreacio) {
+        this.dataCreacio = dataCreacio;
+    }
+
 
     public Usuari getUsuari() {
         return usuari;
@@ -37,11 +57,11 @@ public abstract class Resposta extends Clau implements IResposta {
         this.pregunta = pregunta;
     }
 
-    public java.lang.String toString() {
-        return ""+ super.toString()
-                +" "+ this.usuari +""
-                +", "+ this.pregunta +""
-                +"";
+
+    public String toString() {
+        return String.format("Resposta[Id: %s, Creat:%s, usuari:%s, %s]",
+                Id, dataCreacio, usuari, usuari, pregunta);
     }
+
 
 }

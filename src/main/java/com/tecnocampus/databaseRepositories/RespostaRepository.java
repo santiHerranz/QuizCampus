@@ -46,7 +46,7 @@ public class RespostaRepository {
         this.jdbcOperations = jdbcOperations;
     }
 
-    public int save(Pregunta pregunta, RespostaNumerica resposta) {
+    public Resposta save(Pregunta pregunta, RespostaNumerica resposta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int respostaUpdate = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -65,7 +65,7 @@ public class RespostaRepository {
 
         resposta.setId(keyHolder.getKey().longValue());
 
-        return respostaUpdate;  
+        return findOne(resposta.getId());
     }
 
     public List<Resposta> findAll(Long preguntaId) {
@@ -135,6 +135,7 @@ public class RespostaRepository {
 
             Resposta resposta = new RespostaNumerica();
             resposta.setId(resultSet.getLong("respostaid"));
+            resposta.setDataCreacio(resultSet.getDate("data_creacio"));
             ((RespostaNumerica)resposta).setValor(resultSet.getInt("valor"));
 
             Usuari usuari = beansManager.usuariRepository.findOneLazy(resultSet.getLong("usuariid"));

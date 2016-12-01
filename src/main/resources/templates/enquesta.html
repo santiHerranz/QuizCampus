@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Enquesta</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div th:replace="header :: header('enquestes')">Header</div>
+
+<div class="container">
+    <div class="block-title">
+        <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${enquesta.titol}">enquesta</span>
+        <hr />
+    </div>
+
+    <div>
+        <span th:text="${enquesta.respostesRealitzades()}">respostes</span> valoracions realitzades.
+    </div>
+
+<div id="dataView" class="block">
+
+    <fieldset>
+
+
+        <a sec:authorize="hasRole('ADMIN')" class="btn btn-success btn-sm pull-right" th:href="${'/admin/enquestes/'+ enquesta.Id}" >Editar</a>
+
+
+        <div id="dataView" class="block">
+
+            <div class="table">
+                <table id="general-table" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th style="width: 5%;"><a href="#">#</a></th>
+                        <th style="width: 85%;"><a href="#">pregunta</a></th>
+                        <th style="width: 10%;"><a href="#">valoració mitjana</a></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pregunta, row : ${#lists.sort(enquesta.preguntes)}"
+                        th:id="'pregunta_' + ${pregunta.id}">
+                        <td><span th:text="${pregunta.ordre}">ordre</span></td>
+                        <td><span th:text="${pregunta.enunciat}">titol</span></td>
+                        <td><span th:text="${#numbers.formatDecimal(pregunta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">ordre</span></td>
+
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="lead" >
+                            <td><span></span></td>
+                            <td><strong>Total</strong></td>
+                            <td><strong th:text="${#numbers.formatDecimal(enquesta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">ordre</strong></td>
+
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+        </div>
+
+    </fieldset>
+</div>
+</div>
+
+
+
+<div th:replace="footer :: footer">footer</div>
+<div th:replace="links :: links">links</div>
+
+</body>
+</html>

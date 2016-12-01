@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Create Enquesta</title>
+    <link rel="stylesheet" type="text/css" th:href="@{style.css}"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+
+</head>
+<body>
+
+<div th:replace="header :: header('admin')">Header</div>
+
+<div class="container">
+
+    <div class="block-title">
+        <a class=""  th:href="@{'/enquestes'}" >Enquestes / </a> <span th:text="${pregunta.enquesta.titol}">enquesta</span>
+        <hr />
+    </div>
+
+    <h4>Pregunta</h4>
+
+    <form method="POST" th:object="${pregunta}">
+        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{ordre}" />
+
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('*')}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}"
+                    th:text="${err}">Input is incorrect</li>
+            </ul>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8">
+                <label for="enunciat">Enunciat</label>
+                <input type="text" id="enunciat" th:field="*{enunciat}" class="form-control" autocomplete="off" style="width: 100%;" />
+            </div>
+
+            <div class="col-md-2 hide">
+                <label for="valorMinim"> Mínim</label><br />
+                <select class="form-control selectpicker" id="valorMinim" name="valorMinim"
+                        required="required"
+                        th:field="*{minim}" style="width: 100%;" >
+                    <option th:each="o : ${#numbers.sequence(1,10)}"
+                            th:value="${o}" th:text="${o}" >5</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 hide">
+                <label for="valorMaxim"> Màxim estrelles</label><br />
+                <select class="form-control selectpicker" id="valorMaxim" name="valorMaxim"
+                        th:field="*{maxim}" style="width: 100%;">
+                    <option th:each="o : ${#numbers.sequence(1,10)}"
+                            th:value="${o}" th:text="${o}" >5</option>
+                </select>
+            </div>
+        </div>
+        <br />
+
+        <br />
+        <hr/>
+        <div class="btn-group">
+            <input type="hidden" id="orderedKeyList" name="orderedKeyList" value="" />
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success"/>
+            <a th:href="@{'/enquestes/' + ${pregunta.enquesta.id}}" class="btn btn-sm btn-default">Cancelar</a>
+        </div>
+
+    </form>
+
+</div>
+
+
+<div th:replace="footer :: footer">footer</div>
+<div th:replace="links :: links">links</div>
+
+</body>
+</html>

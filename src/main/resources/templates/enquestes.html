@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Llistat d'enquestes</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+
+</head>
+<body>
+
+<div th:replace="header :: header('enquestes')">Header</div>
+
+
+
+<div class="container">
+
+<div class="block-title">
+    <h2><strong>Enquestes d'opinió</strong></h2>
+</div>
+
+    <br />
+
+
+<div id="dataView" class="block">
+    <div class="table lead">
+        <table id="general-table" class="table table-striped table-vcenter">
+            <tbody>
+            <tr th:each="enquesta : ${enquestaList}">
+                <td>
+                    <div class="row">
+                        <div class="col-md-5"><a th:href="@{'/enquestes/' + ${enquesta.id}}"  th:text="${enquesta.titol}" >titol</a></div>
+                        <div class="col-md-1"><span th:text="${#numbers.formatDecimal(enquesta.getValoracioMitjana(), 1, 'COMMA', 2, 'POINT')}">ordre</span></div>
+                        <div class="col-md-4">
+                            <div class="acidjs-rating-stars">
+                            <label th:each="i : ${#numbers.sequence(5,1,-1)}" th:style="${enquesta.getValoracioMitjana() lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
+                            </div>
+                        </div>
+                        <div class="col-md-1" title="Valoracions realitzades"><span th:text="${enquesta.respostesRealitzades()}">respostes</span></div>
+                        <div class="col-md-1">
+                            <a class="btn btn-success" th:href="${'/entradaRespostesFlow?Id='+ enquesta.Id}" >Respondre</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+
+<div th:replace="footer :: footer">footer</div>
+<div th:replace="links :: links">links</div>
+
+</body>
+</html>

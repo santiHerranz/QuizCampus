@@ -3,6 +3,7 @@ package com.tecnocampus.databaseRepositories;
 import com.tecnocampus.BeansManager;
 import com.tecnocampus.domain.Enquesta;
 import com.tecnocampus.domain.Pregunta;
+import com.tecnocampus.domain.PreguntaNumerica;
 import com.tecnocampus.domain.Usuari;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,6 +18,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -45,26 +48,25 @@ public class EnquestaRepository {
      * @param enquesta
      * @return
      */
-    public int save(Enquesta enquesta) {
-        int result;
+    public Enquesta save(Enquesta enquesta) {
         if(enquesta.getId() == null) {
-            result = insert(enquesta);
+            insert(enquesta);
         } else {
-            result = update(enquesta);
+            update(enquesta);
         }
-        return result;
+        return findOne(enquesta.getId());
     }
 
 
-    private int update(Enquesta enquesta) {
+    private void update(Enquesta enquesta) {
         int updateResult = this.jdbcOperations.update(
                 SQL_UPDATE_STATEMENT,
-                new String[] { enquesta.getTitol(), enquesta.getId().toString() }
+                enquesta.getTitol(),
+                enquesta.getId().toString()
         );
-        return updateResult;
     }
 
-    private int insert(Enquesta enquesta) {
+    private void insert(Enquesta enquesta) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int insertResult = this.jdbcOperations.update(new PreparedStatementCreator() {
@@ -79,8 +81,6 @@ public class EnquestaRepository {
         }, keyHolder);
 
         enquesta.setId(keyHolder.getKey().longValue());
-
-        return insertResult;
     }
 
     /***
@@ -152,6 +152,8 @@ public class EnquestaRepository {
         }
     }
 
+
+
     /***
      * Aquest mètode elimina l'enquesta passada per parametres.
      * @param enquesta
@@ -169,8 +171,17 @@ public class EnquestaRepository {
         public Enquesta mapRow(ResultSet resultSet, int i) throws SQLException {
             Enquesta enquesta = new Enquesta(resultSet.getString("titol"));
             enquesta.setId(resultSet.getLong("enquestaId"));
+            enquesta.setDataCreacio(resultSet.getDate("data_creacio"));
 
-            Iterable<Pregunta> list = beansManager.preguntaRepository.findAllFromQuiz(enquesta.getId());
+            List<PreguntaNumerica> list = beansManager.preguntaRepository.findAllFromQuiz(enquesta.getId());
+
+            //Ordenar les preguntes
+            Collections.sort(list, new Comparator<Pregunta>() {
+                public int compare(Pregunta o1, Pregunta o2) {
+                    return o1.getOrdre() - o2.getOrdre();
+                }
+            });
+
             for (Pregunta p: list) {
                 p.setEnquesta(enquesta);
                 enquesta.afegirPregunta(p);
@@ -185,6 +196,7 @@ public class EnquestaRepository {
         public Enquesta mapRow(ResultSet resultSet, int i) throws SQLException {
             Enquesta enquesta = new Enquesta(resultSet.getString("titol"));
             enquesta.setId(resultSet.getLong("enquestaId"));
+            enquesta.setDataCreacio(resultSet.getDate("data_creacio"));
 
             return enquesta;
         }

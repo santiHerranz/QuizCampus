@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Enquesta</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+
+</head>
+<body>
+
+<div th:replace="header :: header('admin')">Header</div>
+
+<div class="container">
+    <div class="block-title">
+        <a class="" href="/admin/enquestes/" >Enquestes</a> /  <a class="" th:href="@{'/admin/enquestes/' + ${pregunta.enquesta.Id}}" th:text="${pregunta.enquesta.titol}" >Enquesta </a> / <span th:text="${pregunta.enunciat}" >enquesta</span>
+        <hr />
+    </div>
+
+    <div class="form-group form-actions">
+        <div class="btn-group">
+            <a class="btn btn-primary btn-sm" th:href="${'/admin/preguntes/'+ pregunta.Id +'/edita'}" href="/preguntes/edita/"><i class="fa fa-floppy-o"></i> Editar</a>
+        </div>
+
+    </div>
+
+    <div id="dataView" class="block">
+
+        <h3 >
+            <span th:text="${pregunta.enunciat}">enunciat</span>
+        </h3>
+
+        <fieldset>
+            <legend>
+                <div class="md-12">
+                    Respostes:
+                </div>
+            </legend>
+
+            <div th:class="${'alert alert-'+ css +''}" role="alert" th:if="${msg != null}">
+                <strong th:text="${msg}">resultat</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div id="dataView" class="block">
+
+                <div class="table">
+                    <table id="general-table" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th style="width: 30%;"><a href="#">Data</a></th>
+                            <th style="width: 30%;"><a href="#">Usuari</a></th>
+                            <th style="width: 40%;"><a href="#">Valoració</a></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="resposta, row : ${pregunta.respostes}"
+                            th:id="'resposta_' + ${resposta.Id}">
+
+                            <td><span th:text="${resposta.dataCreacio}" >data</span></td>
+
+                            <td>
+                                <span th:text="${resposta.usuari.username}">Usuari</span>
+                            </td>
+                            <td th:title="${resposta.valor +' / '+ resposta.pregunta.maxim}">
+                                <div class="acidjs-rating-stars">
+                                    <label th:each="i : ${#numbers.sequence(resposta.pregunta.maxim,1,-1)}" th:style="${resposta.valor lt i}? 'color: #ccc;' : 'color: #f5b301;' " ></label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+
+</div>
+
+<div th:replace="footer :: footer">footer</div>
+<div th:replace="links :: links">links</div>
+
+</body>
+</html>
